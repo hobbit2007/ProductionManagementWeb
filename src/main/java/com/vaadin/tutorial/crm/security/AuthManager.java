@@ -22,20 +22,29 @@ public class AuthManager {
     private final List<com.vaadin.tutorial.crm.security.AuthenticationListener> listeners;
     @Autowired(required = false)
     private AuthenticationEventPublisher authenticationEventPublisher;
-
+    public boolean authFlag = false;
 
     public void login(String login, String passwd) {
         UsernamePasswordAuthenticationToken baseAuth = new UsernamePasswordAuthenticationToken(login, passwd);
 
         try {
             Authentication auth = ldapAuthenticationProvider.authenticate(baseAuth);
-            auth.setAuthenticated(true);
-            SecurityContextHolder.getContext().setAuthentication(auth);
-            authenticationEventPublisher.publishAuthenticationSuccess(auth);
-            listeners.forEach(authenticationListener -> authenticationListener.listenAuthenticationSuccess(auth));
+            if(!auth.getPrincipal().equals("No auth")) {
+                auth.setAuthenticated(true);
+                SecurityContextHolder.getContext().setAuthentication(auth);
+                authenticationEventPublisher.publishAuthenticationSuccess(auth);
+                listeners.forEach(authenticationListener -> authenticationListener.listenAuthenticationSuccess(auth));
+                authFlag = true;
+            }
+            else {
+                auth.setAuthenticated(false);
+                authFlag = false;
+                Notification.show("Неверное имя пользователя или пароль, либо Вы не зарегистрирован в системе!", 5000, Notification.Position.MIDDLE);
+            }
         } catch (AuthenticationException e) {
+            authFlag = false;
             authenticationEventPublisher.publishAuthenticationFailure(e, baseAuth);
-            Notification notification = new Notification("Неверное имя пользователя или пароль!", 5000);
+            Notification notification = new Notification("Неверное имя пользователя или пароль, либо Вы не зарегистрирован в системе!", 5000);
             notification.setPosition(Notification.Position.MIDDLE);
             notification.open();
         }

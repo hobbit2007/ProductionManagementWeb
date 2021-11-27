@@ -7,11 +7,10 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.tutorial.crm.security.SecurityUtils;
 
-@Route("")
-@PWA(name = "Vaadin Application",
-        shortName = "Vaadin App",
-        description = "This is an example Vaadin application.",
-        enableInstallPrompt = false)
+@Route(value = "", layout = MainLayout.class)
+@PWA(name = "Автоматизированная система управления производством",
+        shortName = "АСУП",
+        description = "Сбор и аналитика данных из PLC контроллеров")
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 public class MainView extends AppLayout {

@@ -1,4 +1,4 @@
-package com.vaadin.tutorial.crm.repository.impl;
+package com.vaadin.tutorial.crm.service.impl;
 
 import com.vaadin.tutorial.crm.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;

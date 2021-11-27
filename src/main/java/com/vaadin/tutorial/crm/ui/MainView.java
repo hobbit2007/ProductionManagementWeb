@@ -4,13 +4,12 @@ import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.PWA;
 import com.vaadin.tutorial.crm.security.SecurityUtils;
 
+/**
+ * Главный класс приложения
+ */
 @Route(value = "", layout = MainLayout.class)
-@PWA(name = "Автоматизированная система управления производством",
-        shortName = "АСУП",
-        description = "Сбор и аналитика данных из PLC контроллеров")
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 public class MainView extends AppLayout {

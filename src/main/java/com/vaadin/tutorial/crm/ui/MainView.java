@@ -3,8 +3,10 @@ package com.vaadin.tutorial.crm.ui;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import com.vaadin.tutorial.crm.security.SecurityUtils;
 
 /**
  * Главный класс приложения
@@ -15,14 +17,25 @@ import com.vaadin.tutorial.crm.security.SecurityUtils;
 public class MainView extends AppLayout {
 
     Label labelUser;
+    VerticalLayout vContent = new VerticalLayout();
+    HorizontalLayout hContent = new HorizontalLayout();
 
     public MainView() {
-        labelUser = new Label("Пользователь: " + SecurityUtils.getAuthentication().getDetails().getFio() + "РОЛЬ: " + SecurityUtils.getAuthentication().getRole());
-        labelUser.getStyle().set("color", "green");
+        labelUser = new Label("ЗДЕСЬ БУДЕТ КОНТЕНТ ПРИЛОЖЕНИЯ");
+        labelUser.getStyle().set("color", "red");
         labelUser.getStyle().set("font-weight", "bold");
         labelUser.getStyle().set("font-size", "11pt");
 
-        setContent(labelUser);
+        hContent.add(labelUser);
+        hContent.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
+        hContent.setVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
+
+        vContent.add(hContent);
+        vContent.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
+        vContent.setHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
+        vContent.setSizeFull();
+
+        setContent(vContent);
 
     }
 

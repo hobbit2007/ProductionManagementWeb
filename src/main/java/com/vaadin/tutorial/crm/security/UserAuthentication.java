@@ -36,7 +36,7 @@ public class UserAuthentication implements Authentication, Serializable {
     }
 
     public long getId() {
-        return details.getUserId();
+        return details.getId();
     }
 
     public String getRole() {

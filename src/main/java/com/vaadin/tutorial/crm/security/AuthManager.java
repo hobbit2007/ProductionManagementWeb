@@ -1,9 +1,6 @@
 package com.vaadin.tutorial.crm.security;
 
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.tutorial.crm.login.LoginView;
-import com.vaadin.tutorial.crm.ui.MainView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationEventPublisher;

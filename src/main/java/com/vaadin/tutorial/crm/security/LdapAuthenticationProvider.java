@@ -18,51 +18,24 @@ import javax.naming.directory.InitialDirContext;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.Optional;
 
 public class LdapAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     private UserRepository userRepository;
 
-    @Value("${ldap.url}")
-    private String ldapURL;
-
-    @Value("${ldap.domain}")
-    private String ldapDomain;
-
     @Override
     public Authentication authenticate(Authentication auth) throws AuthenticationException {
         UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) auth;
-
-        Hashtable<String, String> env = new Hashtable<>();
-        env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-        env.put(Context.SECURITY_AUTHENTICATION, "simple");
-        env.put(Context.PROVIDER_URL, ldapURL);
-        env.put(Context.SECURITY_PRINCIPAL, authentication.getPrincipal() + "@" + ldapDomain);
-        env.put(Context.SECURITY_CREDENTIALS, authentication.getCredentials().toString());
-
         try {
-            InitialDirContext ctx = new InitialDirContext(env);
-            User u = userRepository.findByLogin(authentication.getPrincipal().toString())
-                    .orElseGet(() -> {
-                        User user = new User();
-                        user.setRole(com.vaadin.tutorial.crm.security.Authorities.USER.getAuthority());
-                        user.setLogin(authentication.getPrincipal().toString());
-                        return user;
-                    });
-            userRepository.saveAndFlush(u);
-            return new com.vaadin.tutorial.crm.security.UserAuthentication(authentication.getPrincipal().toString(), com.vaadin.tutorial.crm.security.Authorities.parse(u.getRole()), u);
-        } catch (javax.naming.AuthenticationException e) {
+            Optional<User> u = userRepository.findByLogin(authentication.getPrincipal().toString());
+            if (u.get().getUserPasswd().equals(authentication.getCredentials()))
+                return new com.vaadin.tutorial.crm.security.UserAuthentication(authentication.getPrincipal().toString(), com.vaadin.tutorial.crm.security.Authorities.parse(u.get().getRole()), u.get());
+            else
+                return new com.vaadin.tutorial.crm.security.UserAuthentication("No auth", com.vaadin.tutorial.crm.security.Authorities.parse(u.get().getRole()), u.get());
+        } catch (Exception e) {
             throw new BadCredentialsException("Bad creds");
-        } catch (NamingException e) {
-            throw new AuthenticationServiceException("LDAP err", e);
         }
-    }
-
-    private String formatData() {
-        Date dateNow = new Date();
-        SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy-MM-dd");
-
-        return formatForDateNow.format(dateNow);
     }
 
     @Override

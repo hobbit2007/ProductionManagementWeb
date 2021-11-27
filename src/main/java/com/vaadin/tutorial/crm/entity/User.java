@@ -1,23 +1,46 @@
 package com.vaadin.tutorial.crm.entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Date;
 
+/**
+ * Класс модель описывающий таблицу userslist
+ */
 @Data
 @Entity(name = "userslist")
+@Getter
+@Setter
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String fio;
+
     private String login;
-    private String fio_1;
-    private String fioSender;
+
+    private String userPasswd;
+
+    private String fio;
+
+    private String position;
+
+    private Long idDepartment;
+
+    private String email;
+
     private String role;
+
+    private Date dateCreate;
+
+    private Date lastDateActive;
+
+    private Long delete;
 
     public User(Long id, String login, String role) {
         this.id = id;
@@ -27,44 +50,6 @@ public class User implements UserDetails {
 
     public User() {
 
-    }
-
-    public Long getUserId() {
-        return id;
-    }
-
-    public String getUserName() {
-        return login;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setFio(String fio) {
-        this.fio = fio;
-    }
-
-    public String getFio() { return fio; }
-
-    public void setFioCopy(String fioCopy) {
-        this.fio_1 = fioCopy;
-    }
-
-    public String getFioCopy() { return fio_1; }
-
-    public void setFioSender(String fioSender) {
-        this.fioSender = fioSender;
-    }
-
-    public String getFioSender() { return fioSender; }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     @Override

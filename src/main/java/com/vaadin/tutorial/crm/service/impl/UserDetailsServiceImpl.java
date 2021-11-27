@@ -1,35 +1,28 @@
 package com.vaadin.tutorial.crm.service.impl;
 
 import com.vaadin.tutorial.crm.entity.User;
+import com.vaadin.tutorial.crm.repository.UserRepository;
+import com.vaadin.tutorial.crm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
 
+/**
+ * Класс реализующий методы из интерфейса UserService
+ */
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserService {
+
+    private UserRepository userRepository;
 
     @Autowired
-    private AppUserDAO appUserDAO;
+    public UserDetailsServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
 
     @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        User appUser = this.appUserDAO.findByUser(userName);
-
-        if (appUser == null) {
-            System.out.println("User not found! " + userName);
-            throw new UsernameNotFoundException("User " + userName + " was not found in the database");
-        }
-
-        System.out.println("Found User: " + appUser);
-
-        // [ROLE_USER, ROLE_ADMIN,..]
-        String roleNames = this.appUserDAO.getRoleNames(appUser.getId());
-
-       UserDetails userDetails = (UserDetails) new User(appUser.getId(), //
-                appUser.getUsername(), roleNames);
-
-        return userDetails;
+    public Optional<User> getAll(String username) {
+        return userRepository.findByLogin(username);
     }
 }

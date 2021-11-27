@@ -2,17 +2,16 @@ package com.vaadin.tutorial.crm.ui;
 
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
-import com.vaadin.tutorial.crm.repository.UserRepository;
+import com.vaadin.tutorial.crm.security.SecurityConfiguration;
 import com.vaadin.tutorial.crm.security.SecurityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Класс создающий титульный заголовок вверху страницы
@@ -24,16 +23,15 @@ public class MainLayout extends AppLayout {
     private HorizontalLayout userSeparator;
     private DrawerToggle drawerToggle = new DrawerToggle();
 
-    @SuppressWarnings("SpringJavaAutowiringInspection")
-    @Autowired
-    private UserRepository userRepository;
+    private final SecurityConfiguration securityConfiguration;
 
-    public MainLayout() {
+    public MainLayout(SecurityConfiguration securityConfiguration) {
+        this.securityConfiguration = securityConfiguration;
         createHeader();
         createDrawer();
     }
     private void createHeader() {
-        labelTitle = new Label("Адресное хранилище");
+        labelTitle = new Label("Упроавление производством");
         labelTitle.getStyle().set("color", "#d3b342");
         labelTitle.getStyle().set("font-weight", "bold");
         labelTitle.getStyle().set("font-size", "15pt");
@@ -53,7 +51,10 @@ public class MainLayout extends AppLayout {
         userSeparator = new HorizontalLayout();
         userSeparator.setWidth("12em");
 
-        Anchor logout = new Anchor("logout", exit);
+        Button logout = new Button("Выйти", e -> securityConfiguration.logout());
+        logout.getStyle().set("color", "red");
+        logout.getStyle().set("font-weight", "bold");
+        logout.getStyle().set("font-size", "11pt");
 
         HorizontalLayout header = new HorizontalLayout(drawerToggle, labelTitle, userSeparator, logo, logout);
         header.expand(logo);

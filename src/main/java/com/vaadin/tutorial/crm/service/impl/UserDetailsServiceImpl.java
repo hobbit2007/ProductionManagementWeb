@@ -25,10 +25,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         System.out.println("Found User: " + appUser);
 
         // [ROLE_USER, ROLE_ADMIN,..]
-        String roleNames = this.appUserDAO.getRoleNames(appUser.getUserId());
+        String roleNames = this.appUserDAO.getRoleNames(appUser.getId());
 
-       UserDetails userDetails = (UserDetails) new User(appUser.getUserId(), //
-                appUser.getUserName(), roleNames);
+       UserDetails userDetails = (UserDetails) new User(appUser.getId(), //
+                appUser.getUsername(), roleNames);
 
         return userDetails;
     }

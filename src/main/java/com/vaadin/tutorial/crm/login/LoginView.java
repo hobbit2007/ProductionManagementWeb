@@ -12,7 +12,6 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.tutorial.crm.security.AuthManager;
 import com.vaadin.tutorial.crm.ui.MainView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ldap.NamingException;
 import java.io.Serializable;
 
 /**
@@ -63,7 +62,7 @@ public class LoginView extends AppLayout implements Serializable {
         });
     }
 
-    public void authenticateUser(String login, String passwd) throws NamingException {
+    public void authenticateUser(String login, String passwd) {
         authManager.login(login, passwd);
         if (authManager.authFlag)
             UI.getCurrent().navigate(MainView.class);

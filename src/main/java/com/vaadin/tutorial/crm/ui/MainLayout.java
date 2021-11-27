@@ -31,7 +31,7 @@ public class MainLayout extends AppLayout {
         createDrawer();
     }
     private void createHeader() {
-        labelTitle = new Label("Упроавление производством");
+        labelTitle = new Label("Управление производством");
         labelTitle.getStyle().set("color", "#d3b342");
         labelTitle.getStyle().set("font-weight", "bold");
         labelTitle.getStyle().set("font-size", "15pt");

@@ -17,7 +17,7 @@ public class MainView extends AppLayout {
     Label labelUser;
 
     public MainView() {
-        labelUser = new Label("Пользователь: " + SecurityUtils.getAuthentication().getDetails().getFio() + "(" + SecurityUtils.getAuthentication().getId() + ") " + "РОЛЬ: " + SecurityUtils.getAuthentication().getRole());
+        labelUser = new Label("Пользователь: " + SecurityUtils.getAuthentication().getDetails().getFio() + "РОЛЬ: " + SecurityUtils.getAuthentication().getRole());
         labelUser.getStyle().set("color", "green");
         labelUser.getStyle().set("font-weight", "bold");
         labelUser.getStyle().set("font-size", "11pt");

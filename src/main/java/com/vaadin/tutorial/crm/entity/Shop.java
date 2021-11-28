@@ -19,7 +19,7 @@ public class Shop {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String shop_name;
+    private String shopName;
 
     private Long delete;
 }

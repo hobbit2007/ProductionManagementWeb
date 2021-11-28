@@ -10,7 +10,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 public class AnyComponent extends VerticalLayout {
 
     private Label labelTitle;
-
     public AnyComponent() {
 
     }

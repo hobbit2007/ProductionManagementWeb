@@ -14,7 +14,7 @@ import com.vaadin.tutorial.crm.security.SecurityUtils;
  * Класс содержит реализации компонентов, которые чаще всего используются в приложении
  */
 public class LabelComponent extends VerticalLayout {
-    private Label labelTitle, logo;
+    private Label labelTitle, logo, labelHead;
     private HorizontalLayout userSeparator, header;
     private final SecurityConfiguration securityConfiguration;
     private DrawerToggle drawerToggle = new DrawerToggle();
@@ -28,12 +28,12 @@ public class LabelComponent extends VerticalLayout {
      * Метод содержит визуальные компоненты для построения титульной шапки приложения
      * @return - возвращает объект класс HorizontalLayout
      */
-    public Component labelTitle() {
-        labelTitle = new Label("Управление производством");
-        labelTitle.getStyle().set("color", "#d3b342");
-        labelTitle.getStyle().set("font-weight", "bold");
-        labelTitle.getStyle().set("font-size", "15pt");
-        labelTitle.getStyle().set("margin-left", "30px");
+    public Component labelHead() {
+        labelHead = new Label("Управление производством");
+        labelHead.getStyle().set("color", "#d3b342");
+        labelHead.getStyle().set("font-weight", "bold");
+        labelHead.getStyle().set("font-size", "15pt");
+        labelHead.getStyle().set("margin-left", "30px");
 
         logo = new Label("Пользователь: " + SecurityUtils.getAuthentication().getDetails().getFio() + " РОЛЬ: " + SecurityUtils.getAuthentication().getRole());
         logo.getStyle().set("color", "green");
@@ -57,5 +57,20 @@ public class LabelComponent extends VerticalLayout {
         header.addClassName("header");
 
         return header;
+    }
+
+    /**
+     * Метод реализует создание новой метки класса Label
+     * @param labelText - текст метки
+     * @return - возвращает объект класса Label
+     */
+    public Component labelTitle(String labelText) {
+        labelTitle = new Label(labelText);
+        labelTitle.getStyle().set("color", "#d3b342");
+        labelTitle.getStyle().set("font-weight", "bold");
+        labelTitle.getStyle().set("font-size", "16pt");
+        labelTitle.getStyle().set("margin-left", "30px");
+
+        return labelTitle;
     }
 }

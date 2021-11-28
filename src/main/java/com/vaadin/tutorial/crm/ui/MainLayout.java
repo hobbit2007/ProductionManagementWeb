@@ -65,7 +65,7 @@ public class MainLayout extends AppLayout {
         addToNavbar(header);
     }
     private void createDrawer() {
-        RouterLink listLink = new RouterLink("Поиск места хранения", MainView.class);
+        RouterLink listLink = new RouterLink("Администрирование", MainView.class);
         listLink.setHighlightCondition(HighlightConditions.sameLocation());
 
         addToDrawer(new VerticalLayout(listLink));

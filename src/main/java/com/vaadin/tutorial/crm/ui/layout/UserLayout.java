@@ -25,7 +25,7 @@ public class UserLayout extends AppLayout {
     }
     private void createHeader() {
         labelComponent = new LabelComponent(securityConfiguration);
-        addToNavbar(labelComponent.labelTitle());
+        addToNavbar(labelComponent.labelHead());
     }
 
     private void createDrawer() {

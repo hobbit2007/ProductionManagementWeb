@@ -24,6 +24,10 @@ public class LabelComponent extends VerticalLayout {
         this.securityConfiguration = securityConfiguration;
     }
 
+    /**
+     * Метод содержит визуальные компоненты для построения титульной шапки приложения
+     * @return - возвращает объект класс HorizontalLayout
+     */
     public Component labelTitle() {
         labelTitle = new Label("Управление производством");
         labelTitle.getStyle().set("color", "#d3b342");

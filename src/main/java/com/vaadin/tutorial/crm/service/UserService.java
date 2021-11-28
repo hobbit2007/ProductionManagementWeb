@@ -9,4 +9,6 @@ import java.util.Optional;
  */
 public interface UserService {
     Optional<User> getAll(String username);
+
+    void saveAll(User user);
 }

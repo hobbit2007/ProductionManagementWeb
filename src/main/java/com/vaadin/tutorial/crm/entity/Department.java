@@ -21,7 +21,7 @@ public class Department {
 
     private String departmentName;
 
-    private Long shopID;
+    private Long idShop;
 
     private Long delete;
 

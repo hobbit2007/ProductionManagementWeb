@@ -8,6 +8,7 @@ import com.vaadin.flow.router.RouterLink;
 import com.vaadin.tutorial.crm.security.SecurityConfiguration;
 import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
+import com.vaadin.tutorial.crm.ui.users.UserCreate;
 
 /**
  * Класс реализующий боковое меню управления пользователями
@@ -29,7 +30,7 @@ public class UserLayout extends AppLayout {
     }
 
     private void createDrawer() {
-        RouterLink userCreate = new RouterLink("Создать пользователя", MainView.class);
+        RouterLink userCreate = new RouterLink("Создать пользователя", UserCreate.class);
         userCreate.setHighlightCondition(HighlightConditions.sameLocation());
 
         RouterLink userEdit = new RouterLink("Редактировать пользователя", MainView.class);

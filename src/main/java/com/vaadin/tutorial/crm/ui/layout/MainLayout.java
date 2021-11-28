@@ -25,7 +25,7 @@ public class MainLayout extends AppLayout {
     }
     private void createHeader() {
         labelComponent = new LabelComponent(securityConfiguration);
-        addToNavbar(labelComponent.labelTitle());
+        addToNavbar(labelComponent.labelHead());
     }
     private void createDrawer() {
         RouterLink listLink = new RouterLink("Администрирование", AdminPage.class);

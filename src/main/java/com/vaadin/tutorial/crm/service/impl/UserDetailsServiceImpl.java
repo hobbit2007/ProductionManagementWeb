@@ -1,5 +1,6 @@
 package com.vaadin.tutorial.crm.service.impl;
 
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.tutorial.crm.entity.User;
 import com.vaadin.tutorial.crm.repository.UserRepository;
 import com.vaadin.tutorial.crm.service.UserService;
@@ -24,5 +25,14 @@ public class UserDetailsServiceImpl implements UserService {
     @Override
     public Optional<User> getAll(String username) {
         return userRepository.findByLogin(username);
+    }
+
+    @Override
+    public void saveAll(User user) {
+        if (user != null)
+            userRepository.saveAndFlush(user);
+        else
+            Notification.show("Нет данных для записи", 5000, Notification.Position.MIDDLE);
+
     }
 }

@@ -14,7 +14,7 @@ import com.vaadin.tutorial.crm.security.SecurityUtils;
  * Класс содержит реализации компонентов, которые чаще всего используются в приложении
  */
 public class LabelComponent extends VerticalLayout {
-    private Label labelTitle, logo, labelHead;
+    private Label logo, labelHead;
     private HorizontalLayout userSeparator, header;
     private final SecurityConfiguration securityConfiguration;
     private DrawerToggle drawerToggle = new DrawerToggle();
@@ -49,7 +49,7 @@ public class LabelComponent extends VerticalLayout {
         logout.getStyle().set("font-weight", "bold");
         logout.getStyle().set("font-size", "11pt");
 
-        header = new HorizontalLayout(drawerToggle, labelTitle, userSeparator, logo, logout);
+        header = new HorizontalLayout(drawerToggle, labelHead, userSeparator, logo, logout);
         header.expand(logo);
         header.setDefaultVerticalComponentAlignment(
                 FlexComponent.Alignment.CENTER);

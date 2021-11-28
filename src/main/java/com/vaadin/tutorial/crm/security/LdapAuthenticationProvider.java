@@ -2,6 +2,7 @@ package com.vaadin.tutorial.crm.security;
 
 import com.vaadin.tutorial.crm.entity.User;
 import com.vaadin.tutorial.crm.repository.UserRepository;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -10,6 +11,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 import javax.naming.Context;
@@ -29,7 +31,8 @@ public class LdapAuthenticationProvider implements AuthenticationProvider {
         UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) auth;
         try {
             Optional<User> u = userRepository.findByLogin(authentication.getPrincipal().toString());
-            if (u.get().getUserPasswd().equals(authentication.getCredentials()))
+
+            if (u.get().getUserPasswd().equals(DigestUtils.md5Hex(authentication.getCredentials().toString())) && u.get().getDelete() == 0)//u.get().getUserPasswd().equals(authentication.getCredentials()) && u.get().getDelete() == 0    passwordEncoder.matches(passwordEncoder.encode((CharSequence) authentication.getCredentials()), u.get().getUserPasswd())
                 return new com.vaadin.tutorial.crm.security.UserAuthentication(authentication.getPrincipal().toString(), com.vaadin.tutorial.crm.security.Authorities.parse(u.get().getRole()), u.get());
             else
                 return new com.vaadin.tutorial.crm.security.UserAuthentication("No auth", com.vaadin.tutorial.crm.security.Authorities.parse(u.get().getRole()), u.get());

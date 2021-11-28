@@ -58,19 +58,4 @@ public class LabelComponent extends VerticalLayout {
 
         return header;
     }
-
-    /**
-     * Метод реализует создание новой метки класса Label
-     * @param labelText - текст метки
-     * @return - возвращает объект класса Label
-     */
-    public Component labelTitle(String labelText) {
-        labelTitle = new Label(labelText);
-        labelTitle.getStyle().set("color", "#d3b342");
-        labelTitle.getStyle().set("font-weight", "bold");
-        labelTitle.getStyle().set("font-size", "16pt");
-        labelTitle.getStyle().set("margin-left", "30px");
-
-        return labelTitle;
-    }
 }

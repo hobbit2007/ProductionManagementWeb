@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Класс репозиторий содержащий sql запросы к таблице plcwashing101
+ * Класс репозиторий содержащий sql запросы к таблице plcwashing
  */
 @Repository
 public interface PlcWashingRepository extends JpaRepository<PlcWashing, Long> {
-    @Query("select pw from plcwashing101 pw where pw.delete = 0")
+    @Query("select pw from plcwashing pw where pw.delete = 0")
     List<PlcWashing> getAll();
 }

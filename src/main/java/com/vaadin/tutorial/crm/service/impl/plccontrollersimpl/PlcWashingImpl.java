@@ -1,8 +1,8 @@
-package com.vaadin.tutorial.crm.service.impl.plccontrollers;
+package com.vaadin.tutorial.crm.service.impl.plccontrollersimpl;
 
-import com.vaadin.tutorial.crm.entity.PlcControllers.PlcWashing;
-import com.vaadin.tutorial.crm.repository.plccontrollers.PlcWashingRepository;
-import com.vaadin.tutorial.crm.service.plccontrollers.PlcWashingService;
+import com.vaadin.tutorial.crm.entity.plccontrollersentity.PlcWashing;
+import com.vaadin.tutorial.crm.repository.plccontrollersrepository.PlcWashingRepository;
+import com.vaadin.tutorial.crm.service.plccontrollersservice.PlcWashingService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

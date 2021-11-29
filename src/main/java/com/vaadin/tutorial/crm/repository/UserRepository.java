@@ -2,9 +2,11 @@ package com.vaadin.tutorial.crm.repository;
 
 import com.vaadin.tutorial.crm.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.Date;
@@ -22,6 +24,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> getAll();
 
     //Обновляем в БД дату захода пользователя в систему
+    @Modifying
+    @Transactional
     @Query("update userslist set lastDateActive = :dateActive where id = :userId")
     void updateUserActive(@Param("dateActive") Date dateActive, @Param("userId") Long userId);
 }

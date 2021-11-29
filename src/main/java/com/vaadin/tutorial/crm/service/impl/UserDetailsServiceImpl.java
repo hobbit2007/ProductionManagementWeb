@@ -6,6 +6,8 @@ import com.vaadin.tutorial.crm.repository.UserRepository;
 import com.vaadin.tutorial.crm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -25,6 +27,11 @@ public class UserDetailsServiceImpl implements UserService {
     @Override
     public Optional<User> getAll(String username) {
         return userRepository.findByLogin(username);
+    }
+
+    @Override
+    public List<User> getAll() {
+        return userRepository.getAll();
     }
 
     @Override

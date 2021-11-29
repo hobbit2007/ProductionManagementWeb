@@ -9,10 +9,14 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.tutorial.crm.entity.User;
 import com.vaadin.tutorial.crm.security.AuthManager;
+import com.vaadin.tutorial.crm.security.SecurityUtils;
+import com.vaadin.tutorial.crm.service.UserService;
 import com.vaadin.tutorial.crm.ui.MainView;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Класс реализующий авторизацию в системе
@@ -25,11 +29,13 @@ public class LoginView extends AppLayout implements Serializable {
     Label label1;
 
     private AuthManager authManager;
+    private UserService userService;
 
     @Autowired
-    public LoginView(AuthManager authManager) {
+    public LoginView(AuthManager authManager, UserService userService) {
 
         this.authManager = authManager;
+        this.userService = userService;
         verticalLayout = new VerticalLayout();
         verticalLayout.setSizeFull();
 
@@ -64,7 +70,12 @@ public class LoginView extends AppLayout implements Serializable {
 
     public void authenticateUser(String login, String passwd) {
         authManager.login(login, passwd);
-        if (authManager.authFlag)
+        if (authManager.authFlag) {
+            User user = new User();
+            user.setLastDateActive(new Date());
+            user.setId(SecurityUtils.getAuthentication().getDetails().getId());
+            userService.updateDateActive(user);
             UI.getCurrent().navigate(MainView.class);
+        }
     }
 }

@@ -16,4 +16,6 @@ public interface UserService {
     List<User> getAll();
 
     void saveAll(User user);
+
+    void updateDateActive(User user);
 }

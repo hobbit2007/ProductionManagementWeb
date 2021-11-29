@@ -1,6 +1,6 @@
-package com.vaadin.tutorial.crm.repository.plccontrollers;
+package com.vaadin.tutorial.crm.repository.plccontrollersrepository;
 
-import com.vaadin.tutorial.crm.entity.PlcControllers.PlcWashing;
+import com.vaadin.tutorial.crm.entity.plccontrollersentity.PlcWashing;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

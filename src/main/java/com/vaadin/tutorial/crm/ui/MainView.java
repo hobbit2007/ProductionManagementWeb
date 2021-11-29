@@ -14,7 +14,7 @@ import com.vaadin.tutorial.crm.ui.layout.MainLayout;
  * Главный класс приложения
  */
 @Route(value = "", layout = MainLayout.class)
-@PageTitle("Главное окно | Система управления производством")
+@PageTitle("Dashboard | Система управления производством")
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 public class MainView extends AppLayout {

@@ -10,12 +10,13 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.tutorial.crm.entity.plccontrollersentity.OLDPlcWashing;
 import com.vaadin.tutorial.crm.ui.component.AnyComponent;
 import com.vaadin.tutorial.crm.ui.layout.MainLayout;
+import com.vaadin.tutorial.crm.ui.layout.PlcLayout;
 
 /**
  * Класс содержащий реализацию визуальных элементов и логики для plc контроллера мойка
  * в реальном времени
  */
-@Route(value = "plcwashingrt", layout = MainLayout.class)
+@Route(value = "plcwashingrt", layout = PlcLayout.class)
 @PageTitle("Контроллер Мойка(реальное время) | Система управления производством")
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
@@ -29,7 +30,10 @@ public class PlcWashingController extends VerticalLayout {
         addClassName("list-view");
         setSizeFull();
 
-        vContent.add(anyComponent.labelTitle("Контроллер Мойки(реальное время - 1секунда)"), grid);
+        configureGrid();
+
+        vContent.add(anyComponent.labelTitle("Контроллер Мойка(реальное время - 1секунда)"), grid);
+        vContent.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         add(vContent);
     }
 

@@ -16,7 +16,7 @@ import java.util.Date;
 /**
  * Класс модель описывающий таблицу plcwashing101
  */
-@Entity(name = "plcwashing101")
+//@Entity(name = "plcwashing101")
 @Getter
 @Setter
 public class OLDPlcWashing implements Externalizable {

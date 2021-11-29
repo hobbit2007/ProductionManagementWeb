@@ -19,7 +19,7 @@ import java.util.Date;
 @Entity(name = "plcwashing101")
 @Getter
 @Setter
-public class PlcWashing implements Externalizable {
+public class OLDPlcWashing implements Externalizable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -59,11 +59,11 @@ public class PlcWashing implements Externalizable {
     private float TOT_FT1_107_2;
     private float TOT_WT1_011;
 
-    public PlcWashing(float FT1_005, float FT1_008, float FT1_009_1, float FT1_009_2, float FT1_101, float FT1_102, float FT1_103, float FT1_106,
-                      float FT1_107_1, float FT1_107_2, float WT1_011, float LT1_205, float LT1_206, float LT1_204, float LT1_203 ,float LT1_208,
-                      float LT1_202, float PT1_108, float PT1_010, float TOT_FT1_005, float TOT_FT1_008, float TOT_FT1_009_1, float TOT_FT1_009_2,
-                      float TOT_FT1_101, float TOT_FT1_102, float TOT_FT1_103, float TOT_FT1_106, float TOT_FT1_107_1, float TOT_FT1_107_2,
-                      float TOT_WT1_011) {
+    public OLDPlcWashing(float FT1_005, float FT1_008, float FT1_009_1, float FT1_009_2, float FT1_101, float FT1_102, float FT1_103, float FT1_106,
+                         float FT1_107_1, float FT1_107_2, float WT1_011, float LT1_205, float LT1_206, float LT1_204, float LT1_203 , float LT1_208,
+                         float LT1_202, float PT1_108, float PT1_010, float TOT_FT1_005, float TOT_FT1_008, float TOT_FT1_009_1, float TOT_FT1_009_2,
+                         float TOT_FT1_101, float TOT_FT1_102, float TOT_FT1_103, float TOT_FT1_106, float TOT_FT1_107_1, float TOT_FT1_107_2,
+                         float TOT_WT1_011) {
         this.FT1_005 = FT1_005;
         this.FT1_008 = FT1_008;
         this.FT1_009_1 = FT1_009_1;
@@ -96,7 +96,7 @@ public class PlcWashing implements Externalizable {
         this.TOT_WT1_011 = TOT_WT1_011;
     }
 
-    public PlcWashing() {
+    public OLDPlcWashing() {
 
     }
 

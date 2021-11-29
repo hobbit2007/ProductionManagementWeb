@@ -42,4 +42,10 @@ public class UserDetailsServiceImpl implements UserService {
             Notification.show("Нет данных для записи", 5000, Notification.Position.MIDDLE);
 
     }
+    //метод обновляющей поле даты захода пользователя в систему
+    @Override
+    public void updateDateActive(User user) {
+        if (user != null)
+            userRepository.updateUserActive(user.getLastDateActive(), user.getId());
+    }
 }

@@ -29,7 +29,7 @@ public class MainLayout extends AppLayout {
         addToNavbar(labelComponent.labelHead());
     }
     private void createDrawer() {
-        RouterLink plcLink = new RouterLink("PLC контроллер", PlcWashingController.class);
+        RouterLink plcLink = new RouterLink("PLC контроллеры", PlcWashingController.class);
         plcLink.setHighlightCondition(HighlightConditions.sameLocation());
         RouterLink adminLink = new RouterLink("Администрирование", AdminPage.class);
         adminLink.setHighlightCondition(HighlightConditions.sameLocation());

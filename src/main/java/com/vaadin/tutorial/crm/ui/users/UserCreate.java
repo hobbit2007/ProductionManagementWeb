@@ -136,6 +136,12 @@ public class UserCreate extends VerticalLayout {
            }
            if (!loginText.getValue().isEmpty() && !fioText.getValue().isEmpty() && !shopList.isEmpty() && !departmentList.isEmpty() && !roleList.isEmpty() &&
                 !position.getValue().isEmpty() && !email.getValue().isEmpty()) {
+               for (int i = 0; userService.getAll().size() < i; i++) {
+                   if (loginText.getValue().equals(userService.getAll().get(i).getLogin())) {
+                       Notification.show("Такой пользователь уже зарегистрирован в системе!", 3000, Notification.Position.MIDDLE);
+                       return;
+                   }
+               }
                try {
                    User user = new User();
                    user.setLogin(loginText.getValue());

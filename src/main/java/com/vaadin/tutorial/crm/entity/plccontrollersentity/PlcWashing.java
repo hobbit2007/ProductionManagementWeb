@@ -1,4 +1,4 @@
-package com.vaadin.tutorial.crm.entity.PlcControllers;
+package com.vaadin.tutorial.crm.entity.plccontrollersentity;
 
 import lombok.Getter;
 import lombok.Setter;

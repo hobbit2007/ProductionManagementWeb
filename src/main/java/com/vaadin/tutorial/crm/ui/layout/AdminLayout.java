@@ -31,13 +31,16 @@ public class AdminLayout extends AppLayout {
     }
 
     private void createDrawer() {
+        RouterLink back = new RouterLink("Назад", MainView.class);
+        back.setHighlightCondition(HighlightConditions.sameLocation());
+
         RouterLink usersAction = new RouterLink("Пользователи", UserCreate.class);
         usersAction.setHighlightCondition(HighlightConditions.sameLocation());
 
         RouterLink orgStructure = new RouterLink("Орг. структура", MainView.class);
         orgStructure.setHighlightCondition(HighlightConditions.sameLocation());
 
-        addToDrawer(new VerticalLayout(usersAction, orgStructure));
+        addToDrawer(new VerticalLayout(back, usersAction, orgStructure));
 
         //Закрываем меню на стороне клиента
         //т.к. при первом запуске меню показывается автоматически

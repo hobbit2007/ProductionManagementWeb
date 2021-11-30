@@ -3,14 +3,14 @@ package com.vaadin.tutorial.crm.service.impl.plccontrollersimpl;
 import com.vaadin.tutorial.crm.entity.plccontrollersentity.PlcControllers;
 import com.vaadin.tutorial.crm.repository.plccontrollersrepository.PlcControllersRepository;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.PlcControllersService;
-import io.swagger.v3.oas.annotations.servers.Server;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Класс реализующий методы для работы с таблицей plccontrollers
  */
-@Server
+@Service
 public class PlcControllersImpl implements PlcControllersService {
     private PlcControllersRepository plcControllersRepository;
 

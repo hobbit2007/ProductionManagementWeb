@@ -13,8 +13,8 @@ import java.util.List;
  */
 @Repository
 public interface PlcValueRepository extends JpaRepository<PlcValue, Long> {
-    @Query("select pw, sl from plcwashing pw " +
-            "join signallist sl on sl.idController = pw.idController " +
-            "where pw.idController = :controllerId and pw.delete = 0")
+    @Query("select pcv, sl from plccontrollersvalue pcv " +
+            "join signallist sl on sl.id = pcv.idSignalName " +
+            "where pcv.idController = :controllerId and pcv.delete = 0")
     List<PlcValue> getSignalOnController(@Param("controllerId") Long controllerId);
 }

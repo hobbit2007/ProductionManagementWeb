@@ -19,7 +19,7 @@ import java.util.Date;
 @Entity(name = "plccontrollers")
 @Getter
 @Setter
-public class PlcController implements Externalizable {
+public class PlcControllers implements Externalizable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

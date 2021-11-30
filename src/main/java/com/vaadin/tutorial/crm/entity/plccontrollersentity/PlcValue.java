@@ -2,10 +2,8 @@ package com.vaadin.tutorial.crm.entity.plccontrollersentity;
 
 import lombok.Getter;
 import lombok.Setter;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
+import javax.persistence.*;
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -16,7 +14,7 @@ import java.util.Date;
  * Класс модель описывающий таблицу plcwashing, которая содержит значения
  * сигналов, записанные раз в 10 минут из контроллера мойки
  */
-@Entity(name = "plcwashing")
+@Entity(name = "plccontrollersvalue")
 @Getter
 @Setter
 public class PlcValue implements Externalizable {
@@ -31,6 +29,8 @@ public class PlcValue implements Externalizable {
     private Long idController;
     private int alarm;
 
+    @ManyToOne
+    @JoinColumn(name = "idSignalName", referencedColumnName = "id", insertable = false, updatable = false)
     private SignalList info;
 
     @Override

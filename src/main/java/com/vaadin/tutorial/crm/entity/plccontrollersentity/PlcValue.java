@@ -19,7 +19,7 @@ import java.util.Date;
 @Entity(name = "plcwashing")
 @Getter
 @Setter
-public class PlcWashing implements Externalizable {
+public class PlcValue implements Externalizable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -28,6 +28,7 @@ public class PlcWashing implements Externalizable {
     private Long idOrderNum;
     private Date dateCreate;
     private Long delete;
+    private Long idController;
 
     @Override
     public void writeExternal(ObjectOutput objectOutput) throws IOException {

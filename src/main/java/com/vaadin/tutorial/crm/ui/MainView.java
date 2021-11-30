@@ -24,7 +24,7 @@ public class MainView extends AppLayout {
     HorizontalLayout hContent = new HorizontalLayout();
 
     public MainView() {
-        labelUser = new Label("ЗДЕСЬ БУДЕТ КОНТЕНТ ПРИЛОЖЕНИЯ");
+        labelUser = new Label("ЗДЕСЬ БУДУТ ДАШБОАРДЫ");
         labelUser.getStyle().set("color", "red");
         labelUser.getStyle().set("font-weight", "bold");
         labelUser.getStyle().set("font-size", "11pt");

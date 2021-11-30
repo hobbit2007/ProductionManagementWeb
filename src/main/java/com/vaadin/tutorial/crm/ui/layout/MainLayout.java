@@ -9,7 +9,7 @@ import com.vaadin.tutorial.crm.security.SecurityConfiguration;
 import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.admin.AdminPage;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
-import com.vaadin.tutorial.crm.ui.plccontrollersui.PlcWashingController;
+import com.vaadin.tutorial.crm.ui.plccontrollersui.PlcValueController;
 
 /**
  * Класс создающий титульный заголовок вверху страницы
@@ -32,7 +32,7 @@ public class MainLayout extends AppLayout {
     private void createDrawer() {
         RouterLink dashboardLink = new RouterLink("Dashboard", MainView.class);
         dashboardLink.setHighlightCondition(HighlightConditions.sameLocation());
-        RouterLink plcLink = new RouterLink("PLC контроллеры", PlcWashingController.class);
+        RouterLink plcLink = new RouterLink("PLC контроллеры", PlcValueController.class);
         plcLink.setHighlightCondition(HighlightConditions.sameLocation());
         RouterLink adminLink = new RouterLink("Администрирование", AdminPage.class);
         adminLink.setHighlightCondition(HighlightConditions.sameLocation());

@@ -29,6 +29,9 @@ public class PlcValue implements Externalizable {
     private Date dateCreate;
     private Long delete;
     private Long idController;
+    private int alarm;
+
+    private SignalList info;
 
     @Override
     public void writeExternal(ObjectOutput objectOutput) throws IOException {

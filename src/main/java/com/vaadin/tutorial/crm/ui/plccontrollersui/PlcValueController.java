@@ -138,7 +138,6 @@ public class PlcValueController extends VerticalLayout {
         else {
             //grid = new Grid<>();
             //fContent.setSizeFull();
-            //configureGrid();
             //grid.setSizeFull();
             //fContent.removeAll();
             grid.getStyle().set("border", "5px inset yellow");
@@ -182,5 +181,6 @@ public class PlcValueController extends VerticalLayout {
     private void updateList(Long controllerId) {
         dataProvider = new ListDataProvider<>(
           plcValueService.getSignalOnController(controllerId));
+        grid.setItems(dataProvider);
     }
 }

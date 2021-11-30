@@ -6,6 +6,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.tutorial.crm.security.SecurityConfiguration;
+import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
 import com.vaadin.tutorial.crm.ui.plccontrollersui.PlcValueController;
 
@@ -27,16 +28,19 @@ public class PlcLayout extends AppLayout {
         addToNavbar(labelComponent.labelHead());
     }
     private void createDrawer() {
-        RouterLink plcValue = new RouterLink("Визуализация)", PlcValueController.class);
+        RouterLink back = new RouterLink("Назад", MainView.class);
+        back.setHighlightCondition(HighlightConditions.sameLocation());
+
+        RouterLink plcValue = new RouterLink("Визуализация", PlcValueController.class);
         plcValue.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink plcControllersList = new RouterLink("Список контроллеров)", null);
+        RouterLink plcControllersList = new RouterLink("Список контроллеров", MainView.class);
         plcControllersList.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink plcSignalsList = new RouterLink("Список сигналов)", null);
+        RouterLink plcSignalsList = new RouterLink("Список сигналов", MainView.class);
         plcSignalsList.setHighlightCondition(HighlightConditions.sameLocation());
 
-        addToDrawer(new VerticalLayout(plcValue, plcControllersList, plcSignalsList));
+        addToDrawer(new VerticalLayout(back, plcValue, plcControllersList, plcSignalsList));
 
         //Закрываем меню на стороне клиента
         //т.к. при первом запуске меню показывается автоматически

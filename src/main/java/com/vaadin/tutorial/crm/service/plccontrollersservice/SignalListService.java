@@ -1,4 +1,4 @@
-package com.vaadin.tutorial.crm.service;
+package com.vaadin.tutorial.crm.service.plccontrollersservice;
 
 import com.vaadin.tutorial.crm.entity.plccontrollersentity.SignalList;
 import org.springframework.stereotype.Service;

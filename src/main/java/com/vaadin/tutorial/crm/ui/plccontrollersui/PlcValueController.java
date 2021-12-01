@@ -1,8 +1,6 @@
 package com.vaadin.tutorial.crm.ui.plccontrollersui;
 
-import com.vaadin.flow.component.AbstractField;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.HasValue;
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -24,7 +22,10 @@ import com.vaadin.tutorial.crm.entity.plccontrollersentity.PlcValue;
 import com.vaadin.tutorial.crm.entity.plccontrollersentity.SignalList;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.PlcControllersService;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.PlcValueService;
+import com.vaadin.tutorial.crm.service.plccontrollersservice.SchedulerService;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.SignalListService;
+import com.vaadin.tutorial.crm.threads.FeederThread;
+import com.vaadin.tutorial.crm.threads.UpdateValueController;
 import com.vaadin.tutorial.crm.ui.component.AnyComponent;
 import com.vaadin.tutorial.crm.ui.layout.MainLayout;
 import com.vaadin.tutorial.crm.ui.layout.PlcLayout;
@@ -54,6 +55,7 @@ public class PlcValueController extends VerticalLayout {
     private List<SignalList> controllerSignalList = new ArrayList<>();
     private ListDataProvider<PlcValue> dataProvider;
     private boolean radioButtonFlag = true;//Указывает какое положение было выбрано: реальное время или БД. По умолчанию: реальное время
+    Thread[] textFieldUpdate = new Thread[10000];
     PlcControllersService plcControllersService;
     SignalListService signalListService;
     PlcValueService plcValueService;
@@ -112,6 +114,7 @@ public class PlcValueController extends VerticalLayout {
                 compLabel = anyComponent.labelTitle(selectController.getValue().getControllerName() + " (БД)");
 
             controllerSignalList = signalListService.findSignalList(e.getValue().getId());
+            SchedulerService.controllerParam(controllerSignalList);
             removeAll();
             add(vContent, compLabel, initController(radioButtonFlag, e.getValue().getId()));
             setDefaultHorizontalComponentAlignment(Alignment.CENTER);
@@ -122,15 +125,16 @@ public class PlcValueController extends VerticalLayout {
         FormLayout fContent = new FormLayout();
         VerticalLayout verticalLayout = new VerticalLayout();
         if (flag) {
-            for (int i = 0; i < controllerSignalList.size(); i++) {
-                controllerValue[i] = new TextField(controllerSignalList.get(i).getSignalName());
-                controllerValue[i].setWidth("55px");
-                controllerValue[i].setValue("0.00");
+            if (SchedulerService.dataFromPlcList.size() != 0) {
+                for (int i = 0; i < SchedulerService.dataFromPlcList.size(); i++) { //i < controllerSignalList.size()
+                    controllerValue[i] = new TextField(); //controllerSignalList.get(i).getSignalName()
+                    //controllerValue[i].setWidth("55px");
+                    //controllerValue[i].setValue("0.00");
 
-                fContent.add(controllerValue[i]);
-                verticalLayout.add(fContent);
+                    fContent.add(controllerValue[i]);
+                    verticalLayout.add(fContent);
+                }
             }
-
         }
         else {
             verticalLayout.add(grid);
@@ -171,5 +175,27 @@ public class PlcValueController extends VerticalLayout {
         dataProvider = new ListDataProvider<>(
           plcValueService.getSignalOnController(controllerId));
         grid.setItems(dataProvider);
+    }
+
+    @Override
+    protected void onAttach(AttachEvent attachEvent) {
+        // Start the data feed thread
+        if (SchedulerService.dataFromPlcList.size() != 0) {
+            for (int i = 0; i < SchedulerService.dataFromPlcList.size(); i++) {
+                textFieldUpdate[i] = new UpdateValueController(attachEvent.getUI(), controllerValue[i], SchedulerService.dataFromPlcList.size());
+                textFieldUpdate[i].start();
+            }
+        }
+    }
+
+    @Override
+    protected void onDetach(DetachEvent detachEvent) {
+        // Cleanup
+        if (SchedulerService.dataFromPlcList.size() != 0) {
+            for (int i = 0; i < SchedulerService.dataFromPlcList.size(); i++) {
+                textFieldUpdate[i].interrupt();
+                textFieldUpdate[i] = null;
+            }
+        }
     }
 }

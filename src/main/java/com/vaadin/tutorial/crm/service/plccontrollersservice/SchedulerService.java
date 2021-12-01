@@ -25,10 +25,10 @@ public class SchedulerService {
     SignalListService signalListService;
     PlcControllersService plcControllersService;
     private static final String CRON = "*/10 * * * * *";
-    public static final S7Client[] client = new S7Client[100];
-    public static final S7Client clientRT = new S7Client();
-    public static final byte[] buffer = new byte[65536];
-    public static final byte[] bufferWrite = new byte[65536];
+    public static S7Client[] client = new S7Client[100];
+    public static S7Client clientRT = new S7Client();
+    public static byte[] buffer = new byte[65536];
+    public static byte[] bufferWrite = new byte[65536];
     private List<PlcControllers> plcControllersList = new ArrayList<>();
     public static String controllerConnected = "";
     private StringBuilder numController = new StringBuilder();
@@ -47,6 +47,10 @@ public class SchedulerService {
             client[i] = new S7Client();
             client[i].SetConnectionType(S7.OP);
             client[i].ConnectTo(plcControllersList.get(i).getIp(), 0, 1);
+
+            clientRT = new S7Client();
+            clientRT.SetConnectionType(S7.OP);
+            clientRT.ConnectTo("10.100.10.106", 0, 1);
         }
     }
 
@@ -57,20 +61,21 @@ public class SchedulerService {
                 numController.append(plcControllersList.get(i).getIp() + " - " + plcControllersList.get(i).getControllerName() + "  ");
                 controllerConnected = "Нет подключения к контроллеру: " + numController;
             }
-            numController.delete(0, numController.length() - 1);
+            //numController.delete(0, numController.length() - 1);
         }
         if (numDbPosOffset.size() != 0) {
             DataFromPlc dataFromPlc = new DataFromPlc();
             for (int i = 0; i < numDbPosOffset.size(); i++) {
-                clientRT.ReadArea(S7.S7AreaDB, numDbPosOffset.get(i).getDbValue(), numDbPosOffset.get(i).getPosition(), numDbPosOffset.get(i).getPosition() + numDbPosOffset.get(i).getOffset(), buffer);
-                float readData = S7.GetFloatAt(buffer, 266);
+                clientRT.ReadArea(S7.S7AreaDB, numDbPosOffset.get(i).getDbValue(), 0, numDbPosOffset.get(i).getPosition() + numDbPosOffset.get(i).getOffset(), buffer);
+                float readData = S7.GetFloatAt(buffer, numDbPosOffset.get(i).getPosition());
                 dataFromPlc.setSignalName(numDbPosOffset.get(i).getSignalName());
                 dataFromPlc.setValue(readData);
 
                 dataFromPlcList.add(dataFromPlc);
             }
         }
-        //System.out.println("TEST CRON!!!");
+        System.out.println("TEST CRON!!!");
+        dataFromPlcList.removeAll(dataFromPlcList);
     }
 
     /**

@@ -8,7 +8,7 @@ import com.vaadin.flow.router.RouterLink;
 import com.vaadin.tutorial.crm.security.SecurityConfiguration;
 import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
-import com.vaadin.tutorial.crm.ui.users.UserCreate;
+import com.vaadin.tutorial.crm.ui.users.UsersCreate;
 
 /**
  * Класс реализующий шапку и боковое меню для меню Администрирование
@@ -27,14 +27,14 @@ public class AdminLayout extends AppLayout {
     }
     private void createHeader() {
         labelComponent = new LabelComponent(securityConfiguration);
-       addToNavbar(labelComponent.labelHead());
+        addToNavbar(labelComponent.labelHead());
     }
 
     private void createDrawer() {
         RouterLink back = new RouterLink("Назад", MainView.class);
         back.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink usersAction = new RouterLink("Пользователи", UserCreate.class);
+        RouterLink usersAction = new RouterLink("Пользователи", UsersCreate.class);
         usersAction.setHighlightCondition(HighlightConditions.sameLocation());
 
         RouterLink orgStructure = new RouterLink("Орг. структура", MainView.class);

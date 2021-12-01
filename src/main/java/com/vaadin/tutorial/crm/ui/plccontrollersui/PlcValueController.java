@@ -95,9 +95,7 @@ public class PlcValueController extends VerticalLayout {
 
         vContent.add(vLabel, hTitleContent);
         vContent.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        vContent.getStyle().set("border", "1px inset black");
         add(vContent);
-        getStyle().set("border", "1px inset red");
 
         selectController.addValueChangeListener(e -> {
             comboBoxSelected(e, radioButtonFlag);
@@ -109,7 +107,7 @@ public class PlcValueController extends VerticalLayout {
             Component compLabel;
 
             if (flag)
-                compLabel = anyComponent.labelTitle(selectController.getValue().getControllerName() + " (реальное время - 1секунда)");
+                compLabel = anyComponent.labelTitle(selectController.getValue().getControllerName() + " (реальное время)");
             else
                 compLabel = anyComponent.labelTitle(selectController.getValue().getControllerName() + " (БД)");
 
@@ -117,8 +115,6 @@ public class PlcValueController extends VerticalLayout {
             removeAll();
             add(vContent, compLabel, initController(radioButtonFlag, e.getValue().getId()));
             setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-            //setSizeFull();
-            getStyle().set("border", "1px inset blue");
         }
     }
 
@@ -132,22 +128,15 @@ public class PlcValueController extends VerticalLayout {
                 controllerValue[i].setValue("0.00");
 
                 fContent.add(controllerValue[i]);
+                verticalLayout.add(fContent);
             }
-            //fContent.removeAll();
+
         }
         else {
-            //grid = new Grid<>();
-            //fContent.setSizeFull();
-            //grid.setSizeFull();
-            //fContent.removeAll();
-            grid.getStyle().set("border", "5px inset yellow");
             verticalLayout.add(grid);
             verticalLayout.setSizeFull();
-            //fContent.add(grid);
-            //setSizeFull();
             updateList(controllerId);
         }
-        fContent.getStyle().set("border", "3px inset green");
         return verticalLayout;
     }
 

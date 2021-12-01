@@ -14,6 +14,7 @@ import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.validator.StringLengthValidator;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.tutorial.crm.entity.Department;
 import com.vaadin.tutorial.crm.entity.Shop;
@@ -38,10 +39,11 @@ import java.util.List;
 /**
  * Класс реализующий создание нового пользователя
  */
-@Route(value = "createuser", layout = UserLayout.class)
+@Route(value = "userscreate", layout = UserLayout.class)
+@PageTitle("Создание нового пользователя | Система управления производством")
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
-public class UserCreate extends VerticalLayout {
+public class UsersCreate extends VerticalLayout {
     @Autowired
     private UserService userService;
     @Autowired
@@ -70,8 +72,10 @@ public class UserCreate extends VerticalLayout {
 
     List<String> roleArray = new ArrayList<>();
 
-    public UserCreate(UserService userService, ShopService shopService, DepartmentService departmentService) {
+    public UsersCreate(UserService userService, ShopService shopService, DepartmentService departmentService) {
         this.userService = userService;
+        this.shopService = shopService;
+        this.departmentService = departmentService;
 
         loginText.setRequired(true);
         passwdText.setRequired(true);

@@ -2,6 +2,7 @@ package com.vaadin.tutorial.crm.ui;
 
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.AttachNotifier;
+import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H1;
@@ -30,6 +31,7 @@ public class MainView extends VerticalLayout {
     private Label labelUser  = new Label();
     VerticalLayout vContent = new VerticalLayout();
     HorizontalLayout hContent = new HorizontalLayout();
+    FeederThread thread;
 
     public MainView() {
         labelUser.getStyle().set("color", "red");
@@ -52,7 +54,14 @@ public class MainView extends VerticalLayout {
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         // Start the data feed thread
-        FeederThread thread = new FeederThread(attachEvent.getUI(), labelUser);
+        thread = new FeederThread(attachEvent.getUI(), labelUser);
         thread.start();
+    }
+
+    @Override
+    protected void onDetach(DetachEvent detachEvent) {
+        // Cleanup
+        thread.interrupt();
+        thread = null;
     }
 }

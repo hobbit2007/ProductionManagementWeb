@@ -125,15 +125,14 @@ public class PlcValueController extends VerticalLayout {
         FormLayout fContent = new FormLayout();
         VerticalLayout verticalLayout = new VerticalLayout();
         if (flag) {
-            if (SchedulerService.dataFromPlcList.size() != 0) {
-                for (int i = 0; i < SchedulerService.dataFromPlcList.size(); i++) { //i < controllerSignalList.size()
-                    controllerValue[i] = new TextField(); //controllerSignalList.get(i).getSignalName()
-                    //controllerValue[i].setWidth("55px");
-                    //controllerValue[i].setValue("0.00");
 
-                    fContent.add(controllerValue[i]);
-                    verticalLayout.add(fContent);
-                }
+            for (int i = 0; i < controllerSignalList.size(); i++) { //i < controllerSignalList.size()
+                controllerValue[i] = new TextField(controllerSignalList.get(i).getSignalName()); //controllerSignalList.get(i).getSignalName()
+                controllerValue[i].setWidth("55px");
+                controllerValue[i].setValue("0.00");
+
+                fContent.add(controllerValue[i]);
+                verticalLayout.add(fContent);
             }
         }
         else {
@@ -180,22 +179,18 @@ public class PlcValueController extends VerticalLayout {
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         // Start the data feed thread
-        if (SchedulerService.dataFromPlcList.size() != 0) {
-            for (int i = 0; i < SchedulerService.dataFromPlcList.size(); i++) {
-                textFieldUpdate[i] = new UpdateValueController(attachEvent.getUI(), controllerValue[i], SchedulerService.dataFromPlcList.size());
-                textFieldUpdate[i].start();
-            }
+        for (int i = 0; i < controllerSignalList.size(); i++) {
+            textFieldUpdate[i] = new UpdateValueController(attachEvent.getUI(), controllerValue[i], SchedulerService.dataFromPlcList.size());
+            textFieldUpdate[i].start();
         }
     }
 
     @Override
     protected void onDetach(DetachEvent detachEvent) {
         // Cleanup
-        if (SchedulerService.dataFromPlcList.size() != 0) {
-            for (int i = 0; i < SchedulerService.dataFromPlcList.size(); i++) {
-                textFieldUpdate[i].interrupt();
-                textFieldUpdate[i] = null;
-            }
+        for (int i = 0; i < controllerSignalList.size(); i++) {
+            textFieldUpdate[i].interrupt();
+            textFieldUpdate[i] = null;
         }
     }
 }

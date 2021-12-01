@@ -26,9 +26,12 @@ public class UpdateValueController extends Thread {
             try {
                 Thread.sleep(1000);
                 ui.access(()-> {
-                    for (int i = size; i < size; i++) {
-                        element.setValue(String.valueOf(SchedulerService.controllerConnected));
-                        ui.push();
+                    for (int i = 0; i < size; i++) {
+                        if (SchedulerService.dataFromPlcList.size() != 0) {
+                            element.setValue(String.valueOf(SchedulerService.dataFromPlcList.get(i).getValue()));
+                            ui.push();
+                            System.out.println(SchedulerService.dataFromPlcList.get(i).getSignalName() + "=" + SchedulerService.dataFromPlcList.get(i).getValue());
+                        }
                     }
                 });
                 count--;

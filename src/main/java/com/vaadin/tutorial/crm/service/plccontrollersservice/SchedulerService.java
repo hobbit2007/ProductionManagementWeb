@@ -3,6 +3,8 @@ package com.vaadin.tutorial.crm.service.plccontrollersservice;
 import com.sourceforge.snap7.moka7.S7;
 import com.sourceforge.snap7.moka7.S7Client;
 import com.vaadin.tutorial.crm.entity.plccontrollersentity.PlcControllers;
+import com.vaadin.tutorial.crm.entity.plccontrollersentity.SignalList;
+import com.vaadin.tutorial.crm.model.DataFromPlc;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.PlcControllersService;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.SignalListService;
 import com.vaadin.tutorial.crm.ui.MainView;
@@ -24,11 +26,15 @@ public class SchedulerService {
     PlcControllersService plcControllersService;
     private static final String CRON = "*/10 * * * * *";
     public static final S7Client[] client = new S7Client[100];
+    public static final S7Client clientRT = new S7Client();
     public static final byte[] buffer = new byte[65536];
     public static final byte[] bufferWrite = new byte[65536];
     private List<PlcControllers> plcControllersList = new ArrayList<>();
     public static String controllerConnected = "";
     private StringBuilder numController = new StringBuilder();
+    public static List<SignalList> numDbPosOffset = new ArrayList<>();
+    public static List<DataFromPlc> dataFromPlcList = new ArrayList<>(); //Массив в котором сохраняем данные после чтения из контроллера
+
 
     @Autowired
     public SchedulerService(SignalListService signalListService, PlcControllersService plcControllersService) {
@@ -45,13 +51,33 @@ public class SchedulerService {
     }
 
     @Scheduled(cron = CRON)
-    public void sendsSignal() {
+    public void sendsSignalRT() {
         for (int i = 0; i < plcControllersList.size(); i++) {
             if (!client[i].Connected) {
                 numController.append(plcControllersList.get(i).getIp() + " - " + plcControllersList.get(i).getControllerName() + "  ");
                 controllerConnected = "Нет подключения к контроллеру: " + numController;
             }
         }
-        System.out.println("TEST CRON!!!");
+        if (numDbPosOffset.size() != 0) {
+            DataFromPlc dataFromPlc = new DataFromPlc();
+            for (int i = 0; i < numDbPosOffset.size(); i++) {
+                clientRT.ReadArea(S7.S7AreaDB, numDbPosOffset.get(i).getDbValue(), numDbPosOffset.get(i).getPosition(), numDbPosOffset.get(i).getPosition() + numDbPosOffset.get(i).getOffset(), buffer);
+                float readData = S7.GetFloatAt(buffer, 266);
+                dataFromPlc.setSignalName(numDbPosOffset.get(i).getSignalName());
+                dataFromPlc.setValue(readData);
+
+                dataFromPlcList.add(dataFromPlc);
+            }
+        }
+        //System.out.println("TEST CRON!!!");
+    }
+
+    /**
+     * Метод оживает данные из класса PlcValueController и заполняет List
+     * из таблицы signsllist
+     * @param controllerSignalList - массив переменных сигналов контроллера
+     */
+    public static void controllerParam(List<SignalList> controllerSignalList) {
+        numDbPosOffset = controllerSignalList;
     }
 }

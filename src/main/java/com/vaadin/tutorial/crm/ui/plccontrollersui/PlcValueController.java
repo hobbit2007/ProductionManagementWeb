@@ -56,6 +56,7 @@ public class PlcValueController extends VerticalLayout {
     private ListDataProvider<PlcValue> dataProvider;
     private boolean radioButtonFlag = true;//Указывает какое положение было выбрано: реальное время или БД. По умолчанию: реальное время
     Thread[] textFieldUpdate = new Thread[10000];
+    AttachEvent attachEvent;
     PlcControllersService plcControllersService;
     SignalListService signalListService;
     PlcValueService plcValueService;
@@ -115,6 +116,7 @@ public class PlcValueController extends VerticalLayout {
 
             controllerSignalList = signalListService.findSignalList(e.getValue().getId());
             SchedulerService.controllerParam(controllerSignalList);
+            onAttach(this.attachEvent);
             removeAll();
             add(vContent, compLabel, initController(radioButtonFlag, e.getValue().getId()));
             setDefaultHorizontalComponentAlignment(Alignment.CENTER);
@@ -130,6 +132,9 @@ public class PlcValueController extends VerticalLayout {
                 controllerValue[i] = new TextField(controllerSignalList.get(i).getSignalName()); //controllerSignalList.get(i).getSignalName()
                 controllerValue[i].setWidth("55px");
                 controllerValue[i].setValue("0.00");
+
+                textFieldUpdate[i] = new UpdateValueController(attachEvent.getUI(), controllerValue[i], controllerSignalList.size());
+                textFieldUpdate[i].start();
 
                 fContent.add(controllerValue[i]);
                 verticalLayout.add(fContent);
@@ -179,10 +184,11 @@ public class PlcValueController extends VerticalLayout {
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         // Start the data feed thread
-        for (int i = 0; i < controllerSignalList.size(); i++) {
-            textFieldUpdate[i] = new UpdateValueController(attachEvent.getUI(), controllerValue[i], SchedulerService.dataFromPlcList.size());
-            textFieldUpdate[i].start();
-        }
+        this.attachEvent = attachEvent;
+        //for (int i = 0; i < controllerSignalList.size(); i++) {
+        //    textFieldUpdate[i] = new UpdateValueController(attachEvent.getUI(), controllerValue[i], SchedulerService.dataFromPlcList.size());
+        //    textFieldUpdate[i].start();
+       // }
     }
 
     @Override

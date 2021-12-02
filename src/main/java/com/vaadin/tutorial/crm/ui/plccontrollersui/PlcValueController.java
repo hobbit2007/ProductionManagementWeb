@@ -1,11 +1,14 @@
 package com.vaadin.tutorial.crm.ui.plccontrollersui;
 
+import com.sourceforge.snap7.moka7.S7;
+import com.sourceforge.snap7.moka7.S7Client;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -20,6 +23,7 @@ import com.vaadin.tutorial.crm.entity.plccontrollersentity.OLDPlcWashing;
 import com.vaadin.tutorial.crm.entity.plccontrollersentity.PlcControllers;
 import com.vaadin.tutorial.crm.entity.plccontrollersentity.PlcValue;
 import com.vaadin.tutorial.crm.entity.plccontrollersentity.SignalList;
+import com.vaadin.tutorial.crm.model.DataFromPlc;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.PlcControllersService;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.PlcValueService;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.SchedulerService;
@@ -55,8 +59,13 @@ public class PlcValueController extends VerticalLayout {
     private List<SignalList> controllerSignalList = new ArrayList<>();
     private ListDataProvider<PlcValue> dataProvider;
     private boolean radioButtonFlag = true;//Указывает какое положение было выбрано: реальное время или БД. По умолчанию: реальное время
-    Thread[] textFieldUpdate = new Thread[10000];
-    AttachEvent attachEvent;
+    private Label controllerStatus = new Label();
+    S7Client client = new S7Client();
+    public static byte[] buffer = new byte[65536];
+    //Thread[] textFieldUpdate = new Thread[10000];
+    public static Thread uploadFields = new Thread();
+    public static AttachEvent attachEvent;
+    public static List<TextField> sigFieldList = new ArrayList<>();
     PlcControllersService plcControllersService;
     SignalListService signalListService;
     PlcValueService plcValueService;
@@ -69,6 +78,10 @@ public class PlcValueController extends VerticalLayout {
 
         addClassName("list-view");
         setSizeFull();
+
+        controllerStatus.getStyle().set("color", "red");
+        controllerStatus.getStyle().set("font-weight", "bold");
+        controllerStatus.getStyle().set("font-size", "11pt");
 
         vLabel.add(anyComponent.labelTitle("Визуализация значений контроллеров"));
         vLabel.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
@@ -91,7 +104,7 @@ public class PlcValueController extends VerticalLayout {
         selectController.setItems(plcControllersService.getAll());
         selectController.setItemLabelGenerator(PlcControllers::getControllerName);
 
-        hTitleContent.add(choose, selectController);
+        hTitleContent.add(choose, selectController, controllerStatus);
         hTitleContent.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
 
         configureGrid();
@@ -115,7 +128,7 @@ public class PlcValueController extends VerticalLayout {
                 compLabel = anyComponent.labelTitle(selectController.getValue().getControllerName() + " (БД)");
 
             controllerSignalList = signalListService.findSignalList(e.getValue().getId());
-            SchedulerService.controllerParam(controllerSignalList);
+
             onAttach(this.attachEvent);
             removeAll();
             add(vContent, compLabel, initController(radioButtonFlag, e.getValue().getId()));
@@ -126,19 +139,42 @@ public class PlcValueController extends VerticalLayout {
     public Component initController(boolean flag, Long controllerId) {
         FormLayout fContent = new FormLayout();
         VerticalLayout verticalLayout = new VerticalLayout();
+
         if (flag) {
+            //Проверяем доступен контроллер или нет
+            client.SetConnectionType(S7.OP);
+            String test = selectController.getValue().getIp();
+            client.ConnectTo(selectController.getValue().getIp(), 0, 1);
+            if (client.Connected) {
+                controllerStatus.setVisible(false);
+                SchedulerService.controllerParam(controllerSignalList);
+                for (int i = 0; i < controllerSignalList.size(); i++) { //i < controllerSignalList.size()
+                    controllerValue[i] = new TextField(controllerSignalList.get(i).getSignalName()); //controllerSignalList.get(i).getSignalName()
+                    controllerValue[i].setWidth("55px");
+                    controllerValue[i].setValue("0.00");
 
-            for (int i = 0; i < controllerSignalList.size(); i++) { //i < controllerSignalList.size()
-                controllerValue[i] = new TextField(controllerSignalList.get(i).getSignalName()); //controllerSignalList.get(i).getSignalName()
-                controllerValue[i].setWidth("55px");
-                controllerValue[i].setValue("0.00");
+                    fContent.add(controllerValue[i]);
+                    verticalLayout.add(fContent);
+                    sigFieldList.add(controllerValue[i]);
+                    //textFieldUpdate[i] = new UpdateValueController(attachEvent.getUI(), controllerValue[i], controllerSignalList.get(i).getDbValue(),
+                    //        controllerSignalList.get(i).getPosition(), controllerSignalList.get(i).getOffset(), selectController.getValue().getIp());
+                    //textFieldUpdate[i].start();
 
-                textFieldUpdate[i] = new UpdateValueController(attachEvent.getUI(), controllerValue[i], controllerSignalList.size());
-                textFieldUpdate[i].start();
-
-                fContent.add(controllerValue[i]);
-                verticalLayout.add(fContent);
+                    controllerValue[i].getElement().setAttribute("data-title", controllerSignalList.get(i).getSignalDescription());
+                    controllerValue[i].setClassName("tooltip");
+                }
+                for (int i = 0; i < controllerSignalList.size(); i++) {
+                    client.ReadArea(S7.S7AreaDB, controllerSignalList.get(i).getDbValue(), 0, controllerSignalList.get(i).getPosition() + controllerSignalList.get(i).getOffset(), buffer);
+                    float readData = S7.GetFloatAt(buffer, controllerSignalList.get(i).getPosition());
+                    System.out.println("READDATA = " + readData);
+                }
             }
+            else {
+                controllerStatus.setVisible(true);
+                controllerStatus.setText("Контроллер " + selectController.getValue().getIp() + " - " + selectController.getValue().getControllerName() + " не доступен!");
+            }
+            //uploadFields = new UpdateValueController(attachEvent.getUI(), sigFieldList);
+            //uploadFields.start();
         }
         else {
             verticalLayout.add(grid);
@@ -181,6 +217,11 @@ public class PlcValueController extends VerticalLayout {
         grid.setItems(dataProvider);
     }
 
+    public static void startThread(List<DataFromPlc> array) {
+        uploadFields = new UpdateValueController(attachEvent.getUI(), sigFieldList, array);
+        uploadFields.start();
+    }
+
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         // Start the data feed thread
@@ -191,12 +232,12 @@ public class PlcValueController extends VerticalLayout {
        // }
     }
 
-    @Override
-    protected void onDetach(DetachEvent detachEvent) {
+   // @Override
+   // protected void onDetach(DetachEvent detachEvent) {
         // Cleanup
-        for (int i = 0; i < controllerSignalList.size(); i++) {
-            textFieldUpdate[i].interrupt();
-            textFieldUpdate[i] = null;
-        }
-    }
+   //     for (int i = 0; i < controllerSignalList.size(); i++) {
+   //         textFieldUpdate[i].interrupt();
+   //         textFieldUpdate[i] = null;
+   //     }
+    //}
 }

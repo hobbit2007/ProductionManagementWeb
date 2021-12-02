@@ -36,6 +36,7 @@ import com.vaadin.tutorial.crm.ui.layout.PlcLayout;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -55,7 +56,7 @@ public class PlcValueController extends VerticalLayout {
     private AnyComponent anyComponent = new AnyComponent();
     private RadioButtonGroup choose = new RadioButtonGroup();
     private ComboBox<PlcControllers> selectController = new ComboBox<>("Выберите контроллер:");
-    private TextField[] controllerValue = new TextField[100];
+
     private List<SignalList> controllerSignalList = new ArrayList<>();
     private ListDataProvider<PlcValue> dataProvider;
     private boolean radioButtonFlag = true;//Указывает какое положение было выбрано: реальное время или БД. По умолчанию: реальное время
@@ -139,7 +140,8 @@ public class PlcValueController extends VerticalLayout {
     public Component initController(boolean flag, Long controllerId) {
         FormLayout fContent = new FormLayout();
         VerticalLayout verticalLayout = new VerticalLayout();
-        System.out.println("BEFORE = " + controllerValue.length);
+        List<SignalList> controllerSignalListTemp = new ArrayList<>();//временный массив для хранения сигналов, нужен чтоб избежать переполнения при обновлении страницы
+
         if (flag) {
             //Проверяем доступен контроллер или нет
             client.SetConnectionType(S7.OP);
@@ -147,9 +149,13 @@ public class PlcValueController extends VerticalLayout {
             client.ConnectTo(selectController.getValue().getIp(), 0, 1);
             if (client.Connected) {
                 controllerStatus.setVisible(false);
-                SchedulerService.controllerParam(controllerSignalList);
-                for (int i = 0; i < controllerSignalList.size(); i++) { //i < controllerSignalList.size()
-                    controllerValue[i] = new TextField(controllerSignalList.get(i).getSignalName()); //controllerSignalList.get(i).getSignalName()
+                controllerSignalListTemp.removeAll(controllerSignalListTemp);
+                controllerSignalListTemp = controllerSignalList;
+                SchedulerService.controllerParam(controllerSignalListTemp);
+                TextField[] controllerValue = new TextField[controllerSignalListTemp.size()];
+                sigFieldList.removeAll(sigFieldList);
+                for (int i = 0; i < controllerSignalListTemp.size(); i++) { //i < controllerSignalList.size()
+                    controllerValue[i] = new TextField(controllerSignalListTemp.get(i).getSignalName()); //controllerSignalList.get(i).getSignalName()
                     controllerValue[i].setWidth("55px");
                     controllerValue[i].setValue("0.00");
 
@@ -161,15 +167,15 @@ public class PlcValueController extends VerticalLayout {
                     //        controllerSignalList.get(i).getPosition(), controllerSignalList.get(i).getOffset(), selectController.getValue().getIp());
                     //textFieldUpdate[i].start();
 
-                    controllerValue[i].getElement().setAttribute("data-title", controllerSignalList.get(i).getSignalDescription());
+                    controllerValue[i].getElement().setAttribute("data-title", controllerSignalListTemp.get(i).getSignalDescription());
                     controllerValue[i].setClassName("tooltip");
                 }
-                for (int i = 0; i < controllerSignalList.size(); i++) {
-                    client.ReadArea(S7.S7AreaDB, controllerSignalList.get(i).getDbValue(), 0, controllerSignalList.get(i).getPosition() + controllerSignalList.get(i).getOffset(), buffer);
-                    float readData = S7.GetFloatAt(buffer, controllerSignalList.get(i).getPosition());
+                for (int i = 0; i < controllerSignalListTemp.size(); i++) {
+                    client.ReadArea(S7.S7AreaDB, controllerSignalListTemp.get(i).getDbValue(), 0, controllerSignalListTemp.get(i).getPosition() + controllerSignalListTemp.get(i).getOffset(), buffer);
+                    float readData = S7.GetFloatAt(buffer, controllerSignalListTemp.get(i).getPosition());
                     System.out.println("READDATA = " + readData);
                 }
-                System.out.println("AFTER = " + controllerValue.length);
+
             }
             else {
                 controllerStatus.setVisible(true);

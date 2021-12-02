@@ -8,6 +8,7 @@ import com.vaadin.tutorial.crm.model.DataFromPlc;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.PlcControllersService;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.SignalListService;
 import com.vaadin.tutorial.crm.ui.MainView;
+import com.vaadin.tutorial.crm.ui.plccontrollersui.PlcValueController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -24,7 +25,7 @@ import java.util.List;
 public class SchedulerService {
     SignalListService signalListService;
     PlcControllersService plcControllersService;
-    private static final String CRON = "*/10 * * * * *";
+    private static final String CRON = "*/1 * * * * *";
     public static S7Client[] client = new S7Client[100];
     public static S7Client clientRT = new S7Client();
     public static byte[] buffer = new byte[65536];
@@ -33,7 +34,7 @@ public class SchedulerService {
     public static String controllerConnected = "";
     private StringBuilder numController = new StringBuilder();
     public static List<SignalList> numDbPosOffset = new ArrayList<>();
-    public static List<DataFromPlc> dataFromPlcList = new ArrayList<>(); //Массив в котором сохраняем данные после чтения из контроллера
+    //public static List<DataFromPlc> dataFromPlcList = new ArrayList<>(); //Массив в котором сохраняем данные после чтения из контроллера
 
 
     @Autowired
@@ -63,9 +64,11 @@ public class SchedulerService {
             }
             //numController.delete(0, numController.length() - 1);
         }
+        List<DataFromPlc> dataFromPlcList = new ArrayList<>();
         if (numDbPosOffset.size() != 0) {
-            DataFromPlc dataFromPlc = new DataFromPlc();
+
             for (int i = 0; i < numDbPosOffset.size(); i++) {
+                DataFromPlc dataFromPlc = new DataFromPlc();
                 clientRT.ReadArea(S7.S7AreaDB, numDbPosOffset.get(i).getDbValue(), 0, numDbPosOffset.get(i).getPosition() + numDbPosOffset.get(i).getOffset(), buffer);
                 float readData = S7.GetFloatAt(buffer, numDbPosOffset.get(i).getPosition());
                 dataFromPlc.setSignalName(numDbPosOffset.get(i).getSignalName());
@@ -74,8 +77,11 @@ public class SchedulerService {
                 dataFromPlcList.add(dataFromPlc);
             }
         }
-        System.out.println("TEST CRON!!!");
-        dataFromPlcList.removeAll(dataFromPlcList);
+        if (dataFromPlcList.size() == numDbPosOffset.size() && dataFromPlcList.size() != 0 && numDbPosOffset.size() != 0) {
+            PlcValueController.startThread(dataFromPlcList);
+            System.out.println("TEST CRON!!!");
+            //dataFromPlcList.removeAll(dataFromPlcList);
+        }
     }
 
     /**

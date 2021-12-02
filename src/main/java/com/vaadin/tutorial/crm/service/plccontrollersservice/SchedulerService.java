@@ -62,7 +62,7 @@ public class SchedulerService {
                 numController.append(plcControllersList.get(i).getIp() + " - " + plcControllersList.get(i).getControllerName() + "  ");
                 controllerConnected = "Нет подключения к контроллеру: " + numController;
             }
-            //numController.delete(0, numController.length() - 1);
+            numController.delete(0, numController.length());
         }
         List<DataFromPlc> dataFromPlcList = new ArrayList<>();
         if (numDbPosOffset.size() != 0) {

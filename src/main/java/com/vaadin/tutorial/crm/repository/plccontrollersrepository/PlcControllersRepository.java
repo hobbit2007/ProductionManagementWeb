@@ -12,6 +12,6 @@ import java.util.List;
  */
 @Repository
 public interface PlcControllersRepository extends JpaRepository<PlcControllers, Long> {
-    @Query("select pc from plccontrollers pc where pc.delete = 0")
+    @Query("select pc from plccontrollers pc where pc.delete = 0 order by pc.id asc")
     List<PlcControllers> getAll();
 }

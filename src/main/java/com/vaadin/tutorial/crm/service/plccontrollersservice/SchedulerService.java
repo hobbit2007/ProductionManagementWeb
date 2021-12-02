@@ -51,7 +51,7 @@ public class SchedulerService {
 
             clientRT = new S7Client();
             clientRT.SetConnectionType(S7.OP);
-            clientRT.ConnectTo("10.100.10.106", 0, 1);
+            clientRT.ConnectTo(plcControllersList.get(i).getIp(), 0, 1);
         }
     }
 
@@ -65,6 +65,7 @@ public class SchedulerService {
             numController.delete(0, numController.length());
         }
         List<DataFromPlc> dataFromPlcList = new ArrayList<>();
+        dataFromPlcList.removeAll(dataFromPlcList);
         if (numDbPosOffset.size() != 0) {
 
             for (int i = 0; i < numDbPosOffset.size(); i++) {

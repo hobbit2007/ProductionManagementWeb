@@ -12,6 +12,6 @@ import java.util.List;
  */
 @Repository
 public interface ShopRepository extends JpaRepository<Shop, Long> {
-    @Query("select s from shop s where s.delete = 0 order by s.id asc")
+    @Query("select s from shop s where s.delete = 0")
     List<Shop> getAll();
 }

@@ -13,6 +13,6 @@ import java.util.List;
  */
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
-    @Query("select d from department d where d.idShop = :shopID and d.delete = 0 order by d.id asc")
+    @Query("select d from department d where d.idShop = :shopID and d.delete = 0")
     List<Department> getAll(@Param("shopID") Long shopID);
 }

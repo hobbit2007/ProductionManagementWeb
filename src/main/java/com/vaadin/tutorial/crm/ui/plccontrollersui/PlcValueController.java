@@ -139,7 +139,7 @@ public class PlcValueController extends VerticalLayout {
     public Component initController(boolean flag, Long controllerId) {
         FormLayout fContent = new FormLayout();
         VerticalLayout verticalLayout = new VerticalLayout();
-
+        System.out.println("BEFORE = " + controllerValue.length);
         if (flag) {
             //Проверяем доступен контроллер или нет
             client.SetConnectionType(S7.OP);
@@ -154,6 +154,7 @@ public class PlcValueController extends VerticalLayout {
                     controllerValue[i].setValue("0.00");
 
                     fContent.add(controllerValue[i]);
+                    fContent.setResponsiveSteps(new FormLayout.ResponsiveStep("45px", 10));
                     verticalLayout.add(fContent);
                     sigFieldList.add(controllerValue[i]);
                     //textFieldUpdate[i] = new UpdateValueController(attachEvent.getUI(), controllerValue[i], controllerSignalList.get(i).getDbValue(),
@@ -168,6 +169,7 @@ public class PlcValueController extends VerticalLayout {
                     float readData = S7.GetFloatAt(buffer, controllerSignalList.get(i).getPosition());
                     System.out.println("READDATA = " + readData);
                 }
+                System.out.println("AFTER = " + controllerValue.length);
             }
             else {
                 controllerStatus.setVisible(true);

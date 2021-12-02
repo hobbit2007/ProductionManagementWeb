@@ -32,6 +32,7 @@ public class UpdateValueController extends Thread {
             ui.access(() -> {
                 for (int i = 0; i < element.size(); i++) {
                     element.get(i).setValue(String.valueOf(array.get(i).getValue()));//dataFromPlcList.get(0).getValue())
+                    System.out.println("FROM THREAD = " + array.get(i).getValue() + "SIZE ELEMENT = " + element.size() + "SIZE VALUE = " + array.size());
                     ui.push();
                 }
             });

@@ -15,6 +15,6 @@ import java.util.List;
 public interface PlcValueRepository extends JpaRepository<PlcValue, Long> {
     @Query("select pcv, sl from plccontrollersvalue pcv " +
             "join signallist sl on sl.id = pcv.idSignalName " +
-            "where pcv.idController = :controllerId and sl.delete = 0")
+            "where pcv.idController = :controllerId and sl.delete = 0 order by sl.id asc ")
     List<PlcValue> getSignalOnController(@Param("controllerId") Long controllerId);
 }

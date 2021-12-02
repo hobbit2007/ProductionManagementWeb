@@ -13,6 +13,6 @@ import java.util.List;
  */
 @Repository
 public interface SignalListRepository extends JpaRepository<SignalList, Long> {
-    @Query("select sl from signallist sl where sl.idController = :controllerId and sl.delete = 0")
+    @Query("select sl from signallist sl where sl.idController = :controllerId and sl.delete = 0 order by sl.id asc ")
     List<SignalList> findSignalList(@Param("controllerId") Long controllerId);
 }

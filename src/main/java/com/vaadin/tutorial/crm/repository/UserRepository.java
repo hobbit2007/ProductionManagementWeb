@@ -20,7 +20,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByLogin(String userName);
 
-    @Query("select u from userslist u where u.delete = 0")
+    @Query("select u from userslist u where u.delete = 0 order by u.id asc")
     List<User> getAll();
 
     //Обновляем в БД дату захода пользователя в систему

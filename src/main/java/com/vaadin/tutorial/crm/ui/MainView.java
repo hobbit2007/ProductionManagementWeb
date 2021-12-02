@@ -58,10 +58,10 @@ public class MainView extends VerticalLayout {
         thread.start();
     }
 
-    @Override
-    protected void onDetach(DetachEvent detachEvent) {
+    //@Override
+    //protected void onDetach(DetachEvent detachEvent) {
         // Cleanup
-        thread.interrupt();
-        thread = null;
-    }
+    //    thread.interrupt();
+    //    thread = null;
+    //}
 }

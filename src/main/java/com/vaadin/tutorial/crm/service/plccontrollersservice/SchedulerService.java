@@ -44,18 +44,18 @@ public class SchedulerService {
 
         plcControllersList = plcControllersService.getAll();
 
+        clientForStatus = new S7Client();
+        clientForStatus.SetConnectionType(S7.OP);
+
         for (int i = 0; i < plcControllersList.size(); i++) {
             client[i] = new S7Client();
             client[i].SetConnectionType(S7.OP);
             client[i].ConnectTo(plcControllersList.get(i).getIp(), 0, 1);
-
-            //clientRT = new S7Client();
-            //clientRT.SetConnectionType(S7.OP);
-            //clientRT.ConnectTo(plcControllersList.get(i).getIp(), 0, 1);
+            //Коннектимся ко всем доступным контроллерам
+            clientForStatus.ConnectTo(plcControllersList.get(i).getIp(), 0, 1);
         }
 
-        clientForStatus = new S7Client();
-        clientForStatus.SetConnectionType(S7.OP);
+
     }
 
     @Scheduled(cron = CRON)

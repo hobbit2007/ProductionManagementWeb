@@ -1,7 +1,6 @@
 package com.vaadin.tutorial.crm.service.plccontrollersservice;
 
-import com.sourceforge.snap7.moka7.S7;
-import com.sourceforge.snap7.moka7.S7Client;
+import com.sourceforge.snap7.moka7.*;
 import com.vaadin.tutorial.crm.entity.plccontrollersentity.PlcControllers;
 import com.vaadin.tutorial.crm.entity.plccontrollersentity.SignalList;
 import com.vaadin.tutorial.crm.model.DataFromPlc;
@@ -25,17 +24,18 @@ import java.util.List;
 public class SchedulerService {
     SignalListService signalListService;
     PlcControllersService plcControllersService;
-    private static final String CRON = "*/1 * * * * *";
+    private static final String CRON = "*/10 * * * * *";
+    private static final String CRONStatus = "*/5 * * * * *";
     public static S7Client[] client = new S7Client[100];
-    public static S7Client clientRT = new S7Client();
+    //public static S7Client clientRT;
+    public static S7Client clientForStatus;
     public static byte[] buffer = new byte[65536];
     public static byte[] bufferWrite = new byte[65536];
     private List<PlcControllers> plcControllersList = new ArrayList<>();
     public static String controllerConnected = "";
     private StringBuilder numController = new StringBuilder();
     public static List<SignalList> numDbPosOffset = new ArrayList<>();
-    //public static List<DataFromPlc> dataFromPlcList = new ArrayList<>(); //Массив в котором сохраняем данные после чтения из контроллера
-
+    public static boolean stopThread = false;//Переменная останвливающая запуск потоков, в том случае, если мы ушли из окна Визуализации
 
     @Autowired
     public SchedulerService(SignalListService signalListService, PlcControllersService plcControllersService) {
@@ -49,40 +49,64 @@ public class SchedulerService {
             client[i].SetConnectionType(S7.OP);
             client[i].ConnectTo(plcControllersList.get(i).getIp(), 0, 1);
 
-            clientRT = new S7Client();
-            clientRT.SetConnectionType(S7.OP);
-            clientRT.ConnectTo(plcControllersList.get(i).getIp(), 0, 1);
+            //clientRT = new S7Client();
+            //clientRT.SetConnectionType(S7.OP);
+            //clientRT.ConnectTo(plcControllersList.get(i).getIp(), 0, 1);
         }
+
+        clientForStatus = new S7Client();
+        clientForStatus.SetConnectionType(S7.OP);
     }
 
     @Scheduled(cron = CRON)
     public void sendsSignalRT() {
+        if (clientForStatus.Connected) {
+            List<DataFromPlc> dataFromPlcList = new ArrayList<>();
+            dataFromPlcList.removeAll(dataFromPlcList);
+            if (numDbPosOffset.size() != 0) {
+
+                for (int i = 0; i < numDbPosOffset.size(); i++) {
+                    DataFromPlc dataFromPlc = new DataFromPlc();
+                    clientForStatus.ReadArea(S7.S7AreaDB, numDbPosOffset.get(i).getDbValue(), 0, numDbPosOffset.get(i).getPosition() + numDbPosOffset.get(i).getOffset(), buffer);
+                    float readData = S7.GetFloatAt(buffer, numDbPosOffset.get(i).getPosition());
+                    dataFromPlc.setSignalName(numDbPosOffset.get(i).getSignalName());
+                    dataFromPlc.setValue(readData);
+
+                    dataFromPlcList.add(dataFromPlc);
+                }
+            }
+            if (dataFromPlcList.size() == numDbPosOffset.size() && dataFromPlcList.size() != 0 && numDbPosOffset.size() != 0 && !stopThread) {
+                PlcValueController.startThread(dataFromPlcList);
+                System.out.println("TEST CRON!!!");
+            }
+        }
+    }
+
+    @Scheduled(cron = CRONStatus)
+    public void anyControllersStatus() {
+        plcControllersList = plcControllersService.getAll();
+        numController.setLength(0);
         for (int i = 0; i < plcControllersList.size(); i++) {
+            //client[i].ConnectTo(plcControllersList.get(i).getIp(), 0, 1);
             if (!client[i].Connected) {
                 numController.append(plcControllersList.get(i).getIp() + " - " + plcControllersList.get(i).getControllerName() + "  ");
                 controllerConnected = "Нет подключения к контроллеру: " + numController;
             }
-            numController.delete(0, numController.length());
+            //client[i].Disconnect();
         }
-        List<DataFromPlc> dataFromPlcList = new ArrayList<>();
-        dataFromPlcList.removeAll(dataFromPlcList);
-        if (numDbPosOffset.size() != 0) {
+    }
 
-            for (int i = 0; i < numDbPosOffset.size(); i++) {
-                DataFromPlc dataFromPlc = new DataFromPlc();
-                clientRT.ReadArea(S7.S7AreaDB, numDbPosOffset.get(i).getDbValue(), 0, numDbPosOffset.get(i).getPosition() + numDbPosOffset.get(i).getOffset(), buffer);
-                float readData = S7.GetFloatAt(buffer, numDbPosOffset.get(i).getPosition());
-                dataFromPlc.setSignalName(numDbPosOffset.get(i).getSignalName());
-                dataFromPlc.setValue(readData);
+    public static boolean controllerStatus(String controllerIP) {
+        clientForStatus.ConnectTo(controllerIP, 0, 1);
+        if (clientForStatus.Connected)
+            return true;
+        else
+            return false;
+    }
 
-                dataFromPlcList.add(dataFromPlc);
-            }
-        }
-        if (dataFromPlcList.size() == numDbPosOffset.size() && dataFromPlcList.size() != 0 && numDbPosOffset.size() != 0) {
-            PlcValueController.startThread(dataFromPlcList);
-            System.out.println("TEST CRON!!!");
-            //dataFromPlcList.removeAll(dataFromPlcList);
-        }
+    public static void controllerDisconnect() {
+        if (clientForStatus.Connected)
+            clientForStatus.Disconnect();
     }
 
     /**

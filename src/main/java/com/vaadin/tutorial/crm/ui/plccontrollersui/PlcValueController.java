@@ -63,7 +63,6 @@ public class PlcValueController extends VerticalLayout {
     private Label controllerStatus = new Label();
     S7Client client = new S7Client();
     public static byte[] buffer = new byte[65536];
-    //Thread[] textFieldUpdate = new Thread[10000];
     public static Thread uploadFields = new Thread();
     public static AttachEvent attachEvent;
     public static List<TextField> sigFieldList = new ArrayList<>();
@@ -144,10 +143,12 @@ public class PlcValueController extends VerticalLayout {
 
         if (flag) {
             //Проверяем доступен контроллер или нет
-            client.SetConnectionType(S7.OP);
-            String test = selectController.getValue().getIp();
-            client.ConnectTo(selectController.getValue().getIp(), 0, 1);
-            if (client.Connected) {
+            //client.SetConnectionType(S7.OP);
+            //String test = selectController.getValue().getIp();
+            //client.ConnectTo(selectController.getValue().getIp(), 0, 1);
+            SchedulerService.controllerDisconnect();
+            if (SchedulerService.controllerStatus(selectController.getValue().getIp())) {
+                SchedulerService.stopThread = false;
                 controllerStatus.setVisible(false);
                 controllerSignalListTemp.removeAll(controllerSignalListTemp);
                 controllerSignalListTemp = controllerSignalList;
@@ -170,11 +171,11 @@ public class PlcValueController extends VerticalLayout {
                     controllerValue[i].getElement().setAttribute("data-title", controllerSignalListTemp.get(i).getSignalDescription());
                     controllerValue[i].setClassName("tooltip");
                 }
-                for (int i = 0; i < controllerSignalListTemp.size(); i++) {
-                    client.ReadArea(S7.S7AreaDB, controllerSignalListTemp.get(i).getDbValue(), 0, controllerSignalListTemp.get(i).getPosition() + controllerSignalListTemp.get(i).getOffset(), buffer);
-                    float readData = S7.GetFloatAt(buffer, controllerSignalListTemp.get(i).getPosition());
-                    System.out.println("READDATA = " + readData);
-                }
+                //for (int i = 0; i < controllerSignalListTemp.size(); i++) {
+                //    client.ReadArea(S7.S7AreaDB, controllerSignalListTemp.get(i).getDbValue(), 0, controllerSignalListTemp.get(i).getPosition() + controllerSignalListTemp.get(i).getOffset(), buffer);
+                //    float readData = S7.GetFloatAt(buffer, controllerSignalListTemp.get(i).getPosition());
+                //    System.out.println("READDATA = " + readData);
+                //}
 
             }
             else {

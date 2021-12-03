@@ -24,7 +24,7 @@ import java.util.List;
 public class SchedulerService {
     SignalListService signalListService;
     PlcControllersService plcControllersService;
-    private static final String CRON = "*/10 * * * * *";
+    private static final String CRON = "*/1 * * * * *";
     private static final String CRONStatus = "*/5 * * * * *";
     public static S7Client[] client = new S7Client[100];
     //public static S7Client clientRT;

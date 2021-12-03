@@ -34,10 +34,12 @@ public class MainView extends VerticalLayout {
     FeederThread thread;
 
     public MainView() {
+        SchedulerService.stopThread = true;
+
         labelUser.getStyle().set("color", "red");
         labelUser.getStyle().set("font-weight", "bold");
         labelUser.getStyle().set("font-size", "11pt");
-        labelUser.getStyle().set("border", "1px inset blue");
+        //labelUser.getStyle().set("border", "1px inset blue");
 
         hContent.add(labelUser);
 

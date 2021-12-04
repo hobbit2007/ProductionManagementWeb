@@ -2,10 +2,14 @@ package com.vaadin.tutorial.crm.ui.layout;
 
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.tutorial.crm.security.SecurityConfiguration;
+import com.vaadin.tutorial.crm.security.SecurityUtils;
 import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
 import com.vaadin.tutorial.crm.ui.users.UsersCreate;
@@ -19,9 +23,15 @@ public class AdminLayout extends AppLayout {
     private final SecurityConfiguration securityConfiguration;
 
     LabelComponent labelComponent;
+    HorizontalLayout hMenu1 = new HorizontalLayout();
+    HorizontalLayout hMenu2 = new HorizontalLayout();
+    HorizontalLayout hMenu3 = new HorizontalLayout();
+    private final String ROLE = "ADMIN";
 
     public AdminLayout(SecurityConfiguration securityConfiguration) {
         this.securityConfiguration = securityConfiguration;
+        hMenu1.setVisible(false);
+        hMenu2.setVisible(false);
         createHeader();
         createDrawer();
     }
@@ -33,14 +43,24 @@ public class AdminLayout extends AppLayout {
     private void createDrawer() {
         RouterLink back = new RouterLink("Назад", MainView.class);
         back.setHighlightCondition(HighlightConditions.sameLocation());
+        Icon icon2 = new Icon(VaadinIcon.ARROW_BACKWARD);
+        hMenu3.add(icon2, back);
 
-        RouterLink usersAction = new RouterLink("Пользователи", UsersCreate.class);
-        usersAction.setHighlightCondition(HighlightConditions.sameLocation());
+        if (SecurityUtils.getAuthentication().getDetails().getRole().equals(ROLE)) {
+            hMenu1.setVisible(true);
+            hMenu2.setVisible(true);
+            RouterLink usersAction = new RouterLink("Пользователи", UsersCreate.class);
+            usersAction.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon = new Icon(VaadinIcon.USER);
+            hMenu1.add(icon, usersAction);
 
-        RouterLink orgStructure = new RouterLink("Орг. структура", MainView.class);
-        orgStructure.setHighlightCondition(HighlightConditions.sameLocation());
+            RouterLink orgStructure = new RouterLink("Орг. структура", MainView.class);
+            orgStructure.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon1 = new Icon(VaadinIcon.FACTORY);
+            hMenu2.add(icon1, orgStructure);
+        }
 
-        addToDrawer(new VerticalLayout(back, usersAction, orgStructure));
+        addToDrawer(new VerticalLayout(hMenu3, hMenu1, hMenu2));
 
         //Закрываем меню на стороне клиента
         //т.к. при первом запуске меню показывается автоматически

@@ -25,7 +25,7 @@ public class FeederThread extends Thread {
             try {
                 Thread.sleep(1000);
                 ui.access(()-> {
-                    element.setText(String.valueOf(SchedulerService.controllerConnected));
+                    element.setText(String.valueOf(SchedulerService.anyControllersStatus()));
                     ui.push();
                 });
                 count--;

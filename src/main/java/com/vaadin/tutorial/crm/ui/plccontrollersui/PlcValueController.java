@@ -241,12 +241,9 @@ public class PlcValueController extends VerticalLayout {
        // }
     }
 
-   // @Override
-   // protected void onDetach(DetachEvent detachEvent) {
+    @Override
+    protected void onDetach(DetachEvent detachEvent) {
         // Cleanup
-   //     for (int i = 0; i < controllerSignalList.size(); i++) {
-   //         textFieldUpdate[i].interrupt();
-   //         textFieldUpdate[i] = null;
-   //     }
-    //}
+        SchedulerService.stopThread = false;
+    }
 }

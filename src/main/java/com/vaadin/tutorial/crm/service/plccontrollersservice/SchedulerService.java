@@ -23,17 +23,16 @@ import java.util.List;
 @Service
 public class SchedulerService {
     SignalListService signalListService;
-    PlcControllersService plcControllersService;
-    private static final String CRON = "*/1 * * * * *";
-    private static final String CRONStatus = "*/5 * * * * *";
+    static PlcControllersService plcControllersService;
+    private static final String CRON = "*/2 * * * * *";
     public static S7Client[] client = new S7Client[100];
     //public static S7Client clientRT;
     public static S7Client clientForStatus;
     public static byte[] buffer = new byte[65536];
     public static byte[] bufferWrite = new byte[65536];
-    private List<PlcControllers> plcControllersList = new ArrayList<>();
+    private static List<PlcControllers> plcControllersList = new ArrayList<>();
     public static String controllerConnected = "";
-    private StringBuilder numController = new StringBuilder();
+    private static StringBuilder numController = new StringBuilder();
     public static List<SignalList> numDbPosOffset = new ArrayList<>();
     public static boolean stopThread = false;//Переменная останвливающая запуск потоков, в том случае, если мы ушли из окна Визуализации
 
@@ -77,13 +76,12 @@ public class SchedulerService {
             }
             if (dataFromPlcList.size() == numDbPosOffset.size() && dataFromPlcList.size() != 0 && numDbPosOffset.size() != 0 && !stopThread) {
                 PlcValueController.startThread(dataFromPlcList);
-                System.out.println("TEST CRON!!!");
+                //System.out.println("TEST CRON!!!");
             }
         }
     }
 
-    @Scheduled(cron = CRONStatus)
-    public void anyControllersStatus() {
+    public static String anyControllersStatus() {
         plcControllersList = plcControllersService.getAll();
         numController.setLength(0);
         for (int i = 0; i < plcControllersList.size(); i++) {
@@ -94,6 +92,7 @@ public class SchedulerService {
             }
             //client[i].Disconnect();
         }
+        return controllerConnected;
     }
 
     public static boolean controllerStatus(String controllerIP) {

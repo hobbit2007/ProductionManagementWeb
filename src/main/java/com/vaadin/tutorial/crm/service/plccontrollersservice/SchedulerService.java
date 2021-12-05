@@ -34,7 +34,7 @@ public class SchedulerService {
     public static String controllerConnected = "";
     private static StringBuilder numController = new StringBuilder();
     public static List<SignalList> numDbPosOffset = new ArrayList<>();
-    public static boolean stopThread = false;//Переменная останвливающая запуск потоков, в том случае, если мы ушли из окна Визуализации
+    public static boolean stopThread = true;//Переменная останвливающая запуск потоков, в том случае, если мы ушли из окна Визуализации
 
     @Autowired
     public SchedulerService(SignalListService signalListService, PlcControllersService plcControllersService) {

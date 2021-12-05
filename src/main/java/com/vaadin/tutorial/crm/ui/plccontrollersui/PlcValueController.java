@@ -245,5 +245,6 @@ public class PlcValueController extends VerticalLayout {
     protected void onDetach(DetachEvent detachEvent) {
         // Cleanup
         SchedulerService.stopThread = true;
+        SchedulerService.controllerDisconnect();
     }
 }

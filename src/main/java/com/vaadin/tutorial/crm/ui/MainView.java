@@ -13,7 +13,6 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -23,7 +22,6 @@ import com.vaadin.tutorial.crm.service.plccontrollersservice.SchedulerService;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.SignalListService;
 import com.vaadin.tutorial.crm.threads.FeederThread;
 import com.vaadin.tutorial.crm.threads.UpdateValueController;
-import com.vaadin.tutorial.crm.ui.chart.SplineUpdatingEachSecond;
 import com.vaadin.tutorial.crm.ui.chart.UpdateValueChart;
 import com.vaadin.tutorial.crm.ui.layout.MainLayout;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +44,7 @@ public class MainView extends VerticalLayout {
     VerticalLayout vContent = new VerticalLayout();
     HorizontalLayout hContent = new HorizontalLayout();
     FeederThread thread;
-    //SplineUpdatingEachSecond splineUpdatingEachSecond = new SplineUpdatingEachSecond();
+
     Chart chart = new Chart();
     public static List<DataFromPlc> arrayForChart = new ArrayList<>();
     private List<SignalList> controllerSignalList = new ArrayList<>();

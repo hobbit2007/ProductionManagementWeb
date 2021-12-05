@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
-* Класс поток - проверяет подключение к контроллерам каждые 10 сек.
+* Класс поток - обновляет значение переменных прочитанных из ПЛК, для визуализации данных в TextField каждые 2 сек.
 */
 public class UpdateValueController extends Thread {
     private final UI ui;

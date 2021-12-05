@@ -35,6 +35,7 @@ public class SchedulerService {
     private static StringBuilder numController = new StringBuilder();
     public static List<SignalList> numDbPosOffset = new ArrayList<>();
     public static boolean stopThread = true;//Переменная останвливающая запуск потоков, в том случае, если мы ушли из окна Визуализации
+    public static boolean stopThreadChart = true;
 
     @Autowired
     public SchedulerService(SignalListService signalListService, PlcControllersService plcControllersService) {
@@ -78,6 +79,8 @@ public class SchedulerService {
                 PlcValueController.startThread(dataFromPlcList);
                 //System.out.println("TEST CRON!!!");
             }
+            if (dataFromPlcList.size() == numDbPosOffset.size() && dataFromPlcList.size() != 0 && numDbPosOffset.size() != 0 && !stopThreadChart)
+                MainView.startThread(dataFromPlcList);
         }
     }
 

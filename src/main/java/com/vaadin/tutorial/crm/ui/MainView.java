@@ -82,16 +82,17 @@ public class MainView extends VerticalLayout {
 
     public Component initDemo() {
         final Random random = new Random();
+        chart.setWidth("800px");
         configuration = chart.getConfiguration();
         configuration.getChart().setType(ChartType.SPLINE);
-        configuration.getTitle().setText("Live data");
+        configuration.getTitle().setText("Live data - PLC 106");
 
         XAxis xAxis = configuration.getxAxis();
         xAxis.setType(AxisType.DATETIME);
         xAxis.setTickPixelInterval(150);
 
         YAxis yAxis = configuration.getyAxis();
-        yAxis.setTitle(new AxisTitle("Value"));
+        yAxis.setTitle(new AxisTitle("Значения"));
 
         configuration.getTooltip().setEnabled(true);
         configuration.getLegend().setEnabled(true);
@@ -100,7 +101,7 @@ public class MainView extends VerticalLayout {
         series.setPlotOptions(new PlotOptionsSpline());
         series.setName("Random data");
         for (int i = -19; i <= 0; i++) {
-            series.add(new DataSeriesItem(System.currentTimeMillis() + i * 1000, random.nextDouble()));
+            series.add(new DataSeriesItem(System.currentTimeMillis() + i * 1000, i));
         }
         //final long x = System.currentTimeMillis();
         //final double y = random.nextDouble();

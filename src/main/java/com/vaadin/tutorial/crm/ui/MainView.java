@@ -58,12 +58,6 @@ public class MainView extends VerticalLayout {
     @Autowired
     public MainView(SignalListService signalListService) {
         this.signalListService = signalListService;
-        SchedulerService.stopThread = true;
-        SchedulerService.stopThreadChart = false;
-
-        controllerSignalList = signalListService.findSignalList(4L);
-        SchedulerService.controllerParam(controllerSignalList);
-        SchedulerService.controllerStatus("10.100.10.106");
 
         labelUser.getStyle().set("color", "red");
         labelUser.getStyle().set("font-weight", "bold");
@@ -99,15 +93,15 @@ public class MainView extends VerticalLayout {
         YAxis yAxis = configuration.getyAxis();
         yAxis.setTitle(new AxisTitle("Value"));
 
-        configuration.getTooltip().setEnabled(false);
-        configuration.getLegend().setEnabled(false);
+        configuration.getTooltip().setEnabled(true);
+        configuration.getLegend().setEnabled(true);
 
         series = new DataSeries();
         series.setPlotOptions(new PlotOptionsSpline());
         series.setName("Random data");
-        //for (int i = -19; i <= 0; i++) {
-        //    series.add(new DataSeriesItem(System.currentTimeMillis() + i * 1000, random.nextDouble()));
-        //}
+        for (int i = -19; i <= 0; i++) {
+            series.add(new DataSeriesItem(System.currentTimeMillis() + i * 1000, random.nextDouble()));
+        }
         //final long x = System.currentTimeMillis();
         //final double y = random.nextDouble();
         //series.add(new DataSeriesItem(x, y), true, true);
@@ -137,6 +131,12 @@ public class MainView extends VerticalLayout {
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         // Start the data feed thread
+        SchedulerService.stopThread = true;
+        SchedulerService.stopThreadChart = false;
+
+        controllerSignalList = signalListService.findSignalList(4L);
+        SchedulerService.controllerParam(controllerSignalList);
+        SchedulerService.controllerStatus("10.100.10.106");
         this.attachEvent = attachEvent;
         thread = new FeederThread(attachEvent.getUI(), labelUser);
         thread.start();

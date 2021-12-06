@@ -69,8 +69,9 @@ public class SchedulerService {
                     DataFromPlc dataFromPlc = new DataFromPlc();
                     clientForStatus.ReadArea(S7.S7AreaDB, numDbPosOffset.get(i).getDbValue(), 0, numDbPosOffset.get(i).getPosition() + numDbPosOffset.get(i).getOffset(), buffer);
                     float readData = S7.GetFloatAt(buffer, numDbPosOffset.get(i).getPosition());
+                    double scale = Math.pow(10, 2);
                     dataFromPlc.setSignalName(numDbPosOffset.get(i).getSignalName());
-                    dataFromPlc.setValue(readData);
+                    dataFromPlc.setValue((float) (Math.ceil(readData * scale) / scale));
 
                     dataFromPlcList.add(dataFromPlc);
                 }

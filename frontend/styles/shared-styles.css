@@ -83,7 +83,7 @@ a[highlight] {
 .tooltip:hover::after {
   content: attr(data-title); /* Выводим текст */
   position: absolute; /* Абсолютное позиционирование */
-  left: 1%; top: -5%; /* Положение подсказки */
+  left: 45%; top: 55%; /* Положение подсказки */
   z-index: 1; /* Отображаем подсказку поверх других элементов */
   background: rgba(255,255,230,0.9); /* Полупрозрачный цвет фона */
   font-family: Arial, sans-serif; /* Гарнитура шрифта */

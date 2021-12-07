@@ -26,6 +26,9 @@ public class FeederThread extends Thread {
                 Thread.sleep(5000);
                 ui.access(()-> {
                     element.setText(String.valueOf(PLCConnect.anyControllersStatus()));
+                    element.getStyle().set("color", "red");
+                    element.getStyle().set("font-weight", "bold");
+                    element.getStyle().set("font-size", "11pt");
                     ui.push();
                 });
                 count--;

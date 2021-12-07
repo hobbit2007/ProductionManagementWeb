@@ -1,9 +1,6 @@
 package com.vaadin.tutorial.crm.ui;
 
-import com.vaadin.flow.component.AttachEvent;
-import com.vaadin.flow.component.AttachNotifier;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.DetachEvent;
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.*;
@@ -59,6 +56,8 @@ public class MainView extends VerticalLayout {
     public MainView(SignalListService signalListService) {
         this.signalListService = signalListService;
 
+        //SchedulerService.controllerDisconnect();
+
         labelUser.getStyle().set("color", "red");
         labelUser.getStyle().set("font-weight", "bold");
         labelUser.getStyle().set("font-size", "11pt");
@@ -81,6 +80,10 @@ public class MainView extends VerticalLayout {
     }
 
     public Component initDemo() {
+        //controllerSignalList = signalListService.findSignalList(4L);
+        //SchedulerService.controllerParam(controllerSignalList);
+        //SchedulerService.controllerStatus("10.100.10.106");
+
         final Random random = new Random();
         chart.setWidth("800px");
         configuration = chart.getConfiguration();
@@ -125,8 +128,8 @@ public class MainView extends VerticalLayout {
     }
 
     public static void startThread(List<DataFromPlc> array) {
-        uploadChart = new UpdateValueChart(attachEvent.getUI(), configuration, series,  array);
-        uploadChart.start();
+        //uploadChart = new UpdateValueChart(attachEvent.getUI(), configuration, series,  array);
+        //uploadChart.start();
     }
 
     @Override
@@ -135,9 +138,7 @@ public class MainView extends VerticalLayout {
         SchedulerService.stopThread = true;
         SchedulerService.stopThreadChart = false;
 
-        controllerSignalList = signalListService.findSignalList(4L);
-        SchedulerService.controllerParam(controllerSignalList);
-        SchedulerService.controllerStatus("10.100.10.106");
+
         this.attachEvent = attachEvent;
         thread = new FeederThread(attachEvent.getUI(), labelUser);
         thread.start();
@@ -147,7 +148,7 @@ public class MainView extends VerticalLayout {
     protected void onDetach(DetachEvent detachEvent) {
         // Cleanup
         SchedulerService.stopThreadChart = true;
-        SchedulerService.controllerDisconnect();
+        //SchedulerService.controllerDisconnect();
         thread.interrupt();
         thread = null;
     }

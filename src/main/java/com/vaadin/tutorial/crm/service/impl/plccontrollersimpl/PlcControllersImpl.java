@@ -22,4 +22,9 @@ public class PlcControllersImpl implements PlcControllersService {
     public List<PlcControllers> getAll() {
         return plcControllersRepository.getAll();
     }
+
+    @Override
+    public List<PlcControllers> getAllByID(long id) {
+        return plcControllersRepository.getAllByID(id);
+    }
 }

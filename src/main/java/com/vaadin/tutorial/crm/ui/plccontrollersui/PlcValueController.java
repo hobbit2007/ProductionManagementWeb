@@ -43,6 +43,7 @@ public class PlcValueController extends VerticalLayout {
     public static Thread updateFields = new Thread();
     public static List<TextField> sigFieldList = new ArrayList<>();
     String controllerIP;
+    TextField[] controllerValue;
     PlcControllersService plcControllersService;
     SignalListService signalListService;
 
@@ -78,7 +79,7 @@ public class PlcValueController extends VerticalLayout {
         VerticalLayout verticalLayout = new VerticalLayout();
         if (PLCConnect.controllerStatus(controllerIP)) {
             controllerStatus.setVisible(false);
-            TextField[] controllerValue = new TextField[controllerSignalList.size()];
+            controllerValue = new TextField[controllerSignalList.size()];
             sigFieldList.removeAll(sigFieldList);
             for (int i = 0; i < controllerSignalList.size(); i++) {
                 controllerValue[i] = new TextField(controllerSignalList.get(i).getSignalName());

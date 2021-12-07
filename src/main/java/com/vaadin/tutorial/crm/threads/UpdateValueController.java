@@ -34,12 +34,13 @@ public class UpdateValueController extends Thread {
                     for (int i = 0; i < element.size(); i++) {
                         s7Client.ReadArea(S7.S7AreaDB, array.get(i).getDbValue(), 0, array.get(i).getPosition() + array.get(i).getOffset(), buffer);
                         float readData = S7.GetFloatAt(buffer, array.get(i).getPosition());
-                        element.get(i).setValue(String.valueOf(readData));
+                        double scale = Math.pow(10, 2);
+                        element.get(i).setValue(String.valueOf((float) (Math.ceil(readData * scale) / scale)));
                         //System.out.println("FROM THREAD [" + getId() + " - " + getName()+ "] =" + readData);
                         ui.push();
                     }
                 });
-                sleep(2000);
+                sleep(1000);
             } catch (InterruptedException e) { //Interrupted
                 break;
                 //e.printStackTrace();

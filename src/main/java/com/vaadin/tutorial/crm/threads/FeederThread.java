@@ -23,7 +23,7 @@ public class FeederThread extends Thread {
     public void run() {
         while (!interrupted()){ //count>-1
             try {
-                Thread.sleep(1000);
+                Thread.sleep(5000);
                 ui.access(()-> {
                     element.setText(String.valueOf(PLCConnect.anyControllersStatus()));
                     ui.push();

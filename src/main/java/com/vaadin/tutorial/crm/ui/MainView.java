@@ -1,28 +1,21 @@
 package com.vaadin.tutorial.crm.ui;
 
 import com.vaadin.flow.component.*;
-import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.*;
 import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.tutorial.crm.entity.plccontrollersentity.SignalList;
 import com.vaadin.tutorial.crm.model.DataFromPlc;
-import com.vaadin.tutorial.crm.service.plccontrollersservice.SchedulerService;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.SignalListService;
 import com.vaadin.tutorial.crm.threads.FeederThread;
-import com.vaadin.tutorial.crm.threads.UpdateValueController;
-import com.vaadin.tutorial.crm.ui.chart.UpdateValueChart;
 import com.vaadin.tutorial.crm.ui.layout.MainLayout;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +49,6 @@ public class MainView extends VerticalLayout {
     public MainView(SignalListService signalListService) {
         this.signalListService = signalListService;
 
-        //SchedulerService.controllerDisconnect();
-
         labelUser.getStyle().set("color", "red");
         labelUser.getStyle().set("font-weight", "bold");
         labelUser.getStyle().set("font-size", "11pt");
@@ -81,8 +72,8 @@ public class MainView extends VerticalLayout {
 
     public Component initDemo() {
         //controllerSignalList = signalListService.findSignalList(4L);
-        //SchedulerService.controllerParam(controllerSignalList);
-        //SchedulerService.controllerStatus("10.100.10.106");
+        //PLCConnect.controllerParam(controllerSignalList);
+        //PLCConnect.controllerStatus("10.100.10.106");
 
         final Random random = new Random();
         chart.setWidth("800px");
@@ -127,28 +118,14 @@ public class MainView extends VerticalLayout {
         return chart;
     }
 
-    public static void startThread(List<DataFromPlc> array) {
-        //uploadChart = new UpdateValueChart(attachEvent.getUI(), configuration, series,  array);
-        //uploadChart.start();
-    }
-
     @Override
     protected void onAttach(AttachEvent attachEvent) {
-        // Start the data feed thread
-        SchedulerService.stopThread = true;
-        SchedulerService.stopThreadChart = false;
-
-
-        this.attachEvent = attachEvent;
         thread = new FeederThread(attachEvent.getUI(), labelUser);
         thread.start();
     }
 
     @Override
     protected void onDetach(DetachEvent detachEvent) {
-        // Cleanup
-        SchedulerService.stopThreadChart = true;
-        //SchedulerService.controllerDisconnect();
         thread.interrupt();
         thread = null;
     }

@@ -18,7 +18,7 @@ public class UpdateValueController extends Thread {
     private S7Client s7Client;
     byte[] buffer = new byte[65536];
 
-    public UpdateValueController(UI ui, List<TextField> element, List<SignalList> array, S7Client s7Client) {//int db, int pos, int offset, String controllerIpAddress
+    public UpdateValueController(UI ui, List<TextField> element, List<SignalList> array, S7Client s7Client) {
         this.ui = ui;
         this.element = element;
         this.array = array;

@@ -3,7 +3,6 @@ package com.vaadin.tutorial.crm.ui.admin;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import com.vaadin.tutorial.crm.service.plccontrollersservice.SchedulerService;
 import com.vaadin.tutorial.crm.ui.layout.AdminLayout;
 
 /**
@@ -25,6 +24,6 @@ public class AdminPage extends VerticalLayout {
         vContent.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         vContent.setSizeFull();
 
-        SchedulerService.stopThread = true;
+        //PLCConnect.stopThread = true;
     }
 }

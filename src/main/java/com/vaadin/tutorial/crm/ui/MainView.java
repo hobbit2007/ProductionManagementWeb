@@ -49,7 +49,8 @@ public class MainView extends VerticalLayout {
     public MainView(SignalListService signalListService) {
         this.signalListService = signalListService;
 
-        labelUser.getStyle().set("color", "red");
+        labelUser.setText("Идет подключение к ПЛК...");
+        labelUser.getStyle().set("color", "green");
         labelUser.getStyle().set("font-weight", "bold");
         labelUser.getStyle().set("font-size", "11pt");
         //labelUser.getStyle().set("border", "1px inset blue");

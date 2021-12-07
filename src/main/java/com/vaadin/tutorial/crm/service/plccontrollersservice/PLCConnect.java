@@ -43,12 +43,12 @@ public class PLCConnect {
         plcControllersList = plcControllersService.getAll();
         numController.setLength(0);
         for (int i = 0; i < plcControllersList.size(); i++) {
-            //client[i].ConnectTo(plcControllersList.get(i).getIp(), 0, 1);
+            client[i].ConnectTo(plcControllersList.get(i).getIp(), 0, 1);
             if (!client[i].Connected) {
                 numController.append(plcControllersList.get(i).getIp() + " - " + plcControllersList.get(i).getControllerName() + "  ");
                 controllerConnected = "Нет подключения к контроллеру: " + numController;
             }
-            //client[i].Disconnect();
+            client[i].Disconnect();
         }
         return controllerConnected;
     }

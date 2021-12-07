@@ -11,4 +11,6 @@ import java.util.List;
 @Service
 public interface PlcControllersService {
     List<PlcControllers> getAll();
+
+    List<PlcControllers> getAllByID(long id);
 }

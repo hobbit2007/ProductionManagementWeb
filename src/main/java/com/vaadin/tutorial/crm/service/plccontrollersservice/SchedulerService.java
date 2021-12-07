@@ -28,14 +28,15 @@ public class SchedulerService {
     public static S7Client[] client = new S7Client[100];
     //public static S7Client clientRT;
     public static S7Client clientForStatus;
-    public static byte[] buffer = new byte[65536];
-    public static byte[] bufferWrite = new byte[65536];
+    public byte[] buffer = new byte[65536];
+    public byte[] bufferWrite = new byte[65536];
     private static List<PlcControllers> plcControllersList = new ArrayList<>();
     public static String controllerConnected = "";
     private static StringBuilder numController = new StringBuilder();
     public static List<SignalList> numDbPosOffset = new ArrayList<>();
     public static boolean stopThread = true;//Переменная останвливающая запуск потоков, в том случае, если мы ушли из окна Визуализации
     public static boolean stopThreadChart = true;
+    private static boolean contrConnected;
 
     @Autowired
     public SchedulerService(SignalListService signalListService, PlcControllersService plcControllersService) {
@@ -44,15 +45,15 @@ public class SchedulerService {
 
         plcControllersList = plcControllersService.getAll();
 
-        clientForStatus = new S7Client();
-        clientForStatus.SetConnectionType(S7.OP);
+        //clientForStatus = new S7Client();
+
 
         for (int i = 0; i < plcControllersList.size(); i++) {
             client[i] = new S7Client();
             client[i].SetConnectionType(S7.OP);
             client[i].ConnectTo(plcControllersList.get(i).getIp(), 0, 1);
             //Коннектимся ко всем доступным контроллерам
-            clientForStatus.ConnectTo(plcControllersList.get(i).getIp(), 0, 1);
+            ///clientForStatus.ConnectTo(plcControllersList.get(i).getIp(), 0, 1);
         }
 
 
@@ -60,7 +61,7 @@ public class SchedulerService {
 
     @Scheduled(cron = CRON)
     public void sendsSignalRT() {
-        if (clientForStatus.Connected) {
+        if (contrConnected) {
             List<DataFromPlc> dataFromPlcList = new ArrayList<>();
             dataFromPlcList.removeAll(dataFromPlcList);
             if (numDbPosOffset.size() != 0) {
@@ -100,11 +101,13 @@ public class SchedulerService {
     }
 
     public static boolean controllerStatus(String controllerIP) {
+        clientForStatus = new S7Client();
+        clientForStatus.SetConnectionType(S7.OP);
         clientForStatus.ConnectTo(controllerIP, 0, 1);
         if (clientForStatus.Connected)
-            return true;
+            return contrConnected = true;
         else
-            return false;
+            return contrConnected = false;
     }
 
     public static void controllerDisconnect() {

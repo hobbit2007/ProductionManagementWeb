@@ -2,7 +2,7 @@ package com.vaadin.tutorial.crm.threads;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Label;
-import com.vaadin.tutorial.crm.service.plccontrollersservice.SchedulerService;
+import com.vaadin.tutorial.crm.service.plccontrollersservice.PLCConnect;
 
 /**
  * Класс поток - проверяет подключение к контроллерам каждые 10 сек.
@@ -21,16 +21,16 @@ public class FeederThread extends Thread {
 
     @Override
     public void run() {
-        while (true){ //count>-1
+        while (!interrupted()){ //count>-1
             try {
                 Thread.sleep(1000);
                 ui.access(()-> {
-                    element.setText(String.valueOf(SchedulerService.anyControllersStatus()));
+                    element.setText(String.valueOf(PLCConnect.anyControllersStatus()));
                     ui.push();
                 });
                 count--;
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                break;
             }
         }
     }

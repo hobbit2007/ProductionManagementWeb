@@ -43,7 +43,6 @@ public class PlcValueController extends VerticalLayout {
     public static Thread updateFields = new Thread();
     public static List<TextField> sigFieldList = new ArrayList<>();
     String controllerIP;
-    List<SignalList> controllerSignalListTemp;
     PlcControllersService plcControllersService;
     SignalListService signalListService;
 
@@ -77,15 +76,12 @@ public class PlcValueController extends VerticalLayout {
 
         FormLayout fContent = new FormLayout();
         VerticalLayout verticalLayout = new VerticalLayout();
-        controllerSignalListTemp = new ArrayList<>();//временный массив для хранения сигналов, нужен чтоб избежать переполнения при обновлении страницы
         if (PLCConnect.controllerStatus(controllerIP)) {
             controllerStatus.setVisible(false);
-            controllerSignalListTemp.removeAll(controllerSignalListTemp);
-            controllerSignalListTemp = controllerSignalList;
-            TextField[] controllerValue = new TextField[controllerSignalListTemp.size()];
+            TextField[] controllerValue = new TextField[controllerSignalList.size()];
             sigFieldList.removeAll(sigFieldList);
-            for (int i = 0; i < controllerSignalListTemp.size(); i++) {
-                controllerValue[i] = new TextField(controllerSignalListTemp.get(i).getSignalName());
+            for (int i = 0; i < controllerSignalList.size(); i++) {
+                controllerValue[i] = new TextField(controllerSignalList.get(i).getSignalName());
                 controllerValue[i].setWidth("55px");
                 controllerValue[i].setValue("0.00");
 
@@ -93,7 +89,7 @@ public class PlcValueController extends VerticalLayout {
                 fContent.setResponsiveSteps(new FormLayout.ResponsiveStep("45px", 10));
                 verticalLayout.add(fContent);
                 sigFieldList.add(controllerValue[i]);
-                controllerValue[i].getElement().setAttribute("data-title", controllerSignalListTemp.get(i).getSignalDescription());
+                controllerValue[i].getElement().setAttribute("data-title", controllerSignalList.get(i).getSignalDescription());
                 controllerValue[i].setClassName("tooltip");
             }
         }
@@ -108,7 +104,7 @@ public class PlcValueController extends VerticalLayout {
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         // Start the data feed thread
-        updateFields = new UpdateValueController(attachEvent.getUI(), sigFieldList, controllerSignalListTemp, PLCConnect.clientForStatus);
+        updateFields = new UpdateValueController(attachEvent.getUI(), sigFieldList, controllerSignalList, PLCConnect.clientForStatus);
         updateFields.start();
     }
 

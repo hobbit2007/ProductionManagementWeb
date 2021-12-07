@@ -60,7 +60,7 @@ public class MainView extends VerticalLayout {
 
         hContent.add(labelUser);
 
-        vContent.add(hContent, initDemo());
+        vContent.add(hContent);//, initDemo()
         vContent.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
 
         vContent.setSizeFull();

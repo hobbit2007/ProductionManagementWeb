@@ -77,6 +77,7 @@ public class LoginView extends AppLayout implements Serializable {
             user.setId(SecurityUtils.getAuthentication().getDetails().getId());
             userService.updateDateActive(user);
             PLCConnect.controllerStatusWashing("10.100.10.101");
+            PLCConnect.controllerStatusDiffusion("10.100.10.102");
             PLCConnect.controllerStatus("10.100.10.106");
             UI.getCurrent().navigate(MainView.class);
         }

@@ -13,6 +13,7 @@ import com.vaadin.tutorial.crm.security.SecurityUtils;
 import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
 import com.vaadin.tutorial.crm.ui.plccontrollersui.PlcValueController;
+import com.vaadin.tutorial.crm.ui.plccontrollersui.PlcValueDiffusion;
 import com.vaadin.tutorial.crm.ui.plccontrollersui.PlcValueWashing;
 
 /**
@@ -25,7 +26,8 @@ public class PlcLayout extends AppLayout {
     HorizontalLayout hMenu1 = new HorizontalLayout();
     HorizontalLayout hMenu2 = new HorizontalLayout();
     HorizontalLayout hMenu3 = new HorizontalLayout();
-    HorizontalLayout hMenu4 = new HorizontalLayout();
+    HorizontalLayout hMenu7 = new HorizontalLayout();
+
     private final String ROLE = "ADMIN";
 
     public PlcLayout(SecurityConfiguration securityConfiguration) {
@@ -49,12 +51,17 @@ public class PlcLayout extends AppLayout {
         Icon icon1 = new Icon(VaadinIcon.CONTROLLER);
         hMenu2.add(icon1, plcValueWashing);
 
+        RouterLink plcValueDiffusion = new RouterLink("ПЛК Диффузия", PlcValueDiffusion.class);
+        plcValueWashing.setHighlightCondition(HighlightConditions.sameLocation());
+        Icon icon2 = new Icon(VaadinIcon.CONTROLLER);
+        hMenu3.add(icon2, plcValueDiffusion);
+
         RouterLink plcValue = new RouterLink("ПЛК Выпарка", PlcValueController.class);
         plcValue.setHighlightCondition(HighlightConditions.sameLocation());
-        Icon icon2 = new Icon(VaadinIcon.CONTROLLER);
-        hMenu3.add(icon2, plcValue);
+        Icon icon7 = new Icon(VaadinIcon.CONTROLLER);
+        hMenu7.add(icon7, plcValue);
 
-        addToDrawer(new VerticalLayout(hMenu1, hMenu2, hMenu3));
+        addToDrawer(new VerticalLayout(hMenu1, hMenu2, hMenu3, hMenu7));
 
         //Закрываем меню на стороне клиента
         //т.к. при первом запуске меню показывается автоматически

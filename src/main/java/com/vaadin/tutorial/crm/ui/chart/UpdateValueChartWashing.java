@@ -39,7 +39,7 @@ public class UpdateValueChartWashing extends Thread{
                             float readData = S7.GetFloatAt(buffer, array.get(i).getPosition());
                             double scale = Math.pow(10, 2);
                             series.setName(array.get(i).getSignalName());
-                            series.add(new DataSeriesItem(System.currentTimeMillis() + i * 1000, (Math.ceil(readData * scale) / scale)), true, true);
+                            series.add(new DataSeriesItem(System.currentTimeMillis(), (Math.ceil(readData * scale) / scale)), true, true);
 
                             configuration.setSeries(series);
 

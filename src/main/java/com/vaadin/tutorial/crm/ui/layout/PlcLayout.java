@@ -13,6 +13,7 @@ import com.vaadin.tutorial.crm.security.SecurityUtils;
 import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
 import com.vaadin.tutorial.crm.ui.plccontrollersui.PlcValueController;
+import com.vaadin.tutorial.crm.ui.plccontrollersui.PlcValueWashing;
 
 /**
  * Класс шаблон создающий боковое меню в разделе контроллеры
@@ -29,8 +30,7 @@ public class PlcLayout extends AppLayout {
 
     public PlcLayout(SecurityConfiguration securityConfiguration) {
         this.securityConfiguration = securityConfiguration;
-        hMenu3.setVisible(false);
-        hMenu4.setVisible(false);
+
         createHeader();
         createDrawer();
     }
@@ -44,12 +44,17 @@ public class PlcLayout extends AppLayout {
         Icon icon = new Icon(VaadinIcon.ARROW_BACKWARD);
         hMenu1.add(icon, back);
 
+        RouterLink plcValueWashing = new RouterLink("ПЛК Мойка", PlcValueWashing.class);
+        plcValueWashing.setHighlightCondition(HighlightConditions.sameLocation());
+        Icon icon1 = new Icon(VaadinIcon.CONTROLLER);
+        hMenu2.add(icon1, plcValueWashing);
+
         RouterLink plcValue = new RouterLink("ПЛК Выпарка", PlcValueController.class);
         plcValue.setHighlightCondition(HighlightConditions.sameLocation());
-        Icon icon1 = new Icon(VaadinIcon.CONTROLLER);
-        hMenu2.add(icon1, plcValue);
+        Icon icon2 = new Icon(VaadinIcon.CONTROLLER);
+        hMenu3.add(icon2, plcValue);
 
-        addToDrawer(new VerticalLayout(hMenu1, hMenu2));
+        addToDrawer(new VerticalLayout(hMenu1, hMenu2, hMenu3));
 
         //Закрываем меню на стороне клиента
         //т.к. при первом запуске меню показывается автоматически

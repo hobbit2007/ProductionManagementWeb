@@ -22,6 +22,8 @@ public class PLCConnect {
     public static S7Client clientForStatusWashing;
     public static S7Client clientForStatusDiffusion;
     public static S7Client clientForStatusFermentation;
+    public static S7Client clientForStatusBottling;
+    public static S7Client clientForStatusDrying;
     private static List<PlcControllers> plcControllersList = new ArrayList<>();
     public static String controllerConnected = "";
     private static StringBuilder numController = new StringBuilder();
@@ -29,6 +31,8 @@ public class PLCConnect {
     public static boolean contrConnectedWashing;
     public static boolean contrConnectedDiffusion;
     public static boolean contrConnectedFermentation;
+    public static boolean contrConnectedBottling;
+    public static boolean contrConnectedDrying;
 
     @Autowired
     public PLCConnect(PlcControllersService plcControllersService) {
@@ -97,6 +101,26 @@ public class PLCConnect {
             return contrConnectedFermentation = true;
         else
             return contrConnectedFermentation = false;
+    }
+
+    public static boolean controllerStatusBottling(String controllerIP) {
+        clientForStatusBottling = new S7Client();
+        clientForStatusBottling.SetConnectionType(S7.OP);
+        clientForStatusBottling.ConnectTo(controllerIP, 0, 1);
+        if (clientForStatusBottling.Connected)
+            return contrConnectedBottling = true;
+        else
+            return contrConnectedBottling = false;
+    }
+
+    public static boolean controllerDrying(String controllerIP) {
+        clientForStatusDrying = new S7Client();
+        clientForStatusDrying.SetConnectionType(S7.OP);
+        clientForStatusDrying.ConnectTo(controllerIP, 0, 1);
+        if (clientForStatusDrying.Connected)
+            return contrConnectedDrying = true;
+        else
+            return contrConnectedDrying = false;
     }
 
     public static void controllerDisconnect() {

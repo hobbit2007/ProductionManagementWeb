@@ -77,27 +77,27 @@ public class PlcValueDiffusion extends VerticalLayout{
 
         FormLayout fContent = new FormLayout();
         VerticalLayout verticalLayout = new VerticalLayout();
-        //if (PLCConnect.controllerStatus(controllerIP)) {
-        controllerStatus.setVisible(false);
-        controllerValue = new TextField[controllerSignalList.size()];
-        sigFieldList.removeAll(sigFieldList);
-        for (int i = 0; i < controllerSignalList.size(); i++) {
-            controllerValue[i] = new TextField(controllerSignalList.get(i).getSignalName());
-            controllerValue[i].setWidth("55px");
-            controllerValue[i].setValue("0.00");
+        if (PLCConnect.contrConnectedDiffusion) {
+            controllerStatus.setVisible(false);
+            controllerValue = new TextField[controllerSignalList.size()];
+            sigFieldList.removeAll(sigFieldList);
+            for (int i = 0; i < controllerSignalList.size(); i++) {
+                controllerValue[i] = new TextField(controllerSignalList.get(i).getSignalName());
+                controllerValue[i].setWidth("55px");
+                controllerValue[i].setValue("0.00");
 
-            fContent.add(controllerValue[i]);
-            fContent.setResponsiveSteps(new FormLayout.ResponsiveStep("45px", 10));
-            verticalLayout.add(fContent);
-            sigFieldList.add(controllerValue[i]);
-            controllerValue[i].getElement().setAttribute("data-title", controllerSignalList.get(i).getSignalDescription());
-            controllerValue[i].setClassName("tooltip");
+                fContent.add(controllerValue[i]);
+                fContent.setResponsiveSteps(new FormLayout.ResponsiveStep("45px", 10));
+                verticalLayout.add(fContent);
+                sigFieldList.add(controllerValue[i]);
+                controllerValue[i].getElement().setAttribute("data-title", controllerSignalList.get(i).getSignalDescription());
+                controllerValue[i].setClassName("tooltip");
+            }
         }
-        //}
-        //else {
-        // /   controllerStatus.setVisible(true);
-        //    controllerStatus.setText("Контроллер " + controllerIP + " - " + plcControllersService.getAllByID(controllerID).get(0).getControllerName() + " не доступен!");
-        //}
+        else {
+           controllerStatus.setVisible(true);
+           controllerStatus.setText("Контроллер " + controllerIP + " - " + plcControllersService.getAllByID(controllerID).get(0).getControllerName() + " не доступен!");
+        }
 
         return verticalLayout;
     }

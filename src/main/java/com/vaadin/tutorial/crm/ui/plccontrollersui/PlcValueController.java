@@ -28,7 +28,7 @@ import java.util.List;
  * в реальном времени
  */
 @Route(value = "plcvalue", layout = PlcLayout.class)
-@PageTitle("Визуализация значений контроллера | Система управления производством")
+@PageTitle("Визуализация значений контроллера Выпарки | Система управления производством")
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 public class PlcValueController extends VerticalLayout {
@@ -40,8 +40,8 @@ public class PlcValueController extends VerticalLayout {
     private List<SignalList> controllerSignalList = new ArrayList<>();
     private Label controllerStatus = new Label();
     long controllerID = 4L;
-    public static Thread updateFields = new Thread();
-    public static List<TextField> sigFieldList = new ArrayList<>();
+    Thread updateFields = new Thread();
+    List<TextField> sigFieldList = new ArrayList<>();
     String controllerIP;
     TextField[] controllerValue;
     PlcControllersService plcControllersService;

@@ -24,9 +24,9 @@ public class PLCConnect {
     private static List<PlcControllers> plcControllersList = new ArrayList<>();
     public static String controllerConnected = "";
     private static StringBuilder numController = new StringBuilder();
-    private static boolean contrConnected;
-    private static boolean contrConnectedWashing;
-    private static boolean contrConnectedDiffusion;
+    public static boolean contrConnected;
+    public static boolean contrConnectedWashing;
+    public static boolean contrConnectedDiffusion;
 
     @Autowired
     public PLCConnect(PlcControllersService plcControllersService) {

@@ -113,7 +113,7 @@ public class PLCConnect {
             return contrConnectedBottling = false;
     }
 
-    public static boolean controllerDrying(String controllerIP) {
+    public static boolean controllerStatusDrying(String controllerIP) {
         clientForStatusDrying = new S7Client();
         clientForStatusDrying.SetConnectionType(S7.OP);
         clientForStatusDrying.ConnectTo(controllerIP, 0, 1);

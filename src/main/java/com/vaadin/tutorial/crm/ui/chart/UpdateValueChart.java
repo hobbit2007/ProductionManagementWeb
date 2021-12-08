@@ -39,18 +39,20 @@ public class UpdateValueChart extends Thread{
         while (!isInterrupted()) {
             try {
                 ui.access(() -> {
-                    if (array.size() != 0) {
-                        for (int i = 0; i < array.size(); i++) {
-                            s7Client.ReadArea(S7.S7AreaDB, array.get(i).getDbValue(), 0, array.get(i).getPosition() + array.get(i).getOffset(), buffer);
-                            float readData = S7.GetFloatAt(buffer, array.get(i).getPosition());
-                            double scale = Math.pow(10, 2);
-                            series.setName(array.get(i).getSignalName());
-                            series.add(new DataSeriesItem(System.currentTimeMillis() + i * 1000, (Math.ceil(readData * scale) / scale)), true, true);
+                    synchronized (this) {
+                        if (array.size() != 0) {
+                            for (int i = 0; i < array.size(); i++) {
+                                s7Client.ReadArea(S7.S7AreaDB, array.get(i).getDbValue(), 0, array.get(i).getPosition() + array.get(i).getOffset(), buffer);
+                                float readData = S7.GetFloatAt(buffer, array.get(i).getPosition());
+                                double scale = Math.pow(10, 2);
+                                series.setName(array.get(i).getSignalName());
+                                series.add(new DataSeriesItem(System.currentTimeMillis(), (Math.ceil(readData * scale) / scale)), true, true);
 
-                            configuration.setSeries(series);
+                                configuration.setSeries(series);
 
-                            ui.push();
-                           // System.out.println("FROM THREAD [" + getId() + " - " + getName()+ "] =" + readData + "I = " + i);
+                                ui.push();
+                                // System.out.println("FROM THREAD [" + getId() + " - " + getName()+ "] =" + readData + "I = " + i);
+                            }
                         }
                     }
                 });

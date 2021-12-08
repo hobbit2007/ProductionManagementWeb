@@ -12,10 +12,7 @@ import com.vaadin.tutorial.crm.security.SecurityConfiguration;
 import com.vaadin.tutorial.crm.security.SecurityUtils;
 import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
-import com.vaadin.tutorial.crm.ui.plccontrollersui.PlcValueController;
-import com.vaadin.tutorial.crm.ui.plccontrollersui.PlcValueDiffusion;
-import com.vaadin.tutorial.crm.ui.plccontrollersui.PlcValueFermentation;
-import com.vaadin.tutorial.crm.ui.plccontrollersui.PlcValueWashing;
+import com.vaadin.tutorial.crm.ui.plccontrollersui.*;
 
 /**
  * Класс шаблон создающий боковое меню в разделе контроллеры
@@ -28,6 +25,8 @@ public class PlcLayout extends AppLayout {
     HorizontalLayout hMenu2 = new HorizontalLayout();
     HorizontalLayout hMenu3 = new HorizontalLayout();
     HorizontalLayout hMenu4 = new HorizontalLayout();
+    HorizontalLayout hMenu5 = new HorizontalLayout();
+    HorizontalLayout hMenu6 = new HorizontalLayout();
     HorizontalLayout hMenu7 = new HorizontalLayout();
 
     private final String ROLE = "ADMIN";
@@ -61,14 +60,24 @@ public class PlcLayout extends AppLayout {
         RouterLink plcValueFermentation = new RouterLink("ПЛК Ферментация", PlcValueFermentation.class);
         plcValueFermentation.setHighlightCondition(HighlightConditions.sameLocation());
         Icon icon3 = new Icon(VaadinIcon.CONTROLLER);
-        hMenu4.add(icon3, plcValueDiffusion);
+        hMenu4.add(icon3, plcValueFermentation);
 
         RouterLink plcValue = new RouterLink("ПЛК Выпарка", PlcValueController.class);
         plcValue.setHighlightCondition(HighlightConditions.sameLocation());
         Icon icon7 = new Icon(VaadinIcon.CONTROLLER);
         hMenu7.add(icon7, plcValue);
 
-        addToDrawer(new VerticalLayout(hMenu1, hMenu2, hMenu3, hMenu4, hMenu7));
+        RouterLink plcValueBottling = new RouterLink("ПЛК Розлив", PlcValueBottling.class);
+        plcValueBottling.setHighlightCondition(HighlightConditions.sameLocation());
+        Icon icon4 = new Icon(VaadinIcon.CONTROLLER);
+        hMenu5.add(icon4, plcValueBottling);
+
+        RouterLink plcValueDrying = new RouterLink("ПЛК Сушка", PlcValueDrying.class);
+        plcValueDrying.setHighlightCondition(HighlightConditions.sameLocation());
+        Icon icon5 = new Icon(VaadinIcon.CONTROLLER);
+        hMenu6.add(icon5, plcValueDrying);
+
+        addToDrawer(new VerticalLayout(hMenu1, hMenu2, hMenu3, hMenu4, hMenu7, hMenu5));
 
         //Закрываем меню на стороне клиента
         //т.к. при первом запуске меню показывается автоматически

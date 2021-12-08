@@ -44,7 +44,7 @@ public class UpdateValueController extends Thread {
                            if (!e.getOldValue().equals(e.getValue()))
                                element.get(finalI).getStyle().set("color", "blue");
                         });
-
+                       // System.out.println("FROM THREAD [" + getId() + " - " + getName()+ "] =" + readData + "I = " + i);
                         ui.push();
                     }
                 });

@@ -39,7 +39,7 @@ public class PlcValueFermentation extends VerticalLayout{
     private AnyComponent anyComponent = new AnyComponent();
     private List<SignalList> controllerSignalList = new ArrayList<>();
     private Label controllerStatus = new Label();
-    long controllerID = 2L;
+    long controllerID = 3L;
     Thread updateFields = new Thread();
     List<TextField> sigFieldList = new ArrayList<>();
     String controllerIP;
@@ -105,7 +105,7 @@ public class PlcValueFermentation extends VerticalLayout{
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         // Start the data feed thread
-        updateFields = new UpdateValueController(attachEvent.getUI(), sigFieldList, controllerSignalList, PLCConnect.clientForStatusDiffusion);
+        updateFields = new UpdateValueController(attachEvent.getUI(), sigFieldList, controllerSignalList, PLCConnect.clientForStatusFermentation);
         updateFields.start();
     }
 

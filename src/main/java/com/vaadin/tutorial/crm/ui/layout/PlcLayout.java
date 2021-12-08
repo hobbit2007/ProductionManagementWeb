@@ -77,7 +77,7 @@ public class PlcLayout extends AppLayout {
         Icon icon5 = new Icon(VaadinIcon.CONTROLLER);
         hMenu6.add(icon5, plcValueDrying);
 
-        addToDrawer(new VerticalLayout(hMenu1, hMenu2, hMenu3, hMenu4, hMenu7, hMenu5));
+        addToDrawer(new VerticalLayout(hMenu1, hMenu2, hMenu3, hMenu4, hMenu7, hMenu5, hMenu6));
 
         //Закрываем меню на стороне клиента
         //т.к. при первом запуске меню показывается автоматически

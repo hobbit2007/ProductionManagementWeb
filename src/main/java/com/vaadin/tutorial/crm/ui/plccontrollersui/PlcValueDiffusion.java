@@ -29,7 +29,7 @@ import java.util.List;
  * в реальном времени
  */
 @Route(value = "plcdiffusion", layout = PlcLayout.class)
-@PageTitle("Визуализация значений контроллера Мойки | Система управления производством")
+@PageTitle("Визуализация значений контроллера Диффузии | Система управления производством")
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 public class PlcValueDiffusion extends VerticalLayout{

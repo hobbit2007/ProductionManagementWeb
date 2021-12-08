@@ -13,6 +13,7 @@ import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.admin.AdminPage;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
 import com.vaadin.tutorial.crm.ui.plccontrollersui.PlcValueController;
+import com.vaadin.tutorial.crm.ui.plccontrollersui.PlcValueWashing;
 
 /**
  * Класс создающий титульный заголовок вверху страницы
@@ -41,7 +42,7 @@ public class MainLayout extends AppLayout {
         Icon icon = new Icon(VaadinIcon.DASHBOARD);
         hMenu1.add(icon, dashboardLink);
 
-        RouterLink plcLink = new RouterLink("Визуализация", PlcValueController.class);
+        RouterLink plcLink = new RouterLink("Визуализация", PlcValueWashing.class);
         plcLink.setHighlightCondition(HighlightConditions.sameLocation());
         Icon icon1 = new Icon(VaadinIcon.EYE);
         hMenu2.add(icon1, plcLink);

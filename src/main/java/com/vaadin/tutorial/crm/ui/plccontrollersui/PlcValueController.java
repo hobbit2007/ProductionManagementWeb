@@ -77,7 +77,7 @@ public class PlcValueController extends VerticalLayout {
 
         FormLayout fContent = new FormLayout();
         VerticalLayout verticalLayout = new VerticalLayout();
-        if (PLCConnect.controllerStatus(controllerIP)) {
+        //if (PLCConnect.controllerStatus(controllerIP)) {
             controllerStatus.setVisible(false);
             controllerValue = new TextField[controllerSignalList.size()];
             sigFieldList.removeAll(sigFieldList);
@@ -93,11 +93,11 @@ public class PlcValueController extends VerticalLayout {
                 controllerValue[i].getElement().setAttribute("data-title", controllerSignalList.get(i).getSignalDescription());
                 controllerValue[i].setClassName("tooltip");
             }
-        }
-        else {
-            controllerStatus.setVisible(true);
-            controllerStatus.setText("Контроллер " + controllerIP + " - " + plcControllersService.getAllByID(controllerID).get(0).getControllerName() + " не доступен!");
-        }
+        //}
+        //else {
+        // /   controllerStatus.setVisible(true);
+        //    controllerStatus.setText("Контроллер " + controllerIP + " - " + plcControllersService.getAllByID(controllerID).get(0).getControllerName() + " не доступен!");
+        //}
 
         return verticalLayout;
     }
@@ -112,7 +112,7 @@ public class PlcValueController extends VerticalLayout {
     @Override
     protected void onDetach(DetachEvent detachEvent) {
         // Cleanup
-        PLCConnect.controllerDisconnect();
+        //PLCConnect.controllerDisconnect();
         updateFields.interrupt();
         updateFields = null;
     }

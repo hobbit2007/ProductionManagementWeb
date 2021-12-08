@@ -28,7 +28,7 @@ import java.util.List;
  * Класс содержащий реализацию визуальных элементов и логики для plc контроллера диффузии
  * в реальном времени
  */
-@Route(value = "plcwasing", layout = PlcLayout.class)
+@Route(value = "plcdiffusion", layout = PlcLayout.class)
 @PageTitle("Визуализация значений контроллера Мойки | Система управления производством")
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")

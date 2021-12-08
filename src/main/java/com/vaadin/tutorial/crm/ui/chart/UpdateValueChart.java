@@ -1,10 +1,13 @@
 package com.vaadin.tutorial.crm.ui.chart;
 
+import com.sourceforge.snap7.moka7.S7;
+import com.sourceforge.snap7.moka7.S7Client;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.Configuration;
 import com.vaadin.flow.component.charts.model.DataSeries;
 import com.vaadin.flow.component.charts.model.DataSeriesItem;
+import com.vaadin.tutorial.crm.entity.plccontrollersentity.SignalList;
 import com.vaadin.tutorial.crm.model.DataFromPlc;
 
 import java.util.ArrayList;
@@ -18,35 +21,48 @@ public class UpdateValueChart extends Thread{
     private final UI ui;
     private Configuration configuration;
     private DataSeries series;
-    private List<DataFromPlc> array;
-    private List<Float> dataPLC = new ArrayList<>(50);
+    private List<SignalList> array;
+    private S7Client s7Client;
+    byte[] buffer = new byte[65536];
 
 
-    public UpdateValueChart(UI ui, Configuration configuration, DataSeries series, List<DataFromPlc> array) {
+    public UpdateValueChart(UI ui, Configuration configuration, DataSeries series, List<SignalList> array, S7Client s7Client) {
         this.ui = ui;
         this.configuration = configuration;
         this.series = series;
         this.array = array;
+        this.s7Client = s7Client;
     }
     @Override
     public void run() {
 
+        while (!isInterrupted()) {
+            try {
+                ui.access(() -> {
+                    if (array.size() != 0) {
+                        for (int i = 0; i < array.size(); i++) {
+                            s7Client.ReadArea(S7.S7AreaDB, array.get(i).getDbValue(), 0, array.get(i).getPosition() + array.get(i).getOffset(), buffer);
+                            float readData = S7.GetFloatAt(buffer, array.get(i).getPosition());
+                            series.add(new DataSeriesItem(System.currentTimeMillis() + i * 1000, readData), true, true);
+                            configuration.setSeries(series);
 
-        try {
-            ui.access(() -> {
-                if (array.size() != 0) {
-                    for (int i = 0; i < array.size(); i++) {
-                        series.add(new DataSeriesItem(System.currentTimeMillis() + i * 1000, array.get(i).getValue()), true, true);
-                        //ui.push();
+                            //try {
+                            //    sleep(1000);
+                            //} catch (InterruptedException e) {
+                            //    e.printStackTrace();
+                           // }
+                            ui.push();
+                           // System.out.println("FROM THREAD [" + getId() + " - " + getName()+ "] =" + readData + "I = " + i);
+                        }
+
+
+
                     }
-                    System.out.println("ARRAYSIZE = " + array.size());
-                    configuration.setSeries(series);
-                    ui.push();
-                }
-            });
-            interrupt();
-        } catch (Exception e) { //Interrupted
-            e.printStackTrace();
+                });
+                sleep(3000);
+            } catch (Exception e) { //Interrupted
+                break;
+            }
         }
     }
 }

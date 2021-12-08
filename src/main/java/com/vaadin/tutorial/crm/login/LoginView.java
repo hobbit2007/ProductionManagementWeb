@@ -13,6 +13,7 @@ import com.vaadin.tutorial.crm.entity.User;
 import com.vaadin.tutorial.crm.security.AuthManager;
 import com.vaadin.tutorial.crm.security.SecurityUtils;
 import com.vaadin.tutorial.crm.service.UserService;
+import com.vaadin.tutorial.crm.service.plccontrollersservice.PLCConnect;
 import com.vaadin.tutorial.crm.ui.MainView;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.io.Serializable;
@@ -75,6 +76,7 @@ public class LoginView extends AppLayout implements Serializable {
             user.setLastDateActive(new Date());
             user.setId(SecurityUtils.getAuthentication().getDetails().getId());
             userService.updateDateActive(user);
+            PLCConnect.controllerStatus("10.100.10.106");
             UI.getCurrent().navigate(MainView.class);
         }
     }

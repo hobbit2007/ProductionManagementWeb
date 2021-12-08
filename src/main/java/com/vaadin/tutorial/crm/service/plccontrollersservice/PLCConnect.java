@@ -20,11 +20,13 @@ public class PLCConnect {
     public static S7Client[] client = new S7Client[100];
     public static S7Client clientForStatus;
     public static S7Client clientForStatusWashing;
+    public static S7Client clientForStatusDiffusion;
     private static List<PlcControllers> plcControllersList = new ArrayList<>();
     public static String controllerConnected = "";
     private static StringBuilder numController = new StringBuilder();
     private static boolean contrConnected;
     private static boolean contrConnectedWashing;
+    private static boolean contrConnectedDiffusion;
 
     @Autowired
     public PLCConnect(PlcControllersService plcControllersService) {
@@ -73,6 +75,16 @@ public class PLCConnect {
             return contrConnectedWashing = true;
         else
             return contrConnectedWashing = false;
+    }
+
+    public static boolean controllerStatusDiffusion(String controllerIP) {
+        clientForStatusDiffusion = new S7Client();
+        clientForStatusDiffusion.SetConnectionType(S7.OP);
+        clientForStatusDiffusion.ConnectTo(controllerIP, 0, 1);
+        if (clientForStatusDiffusion.Connected)
+            return contrConnectedDiffusion = true;
+        else
+            return contrConnectedDiffusion = false;
     }
 
     public static void controllerDisconnect() {

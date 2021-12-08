@@ -26,6 +26,8 @@ public class AdminLayout extends AppLayout {
     HorizontalLayout hMenu1 = new HorizontalLayout();
     HorizontalLayout hMenu2 = new HorizontalLayout();
     HorizontalLayout hMenu3 = new HorizontalLayout();
+    HorizontalLayout hMenu4 = new HorizontalLayout();
+    HorizontalLayout hMenu5 = new HorizontalLayout();
     private final String ROLE = "ADMIN";
 
     public AdminLayout(SecurityConfiguration securityConfiguration) {
@@ -49,6 +51,9 @@ public class AdminLayout extends AppLayout {
         if (SecurityUtils.getAuthentication().getDetails().getRole().equals(ROLE)) {
             hMenu1.setVisible(true);
             hMenu2.setVisible(true);
+            hMenu4.setVisible(true);
+            hMenu5.setVisible(true);
+
             RouterLink usersAction = new RouterLink("Пользователи", UsersCreate.class);
             usersAction.setHighlightCondition(HighlightConditions.sameLocation());
             Icon icon = new Icon(VaadinIcon.USER);
@@ -58,7 +63,21 @@ public class AdminLayout extends AppLayout {
             orgStructure.setHighlightCondition(HighlightConditions.sameLocation());
             Icon icon1 = new Icon(VaadinIcon.FACTORY);
             hMenu2.add(icon1, orgStructure);
+
+            RouterLink plcControllersList = new RouterLink("Список контроллеров", MainView.class);
+            plcControllersList.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon4 = new Icon(VaadinIcon.LINES);
+            hMenu4.add(icon4, plcControllersList);
+
+            RouterLink plcSignalsList = new RouterLink("Список сигналов", MainView.class);
+            plcSignalsList.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon5 = new Icon(VaadinIcon.LINES_LIST);
+            hMenu5.add(icon5, plcSignalsList);
         }
+
+
+
+
 
         addToDrawer(new VerticalLayout(hMenu3, hMenu1, hMenu2));
 

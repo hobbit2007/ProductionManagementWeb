@@ -29,7 +29,7 @@ import java.util.List;
  * в реальном времени
  */
 @Route(value = "plcbottling", layout = PlcLayout.class)
-@PageTitle("Визуализация значений контроллера Розлива | Система управления производством")
+@PageTitle("Визуализация значений контроллера Розлива-СИПмойки | Система управления производством")
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 public class PlcValueBottling extends VerticalLayout{

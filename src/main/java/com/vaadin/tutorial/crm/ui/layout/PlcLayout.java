@@ -44,26 +44,12 @@ public class PlcLayout extends AppLayout {
         Icon icon = new Icon(VaadinIcon.ARROW_BACKWARD);
         hMenu1.add(icon, back);
 
-        RouterLink plcValue = new RouterLink("Визуализация", PlcValueController.class);
+        RouterLink plcValue = new RouterLink("ПЛК Выпарка", PlcValueController.class);
         plcValue.setHighlightCondition(HighlightConditions.sameLocation());
-        Icon icon1 = new Icon(VaadinIcon.EYE);
+        Icon icon1 = new Icon(VaadinIcon.CONTROLLER);
         hMenu2.add(icon1, plcValue);
 
-        if (SecurityUtils.getAuthentication().getDetails().getRole().equals(ROLE)) {
-            hMenu3.setVisible(true);
-            hMenu4.setVisible(true);
-            RouterLink plcControllersList = new RouterLink("Список контроллеров", MainView.class);
-            plcControllersList.setHighlightCondition(HighlightConditions.sameLocation());
-            Icon icon2 = new Icon(VaadinIcon.LINES);
-            hMenu3.add(icon2, plcControllersList);
-
-            RouterLink plcSignalsList = new RouterLink("Список сигналов", MainView.class);
-            plcSignalsList.setHighlightCondition(HighlightConditions.sameLocation());
-            Icon icon3 = new Icon(VaadinIcon.LINES_LIST);
-            hMenu4.add(icon3, plcSignalsList);
-        }
-
-        addToDrawer(new VerticalLayout(hMenu1, hMenu2, hMenu3, hMenu4));
+        addToDrawer(new VerticalLayout(hMenu1, hMenu2));
 
         //Закрываем меню на стороне клиента
         //т.к. при первом запуске меню показывается автоматически

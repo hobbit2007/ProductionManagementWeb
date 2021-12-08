@@ -103,7 +103,7 @@ public class MainView extends VerticalLayout {
 
             series = new DataSeries();
             series.setPlotOptions(new PlotOptionsSpline());
-            series.setName("Random data");
+            ///series.setName("Random data");
             for (int i = -19; i <= 0; i++) {
                 series.add(new DataSeriesItem(System.currentTimeMillis() + i * 1000, i));
             }

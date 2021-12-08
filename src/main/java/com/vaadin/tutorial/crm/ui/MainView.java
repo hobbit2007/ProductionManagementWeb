@@ -19,6 +19,7 @@ import com.vaadin.tutorial.crm.service.plccontrollersservice.SignalListService;
 import com.vaadin.tutorial.crm.threads.FeederThread;
 import com.vaadin.tutorial.crm.threads.UpdateValueController;
 import com.vaadin.tutorial.crm.ui.chart.UpdateValueChart;
+import com.vaadin.tutorial.crm.ui.chart.UpdateValueChartWashing;
 import com.vaadin.tutorial.crm.ui.layout.MainLayout;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -41,14 +42,21 @@ public class MainView extends VerticalLayout {
     FeederThread thread;
 
     Chart chart = new Chart();
+    Chart chartWashing = new Chart();
     public static List<DataFromPlc> arrayForChart = new ArrayList<>();
     private List<SignalList> controllerSignalList = new ArrayList<>();
+    private List<SignalList> controllerSignalListWashing = new ArrayList<>();
     private static Configuration configuration;
     private static DataSeries series;
+    private static Configuration configurationWashing;
+    private static DataSeries seriesWashing;
     private static Thread uploadChart = new Thread();
     long controllerID = 4L;
+    long controllerIDWashing = 1L;
     private Thread updateChart = new Thread();
+    private Thread updateChartWashing = new Thread();
     String controllerIP;
+    String controllerIPWashing;
 
     private SignalListService signalListService;
     private PlcControllersService plcControllersService;
@@ -66,13 +74,12 @@ public class MainView extends VerticalLayout {
         controllerSignalList = signalListService.findSignalList(controllerID);
         controllerIP = plcControllersService.getAllByID(controllerID).get(0).getIp();
 
-        configuration = chart.getConfiguration();
-        configuration.getChart().setType(ChartType.SPLINE);
-        configuration.getTitle().setText("Live data");
+        controllerSignalListWashing = signalListService.findSignalList(controllerIDWashing);
+        controllerIPWashing = plcControllersService.getAllByID(controllerIDWashing).get(0).getIp();
 
-        //hContent.add(labelUser);
+        hContent.add(initDemo(), initDemoWashing());
 
-        vContent.add(initDemo());//, initDemo()
+        vContent.add(hContent);//, initDemo()
         //vContent.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
 
         vContent.setSizeFull();
@@ -113,6 +120,37 @@ public class MainView extends VerticalLayout {
         return chart;
     }
 
+    public Component initDemoWashing() {
+
+        final Random random = new Random();
+        //if (PLCConnect.controllerStatus(controllerIP)) {
+        chartWashing.setWidth("800px");
+        configurationWashing = chartWashing.getConfiguration();
+        configurationWashing.getChart().setType(ChartType.SPLINE);
+        configurationWashing.getTitle().setText("Live data - PLC Мойка");
+
+        XAxis xAxis = configurationWashing.getxAxis();
+        xAxis.setType(AxisType.DATETIME);
+        xAxis.setTickPixelInterval(150);
+
+        YAxis yAxis = configurationWashing.getyAxis();
+        yAxis.setTitle(new AxisTitle("Значения"));
+
+        configurationWashing.getTooltip().setEnabled(true);
+        configurationWashing.getLegend().setEnabled(true);
+
+        seriesWashing = new DataSeries();
+        seriesWashing.setPlotOptions(new PlotOptionsSpline());
+        ///series.setName("Random data");
+        for (int i = -19; i <= 0; i++) {
+            seriesWashing.add(new DataSeriesItem(System.currentTimeMillis() + i * 1000, i));
+        }
+
+        configurationWashing.setSeries(seriesWashing);
+        //}
+        return chartWashing;
+    }
+
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         //thread = new FeederThread(attachEvent.getUI(), labelUser);
@@ -120,6 +158,9 @@ public class MainView extends VerticalLayout {
 
         updateChart = new UpdateValueChart(attachEvent.getUI(), configuration, series, controllerSignalList, PLCConnect.clientForStatus);
         updateChart.start();
+
+        updateChartWashing = new UpdateValueChartWashing(attachEvent.getUI(), configurationWashing, seriesWashing, controllerSignalListWashing, PLCConnect.clientForStatusWashing);
+        updateChartWashing.start();
     }
 
     @Override
@@ -132,5 +173,8 @@ public class MainView extends VerticalLayout {
 
         updateChart.interrupt();
         updateChart = null;
+
+        updateChartWashing.interrupt();
+        updateChartWashing = null;
     }
 }

@@ -28,8 +28,8 @@ import java.util.List;
  * Класс содержащий реализацию визуальных элементов и логики для plc контроллера ферментации
  * в реальном времени
  */
-@Route(value = "plcdiffusion", layout = PlcLayout.class)
-@PageTitle("Визуализация значений контроллера Диффузии | Система управления производством")
+@Route(value = "plcfermentation", layout = PlcLayout.class)
+@PageTitle("Визуализация значений контроллера Ферментации-Фильтрации-Ионообмена | Система управления производством")
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 public class PlcValueFermentation extends VerticalLayout{

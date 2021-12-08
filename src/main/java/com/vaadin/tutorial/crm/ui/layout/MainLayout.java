@@ -41,9 +41,9 @@ public class MainLayout extends AppLayout {
         Icon icon = new Icon(VaadinIcon.DASHBOARD);
         hMenu1.add(icon, dashboardLink);
 
-        RouterLink plcLink = new RouterLink("PLC контроллеры", PlcValueController.class);
+        RouterLink plcLink = new RouterLink("Визуализация", PlcValueController.class);
         plcLink.setHighlightCondition(HighlightConditions.sameLocation());
-        Icon icon1 = new Icon(VaadinIcon.CONTROLLER);
+        Icon icon1 = new Icon(VaadinIcon.EYE);
         hMenu2.add(icon1, plcLink);
 
         RouterLink adminLink = new RouterLink("Администрирование", AdminPage.class);

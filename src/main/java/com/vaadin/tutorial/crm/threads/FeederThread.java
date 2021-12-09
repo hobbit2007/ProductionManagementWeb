@@ -38,53 +38,53 @@ public class FeederThread extends Thread {
                     if (!client[i].Connected) {
                         if (array.get(i).getId() == 1) {
                             PLCConnect.contrConnectedWashing = false;
-                            System.out.println("WASHING DIS");
+                            //System.out.println("WASHING DIS");
                         }
                         if (array.get(i).getId() == 2) {
                             PLCConnect.contrConnectedDiffusion = false;
-                            System.out.println("Diffusion DIS");
+                            //System.out.println("Diffusion DIS");
                         }
                         if (array.get(i).getId() == 3) {
                             PLCConnect.contrConnectedFermentation = false;
-                            System.out.println("Fermentation DIS");
+                            //System.out.println("Fermentation DIS");
                         }
                         if (array.get(i).getId() == 4) {
                             PLCConnect.contrConnected = false;
-                            System.out.println("Resuide DIS");
+                            //System.out.println("Resuide DIS");
                         }
                         if (array.get(i).getId() == 5) {
                             PLCConnect.contrConnectedBottling = false;
-                            System.out.println("Bottling DIS");
+                            //System.out.println("Bottling DIS");
                         }
                         if (array.get(i).getId() == 6) {
                             PLCConnect.contrConnectedDrying = false;
-                            System.out.println("Drying DIS");
+                            //System.out.println("Drying DIS");
                         }
                     }
                     else {
                         if (array.get(i).getId() == 1) {
                             PLCConnect.contrConnectedWashing = true;
-                            System.out.println("WASHING CON");
+                            //System.out.println("WASHING CON");
                         }
                         if (array.get(i).getId() == 2) {
                             PLCConnect.contrConnectedDiffusion = true;
-                            System.out.println("Diffusion CON");
+                            //System.out.println("Diffusion CON");
                         }
                         if (array.get(i).getId() == 3) {
                             PLCConnect.contrConnectedFermentation = true;
-                            System.out.println("Fermentation CON");
+                            //System.out.println("Fermentation CON");
                         }
                         if (array.get(i).getId() == 4) {
                             PLCConnect.contrConnected = true;
-                            System.out.println("Resuide CON");
+                            //System.out.println("Resuide CON");
                         }
                         if (array.get(i).getId() == 5) {
                             PLCConnect.contrConnectedBottling = true;
-                            System.out.println("Bottling CON");
+                            //System.out.println("Bottling CON");
                         }
                         if (array.get(i).getId() == 6) {
                             PLCConnect.contrConnectedDrying = true;
-                            System.out.println("Drying CON");
+                            //System.out.println("Drying CON");
                         }
                     }
                     client[i].Disconnect();

@@ -2,7 +2,6 @@ package com.vaadin.tutorial.crm.service.plccontrollersservice;
 
 import com.sourceforge.snap7.moka7.*;
 import com.vaadin.tutorial.crm.entity.plccontrollersentity.PlcControllers;
-import com.vaadin.tutorial.crm.threads.FeederThread;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

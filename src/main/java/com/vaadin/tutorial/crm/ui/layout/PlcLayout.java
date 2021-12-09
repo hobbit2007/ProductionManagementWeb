@@ -9,7 +9,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.tutorial.crm.security.SecurityConfiguration;
-import com.vaadin.tutorial.crm.security.SecurityUtils;
 import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
 import com.vaadin.tutorial.crm.ui.plccontrollersui.*;
@@ -28,8 +27,6 @@ public class PlcLayout extends AppLayout {
     HorizontalLayout hMenu5 = new HorizontalLayout();
     HorizontalLayout hMenu6 = new HorizontalLayout();
     HorizontalLayout hMenu7 = new HorizontalLayout();
-
-    private final String ROLE = "ADMIN";
 
     public PlcLayout(SecurityConfiguration securityConfiguration) {
         this.securityConfiguration = securityConfiguration;
@@ -77,7 +74,7 @@ public class PlcLayout extends AppLayout {
         Icon icon5 = new Icon(VaadinIcon.CONTROLLER);
         hMenu6.add(icon5, plcValueDrying);
 
-        addToDrawer(new VerticalLayout(hMenu1, hMenu2, hMenu3, hMenu4, hMenu7, hMenu5));
+        addToDrawer(new VerticalLayout(hMenu1, hMenu2, hMenu3, hMenu4, hMenu7, hMenu5, hMenu6));
 
         //Закрываем меню на стороне клиента
         //т.к. при первом запуске меню показывается автоматически

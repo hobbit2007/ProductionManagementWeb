@@ -11,4 +11,6 @@ import java.util.List;
 @Service
 public interface DepartmentService {
     List<Department> getAll(Long shopId);
+
+    List<Department> getAllByAll();
 }

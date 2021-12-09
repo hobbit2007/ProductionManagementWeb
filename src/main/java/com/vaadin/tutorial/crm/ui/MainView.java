@@ -39,7 +39,6 @@ public class MainView extends VerticalLayout {
     private Label labelUser  = new Label();
     VerticalLayout vContent = new VerticalLayout();
     HorizontalLayout hContent = new HorizontalLayout();
-    FeederThread thread;
 
     Chart chart = new Chart();
     Chart chartWashing = new Chart();
@@ -66,10 +65,12 @@ public class MainView extends VerticalLayout {
         this.signalListService = signalListService;
         this.plcControllersService = plcControllersService;
 
-        //labelUser.setText("Идет подключение к ПЛК...");
-        //labelUser.getStyle().set("color", "green");
-        //labelUser.getStyle().set("font-weight", "bold");
-        //labelUser.getStyle().set("font-size", "11pt");
+        labelUser.setText("");
+        labelUser.getStyle().set("color", "red");
+        labelUser.getStyle().set("font-weight", "bold");
+        labelUser.getStyle().set("font-size", "11pt");
+        labelUser.setSizeUndefined();
+        labelUser.setVisible(false);
 
         controllerSignalList = signalListService.findSignalList(controllerID);
         controllerIP = plcControllersService.getAllByID(controllerID).get(0).getIp();
@@ -90,9 +91,9 @@ public class MainView extends VerticalLayout {
     }
 
     public Component initDemo() {
-
+        HorizontalLayout hChart = new HorizontalLayout();
         final Random random = new Random();
-        //if (PLCConnect.controllerStatus(controllerIP)) {
+        if (PLCConnect.contrConnected) {
             chart.setWidth("400px");
             configuration = chart.getConfiguration();
             configuration.getChart().setType(ChartType.SPLINE);
@@ -116,60 +117,76 @@ public class MainView extends VerticalLayout {
             }
 
             configuration.setSeries(series);
-        //}
-        return chart;
+
+            hChart.add(chart);
+            hChart.setWidth("405px");
+            hChart.setDefaultVerticalComponentAlignment(Alignment.CENTER);
+            return new HorizontalLayout(hChart);
+        }
+        else {
+            labelUser.setVisible(true);
+            labelUser.setText("Контроллер " + controllerIP + " - " + plcControllersService.getAllByID(controllerID).get(0).getControllerName() + " не доступен!");
+            return labelUser;
+        }
     }
 
     public Component initDemoWashing() {
-
+        HorizontalLayout hChart = new HorizontalLayout();
         final Random random = new Random();
-        //if (PLCConnect.controllerStatus(controllerIP)) {
-        chartWashing.setWidth("400px");
-        configurationWashing = chartWashing.getConfiguration();
-        configurationWashing.getChart().setType(ChartType.SPLINE);
-        configurationWashing.getTitle().setText("Live data - PLC Мойка");
+        if (PLCConnect.contrConnectedWashing) {
+            chartWashing.setWidth("400px");
+            configurationWashing = chartWashing.getConfiguration();
+            configurationWashing.getChart().setType(ChartType.SPLINE);
+            configurationWashing.getTitle().setText("Live data - PLC Мойка");
 
-        XAxis xAxis = configurationWashing.getxAxis();
-        xAxis.setType(AxisType.DATETIME);
-        xAxis.setTickPixelInterval(150);
+            XAxis xAxis = configurationWashing.getxAxis();
+            xAxis.setType(AxisType.DATETIME);
+            xAxis.setTickPixelInterval(150);
 
-        YAxis yAxis = configurationWashing.getyAxis();
-        yAxis.setTitle(new AxisTitle("Значения"));
+            YAxis yAxis = configurationWashing.getyAxis();
+            yAxis.setTitle(new AxisTitle("Значения"));
 
-        configurationWashing.getTooltip().setEnabled(true);
-        configurationWashing.getLegend().setEnabled(true);
+            configurationWashing.getTooltip().setEnabled(true);
+            configurationWashing.getLegend().setEnabled(true);
 
-        seriesWashing = new DataSeries();
-        seriesWashing.setPlotOptions(new PlotOptionsSpline());
-        ///series.setName("Random data");
-        for (int i = -19; i <= 0; i++) {
-            seriesWashing.add(new DataSeriesItem(System.currentTimeMillis() + i * 1000, i));
+            seriesWashing = new DataSeries();
+            seriesWashing.setPlotOptions(new PlotOptionsSpline());
+            ///series.setName("Random data");
+            for (int i = -19; i <= 0; i++) {
+                seriesWashing.add(new DataSeriesItem(System.currentTimeMillis() + i * 1000, i));
+            }
+
+            configurationWashing.setSeries(seriesWashing);
+
+            hChart.add(chartWashing);
+            hChart.setWidth("405px");
+            hChart.setDefaultVerticalComponentAlignment(Alignment.CENTER);
+            return new HorizontalLayout(hChart);
+        }
+        else {
+            labelUser.setVisible(true);
+            labelUser.setText("Контроллер " + controllerIPWashing + " - " + plcControllersService.getAllByID(controllerIDWashing).get(0).getControllerName() + " не доступен!");
+            return labelUser;
         }
 
-        configurationWashing.setSeries(seriesWashing);
-        //}
-        return chartWashing;
     }
 
     @Override
     protected void onAttach(AttachEvent attachEvent) {
-        //thread = new FeederThread(attachEvent.getUI(), labelUser);
-        //thread.start();
 
-        updateChart = new UpdateValueChart(attachEvent.getUI(), configuration, series, controllerSignalList, PLCConnect.clientForStatus);
-        updateChart.start();
+        if (PLCConnect.contrConnected) {
+            updateChart = new UpdateValueChart(attachEvent.getUI(), configuration, series, controllerSignalList, PLCConnect.clientForStatus);
+            updateChart.start();
+        }
 
-        updateChartWashing = new UpdateValueChartWashing(attachEvent.getUI(), configurationWashing, seriesWashing, controllerSignalListWashing, PLCConnect.clientForStatusWashing);
-        updateChartWashing.start();
+        if (PLCConnect.contrConnectedWashing) {
+            updateChartWashing = new UpdateValueChartWashing(attachEvent.getUI(), configurationWashing, seriesWashing, controllerSignalListWashing, PLCConnect.clientForStatusWashing);
+            updateChartWashing.start();
+        }
     }
 
     @Override
     protected void onDetach(DetachEvent detachEvent) {
-
-        //PLCConnect.controllerDisconnect();
-
-        //thread.interrupt();
-        //thread = null;
 
         updateChart.interrupt();
         updateChart = null;

@@ -33,6 +33,9 @@ public class UpdateValueChartWashing extends Thread{
 
         while (!isInterrupted()) {
             try {
+                if (s7Client == null) {
+                    return;
+                }
                ui.access(() -> {
                     if (array.size() != 0) {
                         for (int i = 0; i < array.size(); i++) {

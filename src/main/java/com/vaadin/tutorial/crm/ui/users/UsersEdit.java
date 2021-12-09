@@ -114,7 +114,7 @@ public class UsersEdit extends VerticalLayout {
             close();
         }
         catch (Exception e) {
-
+            Notification.show("Не могу сохранить изменения!" + e.getMessage());
         }
     }
 

@@ -59,7 +59,6 @@ public class UpdateValueChart extends Thread{
                 });
                 sleep(3000);
             } catch (Exception e) { //Interrupted
-                Notification.show("Внимание! Не могу обновить данные! Пожалуйста, перезайдите в систему.", 5000, Notification.Position.MIDDLE);
                 break;
             }
         }

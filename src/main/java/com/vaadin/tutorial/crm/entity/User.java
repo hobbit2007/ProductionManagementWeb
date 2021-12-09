@@ -43,7 +43,7 @@ public class User implements UserDetails {
     private Long delete;
 
     @ManyToOne
-    @JoinColumn(name = "id_department", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "idDepartment", referencedColumnName = "id", insertable = false, updatable = false)
     private Department departmentName;
 
     public User(Long id, String login, String role) {

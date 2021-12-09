@@ -28,4 +28,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Transactional
     @Query("update userslist set lastDateActive = :dateActive where id = :userId")
     void updateUserActive(@Param("dateActive") Date dateActive, @Param("userId") Long userId);
+
+    //Обновляем данные по пользователю
+    @Modifying
+    @Transactional
+    @Query("update userslist set fio = :userFIO, email = :userEmail, role = :userRole where id = :userID")
+    void updateUserInfo(@Param("userID") Long userID, @Param("userFIO") String userFIO, @Param("userEmail") String userEmail, @Param("userRole") String userRole);
 }

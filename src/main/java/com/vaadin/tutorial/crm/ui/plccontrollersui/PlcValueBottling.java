@@ -77,7 +77,7 @@ public class PlcValueBottling extends VerticalLayout{
 
         FormLayout fContent = new FormLayout();
         VerticalLayout verticalLayout = new VerticalLayout();
-        if (PLCConnect.contrConnectedDiffusion) {
+        if (PLCConnect.contrConnectedBottling) {
             controllerStatus.setVisible(false);
             controllerValue = new TextField[controllerSignalList.size()];
             sigFieldList.removeAll(sigFieldList);

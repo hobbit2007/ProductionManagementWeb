@@ -3,10 +3,7 @@ package com.vaadin.tutorial.crm.entity.plccontrollersentity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -32,6 +29,11 @@ public class SignalList implements Externalizable {
     private Long idUserCreate;
     private Date dateCreate;
     private Long idController;
+    private Long idGroup;
+
+    @ManyToOne
+    @JoinColumn(name = "idGroup", referencedColumnName = "id", insertable = false, updatable = false)
+    private SignalGroup groupName;
 
     @Override
     public void writeExternal(ObjectOutput objectOutput) throws IOException {

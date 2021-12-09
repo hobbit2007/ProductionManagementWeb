@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class UsersEdit extends VerticalLayout {
     private VerticalLayout vMain = new VerticalLayout();
     private Grid<User> grid = new Grid<>();
-    private Grid.Column<User> colFio, colPosition, colEmail, colDateCreate, colLastDate, colRole;
+    private Grid.Column<User> colLogin, colFio, colPosition, colEmail, colDateCreate, colLastDate, colRole;
     private ListDataProvider<User> dataProvider;
     private UserService userService;
 
@@ -53,6 +53,7 @@ public class UsersEdit extends VerticalLayout {
         grid.addClassName("contact-grid");
         grid.setSizeFull();
 
+        colLogin = grid.addColumn(userService -> userService.getLogin()).setHeader("Логин");
         colFio = grid.addColumn(userService -> userService.getFio()).setHeader("ФИО");
         colPosition = grid.addColumn(userService -> userService.getPosition()).setHeader("Должность");
         colEmail = grid.addColumn(userService -> userService.getEmail()).setHeader("E-mail");
@@ -60,6 +61,7 @@ public class UsersEdit extends VerticalLayout {
         colLastDate = grid.addColumn(userService -> userService.getLastDateActive()).setHeader("Дата входа в систему");
         colRole = grid.addColumn(userService -> userService.getRole()).setHeader("Роль");
 
+        colLogin.setResizable(true);
         colFio.setResizable(true);
         colPosition.setResizable(true);
         colEmail.setResizable(true);

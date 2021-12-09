@@ -13,6 +13,7 @@ import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.admin.AdminPage;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
 import com.vaadin.tutorial.crm.ui.users.UsersCreate;
+import com.vaadin.tutorial.crm.ui.users.UsersEdit;
 
 /**
  * Класс реализующий боковое меню управления пользователями
@@ -48,7 +49,7 @@ public class UserLayout extends AppLayout {
         Icon icon1 = new Icon(VaadinIcon.DATABASE);
         hMenu2.add(icon1, usersCreate);
 
-        RouterLink userEdit = new RouterLink("Редактировать пользователя", MainView.class);
+        RouterLink userEdit = new RouterLink("Редактировать пользователя", UsersEdit.class);
         userEdit.setHighlightCondition(HighlightConditions.sameLocation());
         Icon icon2 = new Icon(VaadinIcon.USER_CHECK);
         hMenu3.add(icon2, userEdit);

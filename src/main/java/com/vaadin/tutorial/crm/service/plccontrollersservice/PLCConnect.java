@@ -2,6 +2,7 @@ package com.vaadin.tutorial.crm.service.plccontrollersservice;
 
 import com.sourceforge.snap7.moka7.*;
 import com.vaadin.tutorial.crm.entity.plccontrollersentity.PlcControllers;
+import com.vaadin.tutorial.crm.threads.FeederThread;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ import java.util.List;
 public class PLCConnect {
 
     static PlcControllersService plcControllersService;
-    public static S7Client[] client = new S7Client[100];
+    //public static S7Client[] client = new S7Client[100];
     public static S7Client clientForStatus;
     public static S7Client clientForStatusWashing;
     public static S7Client clientForStatusDiffusion;
@@ -25,14 +26,15 @@ public class PLCConnect {
     public static S7Client clientForStatusBottling;
     public static S7Client clientForStatusDrying;
     private static List<PlcControllers> plcControllersList = new ArrayList<>();
-    public static String controllerConnected = "";
-    private static StringBuilder numController = new StringBuilder();
-    public static boolean contrConnected;
-    public static boolean contrConnectedWashing;
-    public static boolean contrConnectedDiffusion;
-    public static boolean contrConnectedFermentation;
-    public static boolean contrConnectedBottling;
-    public static boolean contrConnectedDrying;
+    //public static String controllerConnected = "";
+    //private static StringBuilder numController = new StringBuilder();
+    public static boolean contrConnected = false;
+    public static boolean contrConnectedWashing = false;
+    public static boolean contrConnectedDiffusion = false;
+    public static boolean contrConnectedFermentation = false;
+    public static boolean contrConnectedBottling = false;
+    public static boolean contrConnectedDrying = false;
+    private Thread checkController;
 
     @Autowired
     public PLCConnect(PlcControllersService plcControllersService) {
@@ -40,16 +42,19 @@ public class PLCConnect {
 
         plcControllersList = plcControllersService.getAll();
 
-        for (int i = 0; i < plcControllersList.size(); i++) {
+        checkController = new FeederThread(plcControllersList);
+        checkController.start();
+
+        /*for (int i = 0; i < plcControllersList.size(); i++) {
             client[i] = new S7Client();
             client[i].SetConnectionType(S7.OP);
             client[i].ConnectTo(plcControllersList.get(i).getIp(), 0, 1);
-        }
+        }*/
 
 
     }
 
-    public static String anyControllersStatus() {
+    /*public static String anyControllersStatus() {
         plcControllersList = plcControllersService.getAll();
         numController.setLength(0);
         for (int i = 0; i < plcControllersList.size(); i++) {
@@ -61,7 +66,7 @@ public class PLCConnect {
             client[i].Disconnect();
         }
         return controllerConnected;
-    }
+    }*/
 
     public static boolean controllerStatus(String controllerIP) {
         clientForStatus = new S7Client();

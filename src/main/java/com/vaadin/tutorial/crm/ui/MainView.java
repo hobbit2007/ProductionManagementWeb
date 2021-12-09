@@ -36,7 +36,8 @@ import java.util.Random;
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 public class MainView extends VerticalLayout {
 
-    private Label labelUser  = new Label();
+    private Label labelUserRediuce  = new Label();
+    private Label labelUserWashing  = new Label();
     VerticalLayout vContent = new VerticalLayout();
     HorizontalLayout hContent = new HorizontalLayout();
 
@@ -65,12 +66,19 @@ public class MainView extends VerticalLayout {
         this.signalListService = signalListService;
         this.plcControllersService = plcControllersService;
 
-        labelUser.setText("");
-        labelUser.getStyle().set("color", "red");
-        labelUser.getStyle().set("font-weight", "bold");
-        labelUser.getStyle().set("font-size", "11pt");
-        labelUser.setSizeUndefined();
-        labelUser.setVisible(false);
+        labelUserWashing.setText("");
+        labelUserWashing.getStyle().set("color", "red");
+        labelUserWashing.getStyle().set("font-weight", "bold");
+        labelUserWashing.getStyle().set("font-size", "11pt");
+        labelUserWashing.setSizeUndefined();
+        labelUserWashing.setVisible(false);
+
+        labelUserRediuce.setText("");
+        labelUserRediuce.getStyle().set("color", "red");
+        labelUserRediuce.getStyle().set("font-weight", "bold");
+        labelUserRediuce.getStyle().set("font-size", "11pt");
+        labelUserRediuce.setSizeUndefined();
+        labelUserRediuce.setVisible(false);
 
         controllerSignalList = signalListService.findSignalList(controllerID);
         controllerIP = plcControllersService.getAllByID(controllerID).get(0).getIp();
@@ -124,9 +132,9 @@ public class MainView extends VerticalLayout {
             return new HorizontalLayout(hChart);
         }
         else {
-            labelUser.setVisible(true);
-            labelUser.setText("Контроллер " + controllerIP + " - " + plcControllersService.getAllByID(controllerID).get(0).getControllerName() + " не доступен!");
-            return labelUser;
+            labelUserRediuce.setVisible(true);
+            labelUserRediuce.setText("Контроллер " + controllerIP + " - " + plcControllersService.getAllByID(controllerID).get(0).getControllerName() + " не доступен!");
+            return labelUserRediuce;
         }
     }
 
@@ -164,9 +172,9 @@ public class MainView extends VerticalLayout {
             return new HorizontalLayout(hChart);
         }
         else {
-            labelUser.setVisible(true);
-            labelUser.setText("Контроллер " + controllerIPWashing + " - " + plcControllersService.getAllByID(controllerIDWashing).get(0).getControllerName() + " не доступен!");
-            return labelUser;
+            labelUserWashing.setVisible(true);
+            labelUserWashing.setText("Контроллер " + controllerIPWashing + " - " + plcControllersService.getAllByID(controllerIDWashing).get(0).getControllerName() + " не доступен!");
+            return labelUserWashing;
         }
 
     }

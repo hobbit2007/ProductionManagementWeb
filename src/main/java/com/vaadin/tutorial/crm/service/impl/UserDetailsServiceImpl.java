@@ -48,4 +48,10 @@ public class UserDetailsServiceImpl implements UserService {
         if (user != null)
             userRepository.updateUserActive(user.getLastDateActive(), user.getId());
     }
+
+    @Override
+    public void updateUserInfo(User user) {
+        if (user != null)
+            userRepository.updateUserInfo(user.getId(), user.getFio(), user.getEmail(), user.getRole());
+    }
 }

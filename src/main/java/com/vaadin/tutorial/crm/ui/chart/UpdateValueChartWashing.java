@@ -5,6 +5,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.charts.model.Configuration;
 import com.vaadin.flow.component.charts.model.DataSeries;
 import com.vaadin.flow.component.charts.model.DataSeriesItem;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.tutorial.crm.entity.plccontrollersentity.SignalList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class UpdateValueChartWashing extends Thread{
 
         while (!isInterrupted()) {
             try {
-                ui.access(() -> {
+               ui.access(() -> {
                     if (array.size() != 0) {
                         for (int i = 0; i < array.size(); i++) {
                             s7Client.ReadArea(S7.S7AreaDB, array.get(i).getDbValue(), 0, array.get(i).getPosition() + array.get(i).getOffset(), buffer);

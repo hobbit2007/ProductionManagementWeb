@@ -7,6 +7,7 @@ import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.Configuration;
 import com.vaadin.flow.component.charts.model.DataSeries;
 import com.vaadin.flow.component.charts.model.DataSeriesItem;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.tutorial.crm.entity.plccontrollersentity.SignalList;
 import com.vaadin.tutorial.crm.model.DataFromPlc;
 
@@ -58,6 +59,7 @@ public class UpdateValueChart extends Thread{
                 });
                 sleep(3000);
             } catch (Exception e) { //Interrupted
+                Notification.show("Внимание! Не могу обновить данные! Пожалуйста, перезайдите в систему.", 5000, Notification.Position.MIDDLE);
                 break;
             }
         }

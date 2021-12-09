@@ -93,7 +93,7 @@ public class MainView extends VerticalLayout {
 
         final Random random = new Random();
         //if (PLCConnect.controllerStatus(controllerIP)) {
-            chart.setWidth("800px");
+            chart.setWidth("400px");
             configuration = chart.getConfiguration();
             configuration.getChart().setType(ChartType.SPLINE);
             configuration.getTitle().setText("Live data - PLC Выпарка");
@@ -124,7 +124,7 @@ public class MainView extends VerticalLayout {
 
         final Random random = new Random();
         //if (PLCConnect.controllerStatus(controllerIP)) {
-        chartWashing.setWidth("800px");
+        chartWashing.setWidth("400px");
         configurationWashing = chartWashing.getConfiguration();
         configurationWashing.getChart().setType(ChartType.SPLINE);
         configurationWashing.getTitle().setText("Live data - PLC Мойка");

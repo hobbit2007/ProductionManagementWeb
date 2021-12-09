@@ -40,6 +40,10 @@ public class UpdateValueChart extends Thread{
         while (!isInterrupted()) {
             try {
                 ui.access(() -> {
+                    if (s7Client == null) {
+                        return;
+                    }
+
                     synchronized (this) {
                         if (array.size() != 0) {
                             for (int i = 0; i < array.size(); i++) {

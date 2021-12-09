@@ -28,13 +28,13 @@ public class PLCConnect {
     private static List<PlcControllers> plcControllersList = new ArrayList<>();
     //public static String controllerConnected = "";
     //private static StringBuilder numController = new StringBuilder();
-    public static boolean contrConnected = false;
-    public static boolean contrConnectedWashing = false;
-    public static boolean contrConnectedDiffusion = false;
-    public static boolean contrConnectedFermentation = false;
-    public static boolean contrConnectedBottling = false;
-    public static boolean contrConnectedDrying = false;
-    private Thread checkController;
+    public static boolean contrConnected;
+    public static boolean contrConnectedWashing;
+    public static boolean contrConnectedDiffusion;
+    public static boolean contrConnectedFermentation;
+    public static boolean contrConnectedBottling;
+    public static boolean contrConnectedDrying;
+    //private Thread checkController;
 
     @Autowired
     public PLCConnect(PlcControllersService plcControllersService) {
@@ -42,8 +42,8 @@ public class PLCConnect {
 
         plcControllersList = plcControllersService.getAll();
 
-        checkController = new FeederThread(plcControllersList);
-        checkController.start();
+        //checkController = new FeederThread(plcControllersList);
+        //checkController.start();
 
         /*for (int i = 0; i < plcControllersList.size(); i++) {
             client[i] = new S7Client();

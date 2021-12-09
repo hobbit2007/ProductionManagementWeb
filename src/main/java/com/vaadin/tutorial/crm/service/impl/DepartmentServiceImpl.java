@@ -21,4 +21,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<Department> getAll(Long shopId) {
         return departmentRepository.getAll(shopId);
     }
+
+    @Override
+    public List<Department> getAllByAll() {
+        return departmentRepository.getAllByAll();
+    }
 }

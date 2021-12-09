@@ -77,7 +77,7 @@ public class PlcValueDrying extends VerticalLayout{
 
         FormLayout fContent = new FormLayout();
         VerticalLayout verticalLayout = new VerticalLayout();
-        if (PLCConnect.contrConnectedDiffusion) {
+        if (PLCConnect.contrConnectedDrying) {
             controllerStatus.setVisible(false);
             controllerValue = new TextField[controllerSignalList.size()];
             sigFieldList.removeAll(sigFieldList);

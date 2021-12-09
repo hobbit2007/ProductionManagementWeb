@@ -82,7 +82,7 @@ public class PlcValueWashing extends VerticalLayout{
             controllerValue = new TextField[controllerSignalList.size()];
             sigFieldList.removeAll(sigFieldList);
             for (int i = 0; i < controllerSignalList.size(); i++) {
-                controllerValue[i] = new TextField(controllerSignalList.get(i).getSignalName());
+                controllerValue[i] = new TextField(controllerSignalList.get(i).getSignalName() + "-" + controllerSignalList.get(i).getGroupName().getShortSignalDescription());
                 controllerValue[i].setWidth("55px");
                 controllerValue[i].setValue("0.00");
 

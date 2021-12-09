@@ -16,7 +16,6 @@ import com.vaadin.tutorial.crm.model.DataFromPlc;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.PLCConnect;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.PlcControllersService;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.SignalListService;
-import com.vaadin.tutorial.crm.threads.FeederThread;
 import com.vaadin.tutorial.crm.threads.UpdateValueController;
 import com.vaadin.tutorial.crm.ui.chart.UpdateValueChart;
 import com.vaadin.tutorial.crm.ui.chart.UpdateValueChartWashing;

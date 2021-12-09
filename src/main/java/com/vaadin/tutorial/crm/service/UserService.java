@@ -18,4 +18,6 @@ public interface UserService {
     void saveAll(User user);
 
     void updateDateActive(User user);
+
+    void updateUserInfo(User user);
 }

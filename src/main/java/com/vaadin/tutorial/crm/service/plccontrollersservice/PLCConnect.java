@@ -4,6 +4,7 @@ import com.sourceforge.snap7.moka7.*;
 import com.vaadin.tutorial.crm.entity.plccontrollersentity.PlcControllers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
  * Класс проверяющий есть ли подключение к ПЛК контроллерам
  */
 @Slf4j
+@Scope("session")
 @Service
 public class PLCConnect {
 

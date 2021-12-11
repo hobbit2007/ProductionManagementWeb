@@ -15,4 +15,8 @@ import java.util.List;
 public interface SignalListRepository extends JpaRepository<SignalList, Long> {
     @Query("select sl from signallist sl where sl.idController = :controllerId and sl.delete = 0")
     List<SignalList> findSignalList(@Param("controllerId") Long controllerId);
+
+    //Подсчитываем количество типов сигналов
+    @Query("select idGroup from signallist where idController = :controllerID group by idGroup")
+    Long countGroups(@Param("controllerID") Long controllerID);
 }

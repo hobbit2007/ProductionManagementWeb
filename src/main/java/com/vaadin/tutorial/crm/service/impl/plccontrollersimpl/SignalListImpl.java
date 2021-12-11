@@ -21,4 +21,9 @@ public class SignalListImpl implements SignalListService {
     public List<SignalList> findSignalList(Long controllerId) {
         return signalListRepository.findSignalList(controllerId);
     }
+
+    @Override
+    public Long countGroups(Long controllerId) {
+        return signalListRepository.countGroups(controllerId);
+    }
 }

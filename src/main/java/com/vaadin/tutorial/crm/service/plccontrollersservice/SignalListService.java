@@ -13,4 +13,6 @@ import java.util.List;
 @Service
 public interface SignalListService {
     List<SignalList> findSignalList(Long controllerId);
+
+    Long countGroups(Long controllerId);
 }

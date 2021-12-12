@@ -105,8 +105,8 @@ public class PlcValueWashing extends VerticalLayout{
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         // Start the data feed thread
-        updateFields = new UpdateValueController(attachEvent.getUI(), sigFieldList, controllerSignalList, PLCConnect.clientForStatusWashing);
-        updateFields.start();
+       // updateFields = new UpdateValueController(attachEvent.getUI(), sigFieldList, controllerSignalList, PLCConnect.clientForStatusWashing);
+       // updateFields.start();
     }
 
     @Override

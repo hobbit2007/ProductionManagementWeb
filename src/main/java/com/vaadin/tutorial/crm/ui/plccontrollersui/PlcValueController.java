@@ -9,12 +9,10 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.tutorial.crm.entity.plccontrollersentity.SignalGroup;
 import com.vaadin.tutorial.crm.entity.plccontrollersentity.SignalList;
 import com.vaadin.tutorial.crm.model.DataFromPlc;
-import com.vaadin.tutorial.crm.service.plccontrollersservice.PLCConnect;
-import com.vaadin.tutorial.crm.service.plccontrollersservice.PlcControllersService;
-import com.vaadin.tutorial.crm.service.plccontrollersservice.PlcValueService;
-import com.vaadin.tutorial.crm.service.plccontrollersservice.SignalListService;
+import com.vaadin.tutorial.crm.service.plccontrollersservice.*;
 import com.vaadin.tutorial.crm.threads.UpdateValueController;
 import com.vaadin.tutorial.crm.ui.component.AnyComponent;
 import com.vaadin.tutorial.crm.ui.layout.PlcLayout;
@@ -36,8 +34,12 @@ public class PlcValueController extends VerticalLayout {
     private VerticalLayout vContent = new VerticalLayout();
     private VerticalLayout vLabel = new VerticalLayout();
     private HorizontalLayout hTitleContent = new HorizontalLayout();
+    private HorizontalLayout hSignalGroup[] = new HorizontalLayout[100];
+    private VerticalLayout vSignalGroup[] = new VerticalLayout[100];
+    private Label groupSignalName[] = new Label[100];
     private AnyComponent anyComponent = new AnyComponent();
     private List<SignalList> controllerSignalList = new ArrayList<>();
+    private List<SignalGroup> controllerSignalGroup = new ArrayList<>();
     private Label controllerStatus = new Label();
     long controllerID = 4L;
     Thread updateFields = new Thread();
@@ -46,11 +48,13 @@ public class PlcValueController extends VerticalLayout {
     TextField[] controllerValue;
     PlcControllersService plcControllersService;
     SignalListService signalListService;
+    SignalGroupsService signalGroupsService;
 
     @Autowired
-    public PlcValueController(PlcControllersService plcControllersService, SignalListService signalListService) {
+    public PlcValueController(PlcControllersService plcControllersService, SignalListService signalListService, SignalGroupsService signalGroupsService) {
         this.plcControllersService = plcControllersService;
         this.signalListService = signalListService;
+        this.signalGroupsService = signalGroupsService;
 
         addClassName("list-view");
         setSizeFull();
@@ -60,8 +64,17 @@ public class PlcValueController extends VerticalLayout {
         controllerStatus.getStyle().set("font-size", "11pt");
 
         controllerSignalList = signalListService.findSignalList(controllerID);
+        controllerSignalGroup = signalGroupsService.getAll();
         controllerIP = plcControllersService.getAllByID(controllerID).get(0).getIp();
-
+        for (int i = 0; i < controllerSignalGroup.size(); i++) {
+            hSignalGroup[i] = new HorizontalLayout();
+            vSignalGroup[i] = new VerticalLayout();
+            groupSignalName[i] = new Label();
+            groupSignalName[i].getStyle().set("color", "#d3b342");
+            groupSignalName[i].getStyle().set("font-weight", "bold");
+            groupSignalName[i].getStyle().set("font-size", "16pt");
+            groupSignalName[i].getStyle().set("margin-left", "30px");
+        }
         vLabel.add(anyComponent.labelTitle("Визуализация значений контроллера " + plcControllersService.getAllByID(controllerID).get(0).getControllerName()));
         vLabel.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
@@ -76,19 +89,34 @@ public class PlcValueController extends VerticalLayout {
     public Component initController() {
 
         FormLayout fContent = new FormLayout();
-        VerticalLayout verticalLayout = new VerticalLayout();
+        //VerticalLayout verticalLayout = new VerticalLayout();
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
         if (PLCConnect.contrConnected) {
             controllerStatus.setVisible(false);
             controllerValue = new TextField[controllerSignalList.size()];
             sigFieldList.removeAll(sigFieldList);
             for (int i = 0; i < controllerSignalList.size(); i++) {
-                controllerValue[i] = new TextField(controllerSignalList.get(i).getSignalName() + "-" + controllerSignalList.get(i).getGroupName().getShortSignalDescription());
-                controllerValue[i].setWidth("55px");
-                controllerValue[i].setValue("0.00");
-
-                fContent.add(controllerValue[i]);
-                fContent.setResponsiveSteps(new FormLayout.ResponsiveStep("45px", 10));
-                verticalLayout.add(fContent);
+                for (int j = 0; j < controllerSignalGroup.size(); j++) {
+                    if (controllerSignalList.get(i).getIdGroup() == controllerSignalGroup.get(j).getId()) {
+                        groupSignalName[j].setText(controllerSignalGroup.get(j).getShortSignalDescription());
+                        controllerValue[i] = new TextField(controllerSignalList.get(i).getSignalName());
+                        controllerValue[i].setWidth("81px");
+                        controllerValue[i].setValue("0.00");
+                        hSignalGroup[j].add(groupSignalName[j]);
+                        vSignalGroup[j].add(hSignalGroup[j], controllerValue[i]);//hSignalGroup[j]
+                        vSignalGroup[j].setPadding(false);
+                        vSignalGroup[j].setMargin(false);
+                        //hSignalGroup[j].setPadding(false);
+                        //hSignalGroup[j].setMargin(false);
+                        //verticalLayout.add(vSignalGroup[j]);
+                        //verticalLayout.setMargin(false);
+                        //verticalLayout.setPadding(false);
+                        horizontalLayout.add(vSignalGroup[j]);
+                    }
+                }
+                //fContent.add(controllerValue[i]);
+                //fContent.setResponsiveSteps(new FormLayout.ResponsiveStep("45px", 10));
+                //verticalLayout.add(fContent);
                 sigFieldList.add(controllerValue[i]);
                 controllerValue[i].getElement().setAttribute("data-title", controllerSignalList.get(i).getSignalDescription());
                 controllerValue[i].setClassName("tooltip");
@@ -99,7 +127,7 @@ public class PlcValueController extends VerticalLayout {
            controllerStatus.setText("Контроллер " + controllerIP + " - " + plcControllersService.getAllByID(controllerID).get(0).getControllerName() + " не доступен!");
         }
 
-        return verticalLayout;
+        return horizontalLayout;
     }
 
     @Override

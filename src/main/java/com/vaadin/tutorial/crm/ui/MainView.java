@@ -21,6 +21,7 @@ import com.vaadin.tutorial.crm.ui.chart.UpdateValueChart;
 import com.vaadin.tutorial.crm.ui.chart.UpdateValueChartWashing;
 import com.vaadin.tutorial.crm.ui.layout.MainLayout;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ import java.util.Random;
  * Главный класс приложения
  */
 @Route(value = "", layout = MainLayout.class)
+@Scope("session")
 @PageTitle("Dashboard | Система управления производством")
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
@@ -182,13 +184,13 @@ public class MainView extends VerticalLayout {
     protected void onAttach(AttachEvent attachEvent) {
 
         if (PLCConnect.contrConnected) {
-            updateChart = new UpdateValueChart(attachEvent.getUI(), configuration, series, controllerSignalList, PLCConnect.clientForStatus);
-            updateChart.start();
+            //updateChart = new UpdateValueChart(attachEvent.getUI(), configuration, series, controllerSignalList, PLCConnect.clientForStatus);
+            //updateChart.start();
         }
 
         if (PLCConnect.contrConnectedWashing) {
-            updateChartWashing = new UpdateValueChartWashing(attachEvent.getUI(), configurationWashing, seriesWashing, controllerSignalListWashing, PLCConnect.clientForStatusWashing);
-            updateChartWashing.start();
+            //updateChartWashing = new UpdateValueChartWashing(attachEvent.getUI(), configurationWashing, seriesWashing, controllerSignalListWashing, PLCConnect.clientForStatusWashing);
+            //updateChartWashing.start();
         }
     }
 

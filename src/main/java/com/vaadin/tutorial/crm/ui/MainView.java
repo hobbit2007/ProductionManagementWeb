@@ -184,13 +184,13 @@ public class MainView extends VerticalLayout {
     protected void onAttach(AttachEvent attachEvent) {
 
         if (PLCConnect.contrConnected) {
-            //updateChart = new UpdateValueChart(attachEvent.getUI(), configuration, series, controllerSignalList, PLCConnect.clientForStatus);
-            //updateChart.start();
+            updateChart = new UpdateValueChart(attachEvent.getUI(), configuration, series, controllerSignalList, PLCConnect.clientForStatus);
+            updateChart.start();
         }
 
         if (PLCConnect.contrConnectedWashing) {
-            //updateChartWashing = new UpdateValueChartWashing(attachEvent.getUI(), configurationWashing, seriesWashing, controllerSignalListWashing, PLCConnect.clientForStatusWashing);
-            //updateChartWashing.start();
+            updateChartWashing = new UpdateValueChartWashing(attachEvent.getUI(), configurationWashing, seriesWashing, controllerSignalListWashing, PLCConnect.clientForStatusWashing);
+            updateChartWashing.start();
         }
     }
 

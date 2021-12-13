@@ -8,6 +8,7 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
@@ -39,6 +40,7 @@ public class PlcValueDiffusion extends VerticalLayout{
     private VerticalLayout vLabel = new VerticalLayout();
     private HorizontalLayout hTitleContent = new HorizontalLayout();
     private HorizontalLayout horizontalLayout = new HorizontalLayout();
+    private Scroller scroller = new Scroller();
     private HorizontalLayout hSignalGroup[] = new HorizontalLayout[100];
     private VerticalLayout vSignalGroup[] = new VerticalLayout[100];
     private Label groupSignalName[] = new Label[100];
@@ -90,6 +92,9 @@ public class PlcValueDiffusion extends VerticalLayout{
         hTitleContent.add(controllerStatus); //choose, selectController,
         hTitleContent.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.BASELINE);
 
+        horizontalLayout.setSizeFull();
+        scroller.setSizeFull();
+
         vContent.add(vLabel, hTitleContent, initController());
         vContent.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         add(vContent);
@@ -115,6 +120,7 @@ public class PlcValueDiffusion extends VerticalLayout{
                         vSignalGroup[j].setMargin(false);
                         vSignalGroup[j].getStyle().set("border", "1px outset black");
                         horizontalLayout.add(vSignalGroup[j]);
+                        scroller.setContent(horizontalLayout);
                     }
                 }
                 sigFieldList.add(controllerValue[i]);
@@ -127,7 +133,7 @@ public class PlcValueDiffusion extends VerticalLayout{
            controllerStatus.setText("Контроллер " + controllerIP + " - " + plcControllersService.getAllByID(controllerID).get(0).getControllerName() + " не доступен!");
         }
 
-        return horizontalLayout;
+        return scroller;
     }
 
     @Override

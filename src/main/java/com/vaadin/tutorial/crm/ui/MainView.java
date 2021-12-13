@@ -105,7 +105,7 @@ public class MainView extends VerticalLayout {
         if (PLCConnect.contrConnected) {
             chart.setWidth("500px");
             configuration = chart.getConfiguration();
-            configuration.getChart().setType(ChartType.SPLINE);
+            configuration.getChart().setType(ChartType.LINE);
             configuration.getTitle().setText("Live data - PLC Выпарка");
 
             XAxis xAxis = configuration.getxAxis();

@@ -44,7 +44,7 @@ public class UpdateValueChart extends Thread{
                         return;
                     }
 
-                    //synchronized (this) {
+                    synchronized (this) {
                         if (array.size() != 0) {
                             for (int i = 0; i < array.size(); i++) {
                                 s7Client.ReadArea(S7.S7AreaDB, array.get(i).getDbValue(), 0, array.get(i).getPosition() + array.get(i).getOffset(), buffer);
@@ -56,10 +56,10 @@ public class UpdateValueChart extends Thread{
                                 configuration.setSeries(series);
 
                                 ui.push();
-                                // System.out.println("FROM THREAD [" + getId() + " - " + getName()+ "] =" + readData + "I = " + i);
+                                //System.out.println("FROM THREAD [" + getId() + " - " + getName()+ "]");
                             }
                         }
-                    //}
+                    }
                 });
                 sleep(3000);
             } catch (Exception e) { //Interrupted

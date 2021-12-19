@@ -1,8 +1,10 @@
 package com.vaadin.tutorial.crm.service.impl.plccontrollersimpl;
 
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.tutorial.crm.entity.plccontrollersentity.SignalList;
 import com.vaadin.tutorial.crm.repository.plccontrollersrepository.SignalListRepository;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.SignalListService;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,5 +27,13 @@ public class SignalListImpl implements SignalListService {
     @Override
     public Long countGroups(Long controllerId) {
         return signalListRepository.countGroups(controllerId);
+    }
+
+    @Override
+    public void saveAll(SignalList signalList) {
+        if (signalList != null)
+            signalListRepository.saveAndFlush(signalList);
+        else
+            Notification.show("Нет данных для записи!", 5000, Notification.Position.MIDDLE);
     }
 }

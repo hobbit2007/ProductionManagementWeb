@@ -2,6 +2,7 @@ package com.vaadin.tutorial.crm.ui.admin;
 
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.tutorial.crm.ui.layout.AdminLayout;
 
@@ -9,6 +10,7 @@ import com.vaadin.tutorial.crm.ui.layout.AdminLayout;
  * Класс реализующий страницу администрирования
  */
 @Route(value = "adminpage", layout = AdminLayout.class)
+@PageTitle("Администрирование | Система управления производством")
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 public class AdminPage extends VerticalLayout {

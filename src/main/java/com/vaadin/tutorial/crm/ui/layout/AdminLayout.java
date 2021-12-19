@@ -11,6 +11,7 @@ import com.vaadin.flow.router.RouterLink;
 import com.vaadin.tutorial.crm.security.SecurityConfiguration;
 import com.vaadin.tutorial.crm.security.SecurityUtils;
 import com.vaadin.tutorial.crm.ui.MainView;
+import com.vaadin.tutorial.crm.ui.admin.PlcSignalPage;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
 import com.vaadin.tutorial.crm.ui.users.UsersCreate;
 
@@ -69,7 +70,7 @@ public class AdminLayout extends AppLayout {
             Icon icon4 = new Icon(VaadinIcon.LINES);
             hMenu4.add(icon4, plcControllersList);
 
-            RouterLink plcSignalsList = new RouterLink("Список сигналов", MainView.class);
+            RouterLink plcSignalsList = new RouterLink("Список сигналов", PlcSignalPage.class);
             plcSignalsList.setHighlightCondition(HighlightConditions.sameLocation());
             Icon icon5 = new Icon(VaadinIcon.LINES_LIST);
             hMenu5.add(icon5, plcSignalsList);

@@ -30,25 +30,28 @@ public class UpdateValueController extends Thread {
 
         while (!isInterrupted()) {
             try {
+                Thread.sleep(2000);
                 ui.access(() -> {
-                    for (int i = 0; i < element.size(); i++) {
-                        element.get(i).getStyle().set("color", "black");
-                        s7Client.ReadArea(S7.S7AreaDB, array.get(i).getDbValue(), 0, array.get(i).getPosition() + array.get(i).getOffset(), buffer);
-                        float readData = S7.GetFloatAt(buffer, array.get(i).getPosition());
-                        double scale = Math.pow(10, 2);
-                        element.get(i).setValue(String.valueOf((float) (Math.ceil(readData * scale) / scale)));
-                        //System.out.println("FROM THREAD [" + getId() + " - " + getName()+ "] =" + readData);
+                    synchronized (this) {
+                        for (int i = 0; i < element.size(); i++) {
+                            element.get(i).getStyle().set("color", "black");
+                            s7Client.ReadArea(S7.S7AreaDB, array.get(i).getDbValue(), 0, array.get(i).getPosition() + array.get(i).getOffset(), buffer);
+                            float readData = S7.GetFloatAt(buffer, array.get(i).getPosition());
+                            double scale = Math.pow(10, 2);
+                            element.get(i).setValue(String.valueOf((float) (Math.ceil(readData * scale) / scale)));
+                            //System.out.println("FROM THREAD [" + getId() + " - " + getName()+ "] =" + readData);
 
-                        int finalI = i;
-                        element.get(i).addValueChangeListener(e -> {
-                           if (!e.getOldValue().equals(e.getValue()))
-                               element.get(finalI).getStyle().set("color", "blue");
-                        });
-                       // System.out.println("FROM THREAD [" + getId() + " - " + getName()+ "] =" + readData + "I = " + i);
-                        ui.push();
+                            int finalI = i;
+                            element.get(i).addValueChangeListener(e -> {
+                                if (!e.getOldValue().equals(e.getValue()))
+                                    element.get(finalI).getStyle().set("color", "blue");
+                            });
+                            // System.out.println("FROM THREAD [" + getId() + " - " + getName()+ "] =" + readData + "I = " + i);
+                            ui.push();
+                        }
                     }
                 });
-                sleep(2000);
+                //sleep(2000);
             } catch (InterruptedException e) { //Interrupted
                 break;
                 //e.printStackTrace();

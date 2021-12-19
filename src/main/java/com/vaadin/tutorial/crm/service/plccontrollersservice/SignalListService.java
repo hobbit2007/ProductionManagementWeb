@@ -15,4 +15,6 @@ public interface SignalListService {
     List<SignalList> findSignalList(Long controllerId);
 
     Long countGroups(Long controllerId);
+
+    void saveAll(SignalList signalList);
 }

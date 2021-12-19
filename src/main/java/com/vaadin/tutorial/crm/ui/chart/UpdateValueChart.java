@@ -39,11 +39,11 @@ public class UpdateValueChart extends Thread{
 
         while (!isInterrupted()) {
             try {
+                Thread.sleep(3000);
+                if (s7Client == null) {
+                    return;
+                }
                 ui.access(() -> {
-                    if (s7Client == null) {
-                        return;
-                    }
-
                     synchronized (this) {
                         if (array.size() != 0) {
                             for (int i = 0; i < array.size(); i++) {
@@ -61,7 +61,7 @@ public class UpdateValueChart extends Thread{
                         }
                     }
                 });
-                sleep(3000);
+                //sleep(3000);
             } catch (Exception e) { //Interrupted
                 break;
             }

@@ -1,5 +1,6 @@
 package com.vaadin.tutorial.crm.service.impl.powerresources;
 
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.tutorial.crm.entity.powerresources.PowerResources;
 import com.vaadin.tutorial.crm.repository.powerresources.PowerResourcesRepository;
 import com.vaadin.tutorial.crm.service.powerresources.PowerResourcesService;
@@ -20,11 +21,14 @@ public class PowerResourcesImpl implements PowerResourcesService {
 
     @Override
     public List<PowerResources> getAll() {
-        return null;
+        return powerResourcesRepository.getAll();
     }
 
     @Override
     public void saveAll(PowerResources powerResources) {
-
+        if (powerResources != null)
+            powerResourcesRepository.saveAndFlush(powerResources);
+        else
+            Notification.show("Нет данных для записи!", 5000, Notification.Position.MIDDLE);
     }
 }

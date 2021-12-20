@@ -1,4 +1,4 @@
-package com.vaadin.tutorial.crm.entity;
+package com.vaadin.tutorial.crm.entity.powerresources;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * Класс модель описывающий таблицу power_resource_dict

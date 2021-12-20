@@ -1,4 +1,4 @@
-package com.vaadin.tutorial.crm.service;
+package com.vaadin.tutorial.crm.service.powerresources;
 
 
 import com.vaadin.tutorial.crm.entity.PowerResourceDict;

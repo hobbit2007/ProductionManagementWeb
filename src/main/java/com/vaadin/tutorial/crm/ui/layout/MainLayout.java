@@ -14,6 +14,7 @@ import com.vaadin.tutorial.crm.ui.admin.AdminPage;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
 import com.vaadin.tutorial.crm.ui.plccontrollersui.PlcValueController;
 import com.vaadin.tutorial.crm.ui.plccontrollersui.PlcValueWashing;
+import com.vaadin.tutorial.crm.ui.powerresources.PowerStatistic;
 
 /**
  * Класс создающий титульный заголовок вверху страницы
@@ -26,6 +27,7 @@ public class MainLayout extends AppLayout {
     HorizontalLayout hMenu1 = new HorizontalLayout();
     HorizontalLayout hMenu2 = new HorizontalLayout();
     HorizontalLayout hMenu3 = new HorizontalLayout();
+    HorizontalLayout hMenu4 = new HorizontalLayout();
 
     public MainLayout(SecurityConfiguration securityConfiguration) {
         this.securityConfiguration = securityConfiguration;
@@ -52,7 +54,12 @@ public class MainLayout extends AppLayout {
         Icon icon2 = new Icon(VaadinIcon.TOOLS);
         hMenu3.add(icon2, adminLink);
 
-        addToDrawer(new VerticalLayout(hMenu1, hMenu2, hMenu3));
+        RouterLink powerLink = new RouterLink("Энергоресурсы", PowerStatistic.class);
+        powerLink.setHighlightCondition(HighlightConditions.sameLocation());
+        Icon icon3 = new Icon(VaadinIcon.POWER_OFF);
+        hMenu4.add(icon3, powerLink);
+
+        addToDrawer(new VerticalLayout(hMenu1, hMenu2, hMenu4, hMenu3));
 
         //Закрываем меню на стороне клиента
         //т.к. при первом запуске меню показывается автоматически

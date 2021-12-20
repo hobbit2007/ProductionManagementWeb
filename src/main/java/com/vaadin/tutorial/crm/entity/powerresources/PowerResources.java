@@ -1,11 +1,12 @@
-package com.vaadin.tutorial.crm.entity;
+package com.vaadin.tutorial.crm.entity.powerresources;
 
+import com.vaadin.tutorial.crm.entity.powerresources.PowerResourceDict;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * Класс модель описывающий таблицу power_resources

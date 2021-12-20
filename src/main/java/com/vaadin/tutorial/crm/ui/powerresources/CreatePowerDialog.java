@@ -3,6 +3,7 @@ package com.vaadin.tutorial.crm.ui.powerresources;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.icon.Icon;
@@ -18,9 +19,12 @@ import com.vaadin.tutorial.crm.security.SecurityUtils;
 import com.vaadin.tutorial.crm.service.powerresources.PowerResourceDictService;
 import com.vaadin.tutorial.crm.service.powerresources.PowerResourcesService;
 import com.vaadin.tutorial.crm.ui.component.AnyComponent;
+import org.hibernate.mapping.Any;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.temporal.TemporalField;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -35,6 +39,7 @@ public class CreatePowerDialog extends Dialog {
     HorizontalLayout hButton = new HorizontalLayout();
     List<PowerResourceDict> powerResourceDictList;
     List<NumberField> powerValueFieldLink = new ArrayList<>();
+    DatePicker datePicker = new DatePicker(LocalDate.now());
     /*HorizontalLayout hMain1 = new HorizontalLayout();
     HorizontalLayout hMain2 = new HorizontalLayout();
     HorizontalLayout hMain3 = new HorizontalLayout();
@@ -84,8 +89,10 @@ public class CreatePowerDialog extends Dialog {
         cancel = new Button("Отмена");
         hButton.add(save, cancel);
 
+        datePicker.setLabel("Выберите дату:");
+        datePicker.setI18n(new AnyComponent().datePickerRus());
 
-        vMain.add(new AnyComponent().labelTitle("Добавить показания"), initPower(), hButton);
+        vMain.add(new AnyComponent().labelTitle("Добавить показания"), initPower(), datePicker, hButton);
         vMain.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         add(vMain);
 
@@ -116,15 +123,16 @@ public class CreatePowerDialog extends Dialog {
                         totalElectricity += powerValueFieldLink.get(i).getValue();
                     }
                 }
+                powerValue[9].setValue(totalElectricity);
             }
             for (int i = 0; i < powerValueFieldLink.size(); i++) {
                 try {
                     PowerResources powerResources = new PowerResources();
-
+                    Date date = Date.valueOf(datePicker.getValue());
                     powerResources.setIdPowerResource(powerResourceDictList.get(i).getId());
                     powerResources.setValue(powerValueFieldLink.get(i).getValue());
                     powerResources.setIdUser(SecurityUtils.getAuthentication().getDetails().getId());
-                    powerResources.setDateCreate(new Date(Calendar.getInstance().getTime().getTime()));
+                    powerResources.setDateCreate(date); //new Date(Calendar.getInstance().getTime().getTime())
                     powerResources.setDelete(0L);
 
                     powerResourcesService.saveAll(powerResources);
@@ -139,18 +147,19 @@ public class CreatePowerDialog extends Dialog {
 
     private Component initPower() {
         fContent = new FormLayout();
-        fContent.setWidth("651px");
+        fContent.setWidth("681px");
 
         powerResourceDictList = powerResourceDictService.getAll();
         if (powerResourceDictList.size() != 0) {
             for (int i = 0; i < powerResourceDictList.size(); i++) {
-
                 powerValue[i] = new NumberField(powerResourceDictList.get(i).getResourceName());
                 powerValue[i].setWidth("121px");
                 fContent.add(powerValue[i]);
                 fContent.setResponsiveSteps(new FormLayout.ResponsiveStep("121px", 3));
                 powerValueFieldLink.add(powerValue[i]);
             }
+            powerValue[9].setVisible(false);//Поле Итого с id = 9 не показываем в интерфейсе
+            powerValue[9].setValue(0.00);
         }
         return fContent;
     }

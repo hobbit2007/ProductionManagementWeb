@@ -11,7 +11,7 @@ import java.util.List;
  * Класс репозиторий содержащий sql запросы к таблице power_resources
  */
 @Repository
-public interface PowerResourcedRepository extends JpaRepository<PowerResources, Long> {
+public interface PowerResourcesRepository extends JpaRepository<PowerResources, Long> {
     @Query("select pr from power_resources pr where pr.delete = 0")
     List<PowerResources> getAll();
 }

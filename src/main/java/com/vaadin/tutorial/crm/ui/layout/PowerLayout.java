@@ -29,8 +29,6 @@ public class PowerLayout extends AppLayout {
 
     public PowerLayout(SecurityConfiguration securityConfiguration) {
         this.securityConfiguration = securityConfiguration;
-        hMenu1.setVisible(false);
-        hMenu2.setVisible(false);
         createHeader();
         createDrawer();
     }

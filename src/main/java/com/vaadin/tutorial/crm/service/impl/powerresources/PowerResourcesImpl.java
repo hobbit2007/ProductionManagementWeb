@@ -1,8 +1,8 @@
-package com.vaadin.tutorial.crm.service.impl;
+package com.vaadin.tutorial.crm.service.impl.powerresources;
 
 import com.vaadin.tutorial.crm.entity.PowerResources;
-import com.vaadin.tutorial.crm.repository.PowerResourcesRepository;
-import com.vaadin.tutorial.crm.service.PowerResourcesService;
+import com.vaadin.tutorial.crm.repository.powerresources.PowerResourcesRepository;
+import com.vaadin.tutorial.crm.service.powerresources.PowerResourcesService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.vaadin.tutorial.crm.service.impl.powerresources;
 
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.tutorial.crm.entity.PowerResourceDict;
+import com.vaadin.tutorial.crm.entity.powerresources.PowerResourceDict;
 import com.vaadin.tutorial.crm.repository.powerresources.PowerResourceDictRepository;
 import com.vaadin.tutorial.crm.service.powerresources.PowerResourceDictService;
 import org.springframework.stereotype.Service;

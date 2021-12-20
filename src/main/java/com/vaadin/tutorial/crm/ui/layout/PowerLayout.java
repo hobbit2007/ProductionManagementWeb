@@ -11,6 +11,7 @@ import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.tutorial.crm.security.SecurityConfiguration;
 import com.vaadin.tutorial.crm.service.powerresources.PowerResourceDictService;
+import com.vaadin.tutorial.crm.service.powerresources.PowerResourcesService;
 import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
 import com.vaadin.tutorial.crm.ui.powerresources.CreatePowerDialog;
@@ -28,10 +29,12 @@ public class PowerLayout extends AppLayout {
     HorizontalLayout hMenu2 = new HorizontalLayout();
     HorizontalLayout hMenu3 = new HorizontalLayout();
     private final PowerResourceDictService powerResourceDictService;
+    private final PowerResourcesService powerResourcesService;
 
-    public PowerLayout(SecurityConfiguration securityConfiguration, PowerResourceDictService powerResourceDictService) {
+    public PowerLayout(SecurityConfiguration securityConfiguration, PowerResourceDictService powerResourceDictService, PowerResourcesService powerResourcesService) {
         this.securityConfiguration = securityConfiguration;
         this.powerResourceDictService = powerResourceDictService;
+        this.powerResourcesService = powerResourcesService;
         createHeader();
         createDrawer();
     }
@@ -50,7 +53,7 @@ public class PowerLayout extends AppLayout {
         createPower.getStyle().set("background-color", "#d3b342");
         createPower.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         createPower.addClickListener(e -> {
-           new CreatePowerDialog(powerResourceDictService).open();
+           new CreatePowerDialog(powerResourceDictService, powerResourcesService).open();
         });
 
         RouterLink powerView = new RouterLink("Таблица показаний", MainView.class);

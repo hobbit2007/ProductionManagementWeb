@@ -4,12 +4,14 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.tutorial.crm.entity.PowerResourceDict;
 import com.vaadin.tutorial.crm.repository.PowerResourceDictRepository;
 import com.vaadin.tutorial.crm.service.PowerResourceDictService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Класс реализующий методы интерфейса PowerResourceDictService
  */
+@Service
 public class PowerResourceDictImpl implements PowerResourceDictService {
     private final PowerResourceDictRepository powerResourceDictRepository;
 

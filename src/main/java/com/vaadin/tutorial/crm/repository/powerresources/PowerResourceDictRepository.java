@@ -1,6 +1,6 @@
 package com.vaadin.tutorial.crm.repository.powerresources;
 
-import com.vaadin.tutorial.crm.entity.PowerResourceDict;
+import com.vaadin.tutorial.crm.entity.powerresources.PowerResourceDict;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

@@ -1,4 +1,4 @@
-package com.vaadin.tutorial.crm.repository;
+package com.vaadin.tutorial.crm.repository.powerresources;
 
 import com.vaadin.tutorial.crm.entity.PowerResources;
 import org.springframework.data.jpa.repository.JpaRepository;

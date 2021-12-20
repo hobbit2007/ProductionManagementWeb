@@ -24,4 +24,5 @@ public class PowerResourceDict implements Serializable {
     private Long idUser;
     private Date dateCreate;
     private Long delete;
+    private Long category;
 }

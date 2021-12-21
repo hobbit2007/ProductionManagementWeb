@@ -80,7 +80,7 @@ public class PlcValueController extends VerticalLayout {
             groupSignalName[i].getStyle().set("font-size", "16pt");
             groupSignalName[i].getStyle().set("margin-left", "30px");
         }
-        vLabel.add(anyComponent.labelTitle("Визуализация значений контроллера " + plcControllersService.getAllByID(controllerID).get(0).getControllerName()));
+        vLabel.add(anyComponent.labelTitle("Визуализация значений " + plcControllersService.getAllByID(controllerID).get(0).getControllerName()));
         vLabel.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
         hTitleContent.add(controllerStatus); //choose, selectController,

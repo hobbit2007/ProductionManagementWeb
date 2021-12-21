@@ -106,7 +106,7 @@ public class MainView extends VerticalLayout {
             chart.setWidth("500px");
             configuration = chart.getConfiguration();
             configuration.getChart().setType(ChartType.LINE);
-            configuration.getTitle().setText("Live data - PLC Выпарка");
+            configuration.getTitle().setText("Выпарка");
 
             XAxis xAxis = configuration.getxAxis();
             xAxis.setType(AxisType.DATETIME);
@@ -146,7 +146,7 @@ public class MainView extends VerticalLayout {
             chartWashing.setWidth("500px");
             configurationWashing = chartWashing.getConfiguration();
             configurationWashing.getChart().setType(ChartType.SPLINE);
-            configurationWashing.getTitle().setText("Live data - PLC Мойка");
+            configurationWashing.getTitle().setText("Мойка");
 
             XAxis xAxis = configurationWashing.getxAxis();
             xAxis.setType(AxisType.DATETIME);

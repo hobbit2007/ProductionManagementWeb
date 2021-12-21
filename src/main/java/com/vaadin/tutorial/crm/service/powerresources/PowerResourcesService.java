@@ -13,4 +13,6 @@ public interface PowerResourcesService {
     List<PowerResources> getAll();
 
     void saveAll(PowerResources powerResources);
+
+    List<PowerResources> getAllByResourceId(Long resourceID);
 }

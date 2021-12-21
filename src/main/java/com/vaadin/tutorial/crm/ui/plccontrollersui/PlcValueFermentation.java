@@ -86,7 +86,7 @@ public class PlcValueFermentation extends VerticalLayout{
             groupSignalName[i].getStyle().set("margin-left", "30px");
         }
 
-        vLabel.add(anyComponent.labelTitle("Визуализация значений контроллера " + plcControllersService.getAllByID(controllerID).get(0).getControllerName()));
+        vLabel.add(anyComponent.labelTitle("Визуализация значений " + plcControllersService.getAllByID(controllerID).get(0).getControllerName()));
         vLabel.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
 
         hTitleContent.add(controllerStatus); //choose, selectController,

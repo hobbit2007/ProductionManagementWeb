@@ -3,9 +3,12 @@ package com.vaadin.tutorial.crm.ui.powerresources;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.*;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -42,6 +45,11 @@ public class PowerStatistic extends VerticalLayout {
         vMain.add(new AnyComponent().labelTitle("Статистика по показаниям энергоресурсов"), initChart(), initChartElectric(), update);
         vMain.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         add(vMain);
+
+        Icon icon1 = new Icon(VaadinIcon.REFRESH);
+        update.setIcon(icon1);
+        update.getStyle().set("background-color", "#d3b342");
+        update.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
         update.addClickListener(e -> {
             UI.getCurrent().getPage().reload();

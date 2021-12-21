@@ -18,5 +18,5 @@ public interface PowerResourcesRepository extends JpaRepository<PowerResources, 
 
     //Выбираем список показаний по конкретному ресурсу
     @Query("select pr from power_resources pr where pr.idPowerResource = :resourceID and pr.delete = 0")
-    List<PowerResources> getAllByResourceId(@Param("resourceID") String resourceID);
+    List<PowerResources> getAllByResourceId(@Param("resourceID") Long resourceID);
 }

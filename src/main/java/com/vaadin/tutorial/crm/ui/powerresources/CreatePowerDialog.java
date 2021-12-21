@@ -13,6 +13,7 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
+import com.vaadin.flow.component.timepicker.TimePicker;
 import com.vaadin.tutorial.crm.entity.powerresources.PowerResourceDict;
 import com.vaadin.tutorial.crm.entity.powerresources.PowerResources;
 import com.vaadin.tutorial.crm.security.SecurityUtils;
@@ -24,6 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.OffsetTime;
+import java.time.ZoneOffset;
 import java.time.temporal.TemporalField;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,9 +41,11 @@ public class CreatePowerDialog extends Dialog {
     NumberField[] powerValue = new NumberField[100];
     FormLayout fContent = new FormLayout();
     HorizontalLayout hButton = new HorizontalLayout();
+    HorizontalLayout hDateTime = new HorizontalLayout();
     List<PowerResourceDict> powerResourceDictList;
     List<NumberField> powerValueFieldLink = new ArrayList<>();
     DatePicker datePicker = new DatePicker(LocalDate.now());
+    TimePicker timePicker = new TimePicker(LocalTime.now());
     /*HorizontalLayout hMain1 = new HorizontalLayout();
     HorizontalLayout hMain2 = new HorizontalLayout();
     HorizontalLayout hMain3 = new HorizontalLayout();
@@ -92,7 +98,13 @@ public class CreatePowerDialog extends Dialog {
         datePicker.setLabel("Выберите дату:");
         datePicker.setI18n(new AnyComponent().datePickerRus());
 
-        vMain.add(new AnyComponent().labelTitle("Добавить показания"), initPower(), datePicker, hButton);
+        timePicker.setLabel("Выберите время:");
+        timePicker.setValue(LocalTime.now());
+
+        hDateTime.add(datePicker, timePicker);
+        hDateTime.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.BASELINE);
+
+        vMain.add(new AnyComponent().labelTitle("Добавить показания"), initPower(), hDateTime, hButton);
         vMain.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         add(vMain);
 
@@ -129,11 +141,13 @@ public class CreatePowerDialog extends Dialog {
                 try {
                     PowerResources powerResources = new PowerResources();
                     Date date = Date.valueOf(datePicker.getValue());
+                    OffsetTime offsettime = OffsetTime.of(timePicker.getValue(), ZoneOffset.UTC);
                     powerResources.setIdPowerResource(powerResourceDictList.get(i).getId());
                     powerResources.setValue(powerValueFieldLink.get(i).getValue());
                     powerResources.setIdUser(SecurityUtils.getAuthentication().getDetails().getId());
                     powerResources.setDateCreate(date); //new Date(Calendar.getInstance().getTime().getTime())
                     powerResources.setDelete(0L);
+                    powerResources.setTimeCreate(offsettime);
 
                     powerResourcesService.saveAll(powerResources);
                     close();

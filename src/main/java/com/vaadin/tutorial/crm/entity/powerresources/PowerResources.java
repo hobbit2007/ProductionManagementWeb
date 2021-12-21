@@ -26,7 +26,7 @@ public class PowerResources implements Serializable {
     private Long idUser;
     private Date dateCreate;
     private Long delete;
-    private OffsetTime time;
+    private OffsetTime timeCreate;
 
     @Transient
     String description;
@@ -47,9 +47,10 @@ public class PowerResources implements Serializable {
         this.parent = parent;
     }
 
-    public PowerResources(double value, Date dateCreate, PowerResources parent) {
+    public PowerResources(double value, Date dateCreate, OffsetTime timeCreate, PowerResources parent) {
         this.value = value;
         this.dateCreate = dateCreate;
+        this.timeCreate = timeCreate;
         this.parent = parent;
     }
 }

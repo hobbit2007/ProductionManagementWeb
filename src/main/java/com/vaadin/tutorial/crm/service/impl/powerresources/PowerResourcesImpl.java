@@ -31,4 +31,9 @@ public class PowerResourcesImpl implements PowerResourcesService {
         else
             Notification.show("Нет данных для записи!", 5000, Notification.Position.MIDDLE);
     }
+
+    @Override
+    public List<PowerResources> getAllByResourceId(Long resourceID) {
+        return powerResourcesRepository.getAllByResourceId(resourceID);
+    }
 }

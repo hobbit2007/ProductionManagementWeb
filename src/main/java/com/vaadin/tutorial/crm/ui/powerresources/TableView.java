@@ -28,7 +28,7 @@ import java.util.List;
 public class TableView extends VerticalLayout {
     VerticalLayout vMain = new VerticalLayout();
     TreeGrid<PowerResources> grid;
-    Grid.Column<PowerResources> colDesc, colValue, colDate;
+    Grid.Column<PowerResources> colDesc, colValue, colDate, colTime;
     private final PowerResourcesService powerResourcesService;
     private final PowerResourceDictService powerResourceDictService;
     public TableView(PowerResourcesService powerResourcesService, PowerResourceDictService powerResourceDictService) {
@@ -39,6 +39,7 @@ public class TableView extends VerticalLayout {
         updateList();
         vMain.add(new AnyComponent().labelTitle("Таблица показаний"), grid);
         vMain.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+        vMain.setSizeFull();
         add(vMain);
     }
     private void fillTreeGrid(List<PowerResources> data) {
@@ -54,7 +55,7 @@ public class TableView extends VerticalLayout {
             index = childData.size() - 1;
             for (int i = 0; i < data.size(); i++) {
                 if (data.get(i).getIdPowerResource() == parentData.get(g).getId()) {
-                    childData.add(new PowerResources(data.get(i).getValue(), data.get(i).getDateCreate(), childData.get(index)));
+                    childData.add(new PowerResources(data.get(i).getValue(), data.get(i).getDateCreate(), data.get(i).getTimeCreate(), childData.get(index)));
                     parentFlag = true;
                 }
             }
@@ -79,9 +80,11 @@ public class TableView extends VerticalLayout {
         colDesc = grid.addHierarchyColumn(powerResources -> powerResources.getDescription() == null ? "" : powerResources.getDescription()).setHeader("Группы энергоресурсов");
         colValue = grid.addColumn(powerResources -> powerResources.getValue() == 0.0 ? "" : powerResources.getValue()).setHeader("Показания");
         colDate = grid.addColumn(powerResources -> powerResources.getDateCreate()).setHeader("Дата снятия");
+        colTime = grid.addColumn(powerResources -> powerResources.getTimeCreate()).setHeader("Время снятия");
 
         colDesc.setResizable(true);
         colValue.setResizable(true);
         colDate.setResizable(true);
+        colTime.setResizable(true);
     }
 }

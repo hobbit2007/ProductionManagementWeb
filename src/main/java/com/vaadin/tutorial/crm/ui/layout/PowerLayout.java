@@ -16,6 +16,7 @@ import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
 import com.vaadin.tutorial.crm.ui.powerresources.CreatePowerDialog;
 import com.vaadin.tutorial.crm.ui.powerresources.PowerStatistic;
+import com.vaadin.tutorial.crm.ui.powerresources.TableView;
 
 /**
  * Класс реализующий шапку и боковое меню для меню Энергоресурсы
@@ -56,7 +57,7 @@ public class PowerLayout extends AppLayout {
            new CreatePowerDialog(powerResourceDictService, powerResourcesService).open();
         });
 
-        RouterLink powerView = new RouterLink("Таблица показаний", MainView.class);
+        RouterLink powerView = new RouterLink("Таблица показаний", TableView.class);
         powerView.setHighlightCondition(HighlightConditions.sameLocation());
         Icon icon2 = new Icon(VaadinIcon.TABLE);
         hMenu2.add(icon2, powerView);

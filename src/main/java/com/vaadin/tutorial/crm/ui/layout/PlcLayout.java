@@ -44,32 +44,32 @@ public class PlcLayout extends AppLayout {
         Icon icon = new Icon(VaadinIcon.ARROW_BACKWARD);
         hMenu1.add(icon, back);
 
-        RouterLink plcValueWashing = new RouterLink("ПЛК Мойка", PlcValueWashing.class);
+        RouterLink plcValueWashing = new RouterLink("Мойка", PlcValueWashing.class);
         plcValueWashing.setHighlightCondition(HighlightConditions.sameLocation());
         Icon icon1 = new Icon(VaadinIcon.CONTROLLER);
         hMenu2.add(icon1, plcValueWashing);
 
-        RouterLink plcValueDiffusion = new RouterLink("ПЛК Диффузия", PlcValueDiffusion.class);
+        RouterLink plcValueDiffusion = new RouterLink("Диффузия", PlcValueDiffusion.class);
         plcValueDiffusion.setHighlightCondition(HighlightConditions.sameLocation());
         Icon icon2 = new Icon(VaadinIcon.CONTROLLER);
         hMenu3.add(icon2, plcValueDiffusion);
 
-        RouterLink plcValueFermentation = new RouterLink("ПЛК Ферментация", PlcValueFermentation.class);
+        RouterLink plcValueFermentation = new RouterLink("Ферментация", PlcValueFermentation.class);
         plcValueFermentation.setHighlightCondition(HighlightConditions.sameLocation());
         Icon icon3 = new Icon(VaadinIcon.CONTROLLER);
         hMenu4.add(icon3, plcValueFermentation);
 
-        RouterLink plcValue = new RouterLink("ПЛК Выпарка", PlcValueController.class);
+        RouterLink plcValue = new RouterLink("Выпарка", PlcValueController.class);
         plcValue.setHighlightCondition(HighlightConditions.sameLocation());
         Icon icon7 = new Icon(VaadinIcon.CONTROLLER);
         hMenu7.add(icon7, plcValue);
 
-        RouterLink plcValueBottling = new RouterLink("ПЛК Розлив", PlcValueBottling.class);
+        RouterLink plcValueBottling = new RouterLink("Розлив", PlcValueBottling.class);
         plcValueBottling.setHighlightCondition(HighlightConditions.sameLocation());
         Icon icon4 = new Icon(VaadinIcon.CONTROLLER);
         hMenu5.add(icon4, plcValueBottling);
 
-        RouterLink plcValueDrying = new RouterLink("ПЛК Сушка", PlcValueDrying.class);
+        RouterLink plcValueDrying = new RouterLink("Сушка", PlcValueDrying.class);
         plcValueDrying.setHighlightCondition(HighlightConditions.sameLocation());
         Icon icon5 = new Icon(VaadinIcon.CONTROLLER);
         hMenu6.add(icon5, plcValueDrying);

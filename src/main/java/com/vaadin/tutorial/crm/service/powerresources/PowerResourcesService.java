@@ -3,6 +3,7 @@ package com.vaadin.tutorial.crm.service.powerresources;
 import com.vaadin.tutorial.crm.entity.powerresources.PowerResources;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -15,4 +16,6 @@ public interface PowerResourcesService {
     void saveAll(PowerResources powerResources);
 
     List<PowerResources> getAllByResourceId(Long resourceID);
+
+    List<PowerResources> getResourceBySearch(Date dateBegin, Date dateEnd);
 }

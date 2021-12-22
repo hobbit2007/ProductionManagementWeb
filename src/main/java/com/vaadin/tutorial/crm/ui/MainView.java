@@ -103,7 +103,7 @@ public class MainView extends VerticalLayout {
         HorizontalLayout hChart = new HorizontalLayout();
         final Random random = new Random();
         if (PLCConnect.contrConnected) {
-            chart.setWidth("500px");
+            chart.setWidth("570px");
             configuration = chart.getConfiguration();
             configuration.getChart().setType(ChartType.LINE);
             configuration.getTitle().setText("Выпарка");
@@ -143,7 +143,7 @@ public class MainView extends VerticalLayout {
         HorizontalLayout hChart = new HorizontalLayout();
         final Random random = new Random();
         if (PLCConnect.contrConnectedWashing) {
-            chartWashing.setWidth("500px");
+            chartWashing.setWidth("570px");
             configurationWashing = chartWashing.getConfiguration();
             configurationWashing.getChart().setType(ChartType.SPLINE);
             configurationWashing.getTitle().setText("Мойка");

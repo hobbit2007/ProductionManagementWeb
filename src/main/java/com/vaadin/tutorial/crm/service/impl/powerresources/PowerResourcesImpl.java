@@ -6,6 +6,7 @@ import com.vaadin.tutorial.crm.repository.powerresources.PowerResourcesRepositor
 import com.vaadin.tutorial.crm.service.powerresources.PowerResourcesService;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -35,5 +36,10 @@ public class PowerResourcesImpl implements PowerResourcesService {
     @Override
     public List<PowerResources> getAllByResourceId(Long resourceID) {
         return powerResourcesRepository.getAllByResourceId(resourceID);
+    }
+
+    @Override
+    public List<PowerResources> getResourceBySearch(Date dateBegin, Date dateEnd) {
+        return powerResourcesRepository.getResourceBySearch(dateBegin, dateEnd);
     }
 }

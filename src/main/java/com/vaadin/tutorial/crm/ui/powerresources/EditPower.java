@@ -18,8 +18,7 @@ import com.vaadin.tutorial.crm.entity.powerresources.PowerResources;
 import com.vaadin.tutorial.crm.service.powerresources.PowerResourceDictService;
 import com.vaadin.tutorial.crm.service.powerresources.PowerResourcesService;
 import com.vaadin.tutorial.crm.ui.component.AnyComponent;
-import com.vaadin.tutorial.crm.ui.layout.UserLayout;
-
+import com.vaadin.tutorial.crm.ui.layout.PowerLayout;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +26,7 @@ import java.util.List;
 /**
  * Класс реализующий обновление введенных показаний по энергоресурсам
  */
-@Route(value = "poweredit", layout = UserLayout.class)
+@Route(value = "poweredit", layout = PowerLayout.class)
 @PageTitle("Редактирование показаний | Система управления производством")
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")

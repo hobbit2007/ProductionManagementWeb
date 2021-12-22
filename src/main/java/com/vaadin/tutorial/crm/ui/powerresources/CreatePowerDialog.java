@@ -32,6 +32,7 @@ import java.time.temporal.TemporalField;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Класс реализующий добавление показателей счетчиков энергоресурсов
@@ -100,6 +101,8 @@ public class CreatePowerDialog extends Dialog {
 
         timePicker.setLabel("Выберите время:");
         timePicker.setValue(LocalTime.now());
+        Locale locale = Locale.UK;
+        timePicker.setLocale(locale);
 
         hDateTime.add(datePicker, timePicker);
         hDateTime.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.BASELINE);

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -19,4 +20,8 @@ public interface PowerResourcesRepository extends JpaRepository<PowerResources, 
     //Выбираем список показаний по конкретному ресурсу
     @Query("select pr from power_resources pr where pr.idPowerResource = :resourceID and pr.delete = 0")
     List<PowerResources> getAllByResourceId(@Param("resourceID") Long resourceID);
+
+    //Выбирает список показаний за указанные даты
+    @Query("select pr from power_resources pr where pr.dateCreate between :dateBegin and :dateEnd and pr.delete = 0")
+    List<PowerResources> getResourceBySearch(@Param("dateBegin") Date dateBegin, @Param("dateEnd") Date dateEnd);
 }

@@ -20,7 +20,6 @@ import com.vaadin.tutorial.crm.service.powerresources.PowerResourcesService;
 import com.vaadin.tutorial.crm.ui.component.AnyComponent;
 import com.vaadin.tutorial.crm.ui.layout.PowerLayout;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

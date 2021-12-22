@@ -10,11 +10,13 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.tutorial.crm.security.SecurityConfiguration;
+import com.vaadin.tutorial.crm.security.SecurityUtils;
 import com.vaadin.tutorial.crm.service.powerresources.PowerResourceDictService;
 import com.vaadin.tutorial.crm.service.powerresources.PowerResourcesService;
 import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
 import com.vaadin.tutorial.crm.ui.powerresources.CreatePowerDialog;
+import com.vaadin.tutorial.crm.ui.powerresources.EditPower;
 import com.vaadin.tutorial.crm.ui.powerresources.PowerStatistic;
 import com.vaadin.tutorial.crm.ui.powerresources.TableView;
 
@@ -29,8 +31,10 @@ public class PowerLayout extends AppLayout {
     HorizontalLayout hMenu1 = new HorizontalLayout();
     HorizontalLayout hMenu2 = new HorizontalLayout();
     HorizontalLayout hMenu3 = new HorizontalLayout();
+    HorizontalLayout hMenu4 = new HorizontalLayout();
     private final PowerResourceDictService powerResourceDictService;
     private final PowerResourcesService powerResourcesService;
+    private final String ROLE = "ADMIN";
 
     public PowerLayout(SecurityConfiguration securityConfiguration, PowerResourceDictService powerResourceDictService, PowerResourcesService powerResourcesService) {
         this.securityConfiguration = securityConfiguration;
@@ -67,7 +71,14 @@ public class PowerLayout extends AppLayout {
         Icon icon3 = new Icon(VaadinIcon.CHART);
         hMenu3.add(icon3, statistics);
 
-        addToDrawer(new VerticalLayout(hMenu1, createPower, hMenu2, hMenu3));
+        if (SecurityUtils.getAuthentication().getDetails().getRole().equals(ROLE)) {
+            RouterLink editLink = new RouterLink("Редактирование показаний", EditPower.class);
+            editLink.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon5 = new Icon(VaadinIcon.EDIT);
+            hMenu4.add(icon5, editLink);
+        }
+
+        addToDrawer(new VerticalLayout(hMenu1, createPower, hMenu2, hMenu3, hMenu4));
 
         //Закрываем меню на стороне клиента
         //т.к. при первом запуске меню показывается автоматически

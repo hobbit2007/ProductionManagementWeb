@@ -1,6 +1,5 @@
 package com.vaadin.tutorial.crm.ui.powerresources;
 
-import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
@@ -13,10 +12,6 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.shared.Registration;
 import com.vaadin.tutorial.crm.entity.powerresources.PowerResources;
 import com.vaadin.tutorial.crm.service.powerresources.PowerResourcesService;
-import com.vaadin.tutorial.crm.ui.users.FormUsersEdit;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Класс форма реализующий редактирование показаний

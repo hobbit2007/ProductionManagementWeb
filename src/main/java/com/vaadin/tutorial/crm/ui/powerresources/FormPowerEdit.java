@@ -27,7 +27,7 @@ public class FormPowerEdit extends FormLayout {
     TextField dateCreate = new TextField("Дата снятия:");
     TextField timeCreate = new TextField("Время снятия:");
     Button save = new Button("Сохранить");
-    Button cancel = new Button("Отменить");
+    Button cancel = new Button("Закрыть");
     PowerResources powerResources = new PowerResources();
     long powerValueID;
     private final PowerResourcesService powerResourcesService;

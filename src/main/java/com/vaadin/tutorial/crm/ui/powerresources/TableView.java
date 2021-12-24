@@ -108,7 +108,7 @@ public class TableView extends VerticalLayout {
             index = childData.size() - 1;
             for (int i = 0; i < data.size(); i++) {
                 if (data.get(i).getIdPowerResource() == parentData.get(g).getId()) {
-                    childData.add(new PowerResources(data.get(i).getValue(), data.get(i).getDateCreate(), data.get(i).getTimeCreate(), childData.get(index)));
+                    childData.add(new PowerResources(data.get(i).getValue(), data.get(i).getDateCreate(), data.get(i).getTimeCreate(), data.get(i).getId(), childData.get(index)));
                     parentFlag = true;
                 }
             }

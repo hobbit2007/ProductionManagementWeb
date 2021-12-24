@@ -42,4 +42,9 @@ public class PowerResourcesImpl implements PowerResourcesService {
     public List<PowerResources> getResourceBySearch(Date dateBegin, Date dateEnd) {
         return powerResourcesRepository.getResourceBySearch(dateBegin, dateEnd);
     }
+
+    @Override
+    public void updateValue(PowerResources powerResources) {
+        powerResourcesRepository.updateValue(powerResources.getId(), powerResources.getValue());
+    }
 }

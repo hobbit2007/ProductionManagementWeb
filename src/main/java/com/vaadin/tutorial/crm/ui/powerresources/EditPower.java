@@ -5,6 +5,7 @@ import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -13,6 +14,7 @@ import com.vaadin.flow.data.provider.hierarchy.TreeData;
 import com.vaadin.flow.data.provider.hierarchy.TreeDataProvider;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.tutorial.crm.entity.User;
 import com.vaadin.tutorial.crm.entity.powerresources.PowerResourceDict;
 import com.vaadin.tutorial.crm.entity.powerresources.PowerResources;
 import com.vaadin.tutorial.crm.service.powerresources.PowerResourceDictService;
@@ -39,12 +41,15 @@ public class EditPower extends VerticalLayout {
     DatePicker dateEnd = new DatePicker("по:");
     Button sortButton = new Button("Сортировка");
     Button allViewButton = new Button("Показать все");
+    long powerValueID;
+    FormPowerEdit formPowerEdit;
+    Div content;
     private final PowerResourcesService powerResourcesService;
     private final PowerResourceDictService powerResourceDictService;
     public EditPower(PowerResourcesService powerResourcesService, PowerResourceDictService powerResourceDictService) {
         this.powerResourcesService = powerResourcesService;
         this.powerResourceDictService = powerResourceDictService;
-
+        addClassName("list-view");
         setSizeFull();
         configureGrid();
         updateList();
@@ -56,10 +61,18 @@ public class EditPower extends VerticalLayout {
         hSort.add(new AnyComponent().labelTitle("Сортировка по дате:"), dateBegin, dateEnd, sortButton, allViewButton);
         hSort.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
 
-        vMain.add(new AnyComponent().labelTitle("Редактирование показаний"), hSort, grid);
+        formPowerEdit = new FormPowerEdit();
+
+        content = new Div(grid, formPowerEdit);
+        content.addClassName("content");
+        content.setSizeFull();
+
+        vMain.add(new AnyComponent().labelTitle("Редактирование показаний"), hSort, content);
         vMain.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         vMain.setSizeFull();
         add(vMain);
+
+        close();
 
         sortButton.addClickListener(e -> {
             if (!dateBegin.isEmpty() && !dateEnd.isEmpty()) {
@@ -138,5 +151,26 @@ public class EditPower extends VerticalLayout {
         colValue.setResizable(true);
         colDate.setResizable(true);
         colTime.setResizable(true);
+
+        grid.asSingleSelect().addValueChangeListener(event -> {
+           if (event.getValue() != null) {
+               powerValueID = event.getValue().getId();
+               editForm(event.getValue());
+           }
+           else
+               close();
+        });
+    }
+    private void editForm(PowerResources powerResources) {
+        if (powerResources == null)
+            close();
+        formPowerEdit.setPowerRes(powerResources);
+        formPowerEdit.setVisible(true);
+        addClassName("editing");
+    }
+    private void close() {
+        formPowerEdit.setPowerRes(null);
+        formPowerEdit.setVisible(false);
+        //updateList();
     }
 }

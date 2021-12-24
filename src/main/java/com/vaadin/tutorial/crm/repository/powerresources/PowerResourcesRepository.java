@@ -2,9 +2,11 @@ package com.vaadin.tutorial.crm.repository.powerresources;
 
 import com.vaadin.tutorial.crm.entity.powerresources.PowerResources;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.List;
@@ -24,4 +26,10 @@ public interface PowerResourcesRepository extends JpaRepository<PowerResources, 
     //Выбирает список показаний за указанные даты
     @Query("select pr from power_resources pr where pr.dateCreate between :dateBegin and :dateEnd and pr.delete = 0")
     List<PowerResources> getResourceBySearch(@Param("dateBegin") Date dateBegin, @Param("dateEnd") Date dateEnd);
+
+    //Обновление значения показания
+    @Modifying
+    @Transactional
+    @Query("update power_resources pr set pr.value = :value where pr.id = :ID")
+    void updateValue(@Param("ID") Long ID, @Param("value") Double value);
 }

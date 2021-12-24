@@ -47,10 +47,12 @@ public class PowerResources implements Serializable {
         this.parent = parent;
     }
 
-    public PowerResources(double value, Date dateCreate, OffsetTime timeCreate, PowerResources parent) {
+    public PowerResources(double value, Date dateCreate, OffsetTime timeCreate,
+                          long id, PowerResources parent) {
         this.value = value;
         this.dateCreate = dateCreate;
         this.timeCreate = timeCreate;
+        this.id = id;
         this.parent = parent;
     }
 }

@@ -1,5 +1,6 @@
 package com.vaadin.tutorial.crm.ui.powerresources;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -42,6 +43,7 @@ public class EditPower extends VerticalLayout {
     Button allViewButton = new Button("Показать все");
     FormPowerEdit formPowerEdit;
     Div content;
+    long powerID;
     private final PowerResourcesService powerResourcesService;
     private final PowerResourceDictService powerResourceDictService;
     public EditPower(PowerResourcesService powerResourcesService, PowerResourceDictService powerResourceDictService) {
@@ -60,6 +62,8 @@ public class EditPower extends VerticalLayout {
         hSort.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
 
         formPowerEdit = new FormPowerEdit(powerResourcesService);
+        formPowerEdit.addListener(FormPowerEdit.ContactFormEvent.EditEvent.class, e -> powerValueSave());
+        formPowerEdit.addListener(FormPowerEdit.ContactFormEvent.CloseEvent.class, e -> close());
 
         content = new Div(grid, formPowerEdit);
         content.addClassName("content");
@@ -154,6 +158,7 @@ public class EditPower extends VerticalLayout {
 
         grid.asSingleSelect().addValueChangeListener(event -> {
            if (event.getValue() != null) {
+               powerID = event.getValue().getId();
                editForm(event.getValue());
            }
            else
@@ -166,6 +171,19 @@ public class EditPower extends VerticalLayout {
         formPowerEdit.setPowerRes(powerResources);
         formPowerEdit.setVisible(true);
         addClassName("editing");
+    }
+    private void powerValueSave() {
+        PowerResources powerResources = new PowerResources();
+        try {
+            powerResources.setValue(FormPowerEdit.ContactFormEvent.getValue());
+            powerResources.setId(powerID);
+            powerResourcesService.updateValue(powerResources);
+            UI.getCurrent().getPage().reload();
+        }
+        catch (Exception ex) {
+            Notification.show("Не могу сохранить в БД!" + ex.getMessage());
+            return;
+        }
     }
     private void close() {
         formPowerEdit.setPowerRes(null);

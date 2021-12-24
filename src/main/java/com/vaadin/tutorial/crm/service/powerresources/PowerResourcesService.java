@@ -18,4 +18,6 @@ public interface PowerResourcesService {
     List<PowerResources> getAllByResourceId(Long resourceID);
 
     List<PowerResources> getResourceBySearch(Date dateBegin, Date dateEnd);
+
+    void updateValue(PowerResources powerResources);
 }

@@ -14,7 +14,6 @@ import com.vaadin.flow.data.provider.hierarchy.TreeData;
 import com.vaadin.flow.data.provider.hierarchy.TreeDataProvider;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.tutorial.crm.entity.User;
 import com.vaadin.tutorial.crm.entity.powerresources.PowerResourceDict;
 import com.vaadin.tutorial.crm.entity.powerresources.PowerResources;
 import com.vaadin.tutorial.crm.service.powerresources.PowerResourceDictService;
@@ -36,12 +35,11 @@ public class EditPower extends VerticalLayout {
     VerticalLayout vMain = new VerticalLayout();
     HorizontalLayout hSort = new HorizontalLayout();
     TreeGrid<PowerResources> grid;
-    Grid.Column<PowerResources> colDesc, colValue, colDate, colTime;
+    Grid.Column<PowerResources> colId, colDesc, colValue, colDate, colTime;
     DatePicker dateBegin = new DatePicker("с:");
     DatePicker dateEnd = new DatePicker("по:");
     Button sortButton = new Button("Сортировка");
     Button allViewButton = new Button("Показать все");
-    long powerValueID;
     FormPowerEdit formPowerEdit;
     Div content;
     private final PowerResourcesService powerResourcesService;
@@ -61,7 +59,7 @@ public class EditPower extends VerticalLayout {
         hSort.add(new AnyComponent().labelTitle("Сортировка по дате:"), dateBegin, dateEnd, sortButton, allViewButton);
         hSort.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
 
-        formPowerEdit = new FormPowerEdit();
+        formPowerEdit = new FormPowerEdit(powerResourcesService);
 
         content = new Div(grid, formPowerEdit);
         content.addClassName("content");
@@ -120,7 +118,7 @@ public class EditPower extends VerticalLayout {
             index = childData.size() - 1;
             for (int i = 0; i < data.size(); i++) {
                 if (data.get(i).getIdPowerResource() == parentData.get(g).getId()) {
-                    childData.add(new PowerResources(data.get(i).getValue(), data.get(i).getDateCreate(), data.get(i).getTimeCreate(), childData.get(index)));
+                    childData.add(new PowerResources(data.get(i).getValue(), data.get(i).getDateCreate(), data.get(i).getTimeCreate(), data.get(i).getId(), childData.get(index)));
                     parentFlag = true;
                 }
             }
@@ -146,6 +144,8 @@ public class EditPower extends VerticalLayout {
         colValue = grid.addColumn(powerResources -> powerResources.getValue() == 0.0 ? "" : powerResources.getValue()).setHeader("Показания");
         colDate = grid.addColumn(powerResources -> powerResources.getDateCreate()).setHeader("Дата снятия");
         colTime = grid.addColumn(powerResources -> powerResources.getTimeCreate()).setHeader("Время снятия");
+        colId = grid.addColumn(powerResources -> powerResources.getId()).setHeader("ID");
+        colId.setVisible(false);
 
         colDesc.setResizable(true);
         colValue.setResizable(true);
@@ -154,7 +154,6 @@ public class EditPower extends VerticalLayout {
 
         grid.asSingleSelect().addValueChangeListener(event -> {
            if (event.getValue() != null) {
-               powerValueID = event.getValue().getId();
                editForm(event.getValue());
            }
            else

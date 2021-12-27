@@ -49,12 +49,12 @@ public class PowerResourcesImpl implements PowerResourcesService {
     }
 
     @Override
-    public void updateValueDaily(PowerResources powerResources) {
-        powerResourcesRepository.updateValueDaily(powerResources.getId(), powerResources.getValue());
+    public void updateValueDaily(Long id, double value) {
+        powerResourcesRepository.updateValueDaily(id, value);
     }
 
     @Override
-    public void updateValueWeekly(PowerResources powerResources) {
-        powerResourcesRepository.updateValueWeekly(powerResources.getId(), powerResources.getValue());
+    public void updateValueWeekly(Long id, double value) {
+        powerResourcesRepository.updateValueWeekly(id, value);
     }
 }

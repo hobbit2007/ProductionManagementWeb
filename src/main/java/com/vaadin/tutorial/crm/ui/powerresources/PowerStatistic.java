@@ -103,7 +103,7 @@ public class PowerStatistic extends VerticalLayout {
                 waterWellSeries[i].add(item[i]);
             }
         }
-        configuration.setSeries(waterWellSeries[0], waterWellSeries[1], waterWellSeries[2], waterWellSeries[3], waterWellSeries[4]);
+        configuration.setSeries(waterWellSeries[0], waterWellSeries[1]); //waterWellSeries[1], waterWellSeries[2],, waterWellSeries[5]
         PlotOptionsSeries plotOptionsSeries = new PlotOptionsSeries();
         plotOptionsSeries.setCompare(Compare.PERCENT);
         configuration.setPlotOptions(plotOptionsSeries);
@@ -162,7 +162,7 @@ public class PowerStatistic extends VerticalLayout {
                 waterWellSeries[i].add(item[i]);
             }
         }
-        configuration.setSeries(waterWellSeries[5], waterWellSeries[6], waterWellSeries[7], waterWellSeries[8], waterWellSeries[9]);
+        configuration.setSeries(waterWellSeries[2], waterWellSeries[3], waterWellSeries[4]); //waterWellSeries[6], waterWellSeries[7],waterWellSeries[8],
         PlotOptionsSeries plotOptionsSeries = new PlotOptionsSeries();
         plotOptionsSeries.setCompare(Compare.PERCENT);
         configuration.setPlotOptions(plotOptionsSeries);

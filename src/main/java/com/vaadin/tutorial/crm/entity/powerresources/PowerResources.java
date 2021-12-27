@@ -1,6 +1,5 @@
 package com.vaadin.tutorial.crm.entity.powerresources;
 
-import com.vaadin.tutorial.crm.entity.powerresources.PowerResourceDict;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.NotFound;

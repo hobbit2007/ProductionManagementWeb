@@ -29,6 +29,7 @@ public class PowerResources implements Serializable {
     private OffsetTime timeCreate;
     private double valueDaily;
     private double valueWeekly;
+    private double totalValueWeekly;
 
     @Transient
     String description;

@@ -24,4 +24,6 @@ public interface PowerResourcesService {
     void updateValueDaily(Long id, double value);
 
     void updateValueWeekly(Long id, double value);
+
+    void updateTotalValueWeekly(Long id, double value);
 }

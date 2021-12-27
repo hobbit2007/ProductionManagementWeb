@@ -32,4 +32,16 @@ public interface PowerResourcesRepository extends JpaRepository<PowerResources, 
     @Transactional
     @Query("update power_resources pr set pr.value = :value where pr.id = :ID")
     void updateValue(@Param("ID") Long ID, @Param("value") Double value);
+
+    //Обновление ежедневной разницы показаний
+    @Modifying
+    @Transactional
+    @Query("update power_resources pr set pr.valueDaily = :value where pr.id = :ID")
+    void updateValueDaily(@Param("ID") Long ID, @Param("value") Double value);
+
+    //Обновление еженедельной разницы показаний
+    @Modifying
+    @Transactional
+    @Query("update power_resources pr set pr.valueWeekly = :value where pr.id = :ID")
+    void updateValueWeekly(@Param("ID") Long ID, @Param("value") Double value);
 }

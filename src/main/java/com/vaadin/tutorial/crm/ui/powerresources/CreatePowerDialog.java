@@ -20,7 +20,6 @@ import com.vaadin.tutorial.crm.security.SecurityUtils;
 import com.vaadin.tutorial.crm.service.powerresources.PowerResourceDictService;
 import com.vaadin.tutorial.crm.service.powerresources.PowerResourcesService;
 import com.vaadin.tutorial.crm.ui.component.AnyComponent;
-import org.hibernate.mapping.Any;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Date;
@@ -28,9 +27,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.OffsetTime;
 import java.time.ZoneOffset;
-import java.time.temporal.TemporalField;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -126,57 +123,87 @@ public class CreatePowerDialog extends Dialog {
         });
         save.addClickListener(e -> {
             powerResourceDictList = powerResourceDictService.getAll();
-            for (int i = 0; i < powerValueFieldLink.size(); i++) {
-                if (powerValueFieldLink.get(i).isEmpty()) {
-                    Notification.show("Не все поля заполнены!", 5000, Notification.Position.MIDDLE);
-                    return;
-                }
-            }
+            //for (int i = 0; i < powerValueFieldLink.size(); i++) {
+                //if (powerValueFieldLink.get(i).isEmpty()) {
+                //    Notification.show("Не все поля заполнены!", 5000, Notification.Position.MIDDLE);
+                //    return;
+                //}
+            //}
             if (powerResourceDictList.size() != 0) {
                 for (int i = 0; i < powerResourceDictList.size(); i++) {
-                    if (powerResourceDictList.get(i).getCategory() == 1) {
+                    if (powerResourceDictList.get(i).getCategory() == 1 && !powerValueFieldLink.get(i).isEmpty()) {
                         totalElectricity += powerValueFieldLink.get(i).getValue();
                     }
                 }
-                powerValue[9].setValue(totalElectricity);
+                powerValue[5].setValue(totalElectricity);
             }
             for (int i = 0; i < powerValueFieldLink.size(); i++) {
                 try {
-                    PowerResources powerResources = new PowerResources();
-                    Date date = Date.valueOf(datePicker.getValue());
-                    OffsetTime offsettime = OffsetTime.of(timePicker.getValue(), ZoneOffset.UTC);
-                    powerResources.setIdPowerResource(powerResourceDictList.get(i).getId());
-                    powerResources.setValue(powerValueFieldLink.get(i).getValue());
-                    powerResources.setIdUser(SecurityUtils.getAuthentication().getDetails().getId());
-                    powerResources.setDateCreate(date); //new Date(Calendar.getInstance().getTime().getTime())
-                    powerResources.setDelete(0L);
-                    powerResources.setTimeCreate(offsettime);
+                    if (!powerValueFieldLink.get(i).isEmpty()) {
+                        PowerResources powerResources = new PowerResources();
+                        Date date = Date.valueOf(datePicker.getValue());
+                        OffsetTime offsettime = OffsetTime.of(timePicker.getValue(), ZoneOffset.UTC);
+                        powerResources.setIdPowerResource(powerResourceDictList.get(i).getId());
+                        powerResources.setValue(powerValueFieldLink.get(i).getValue());
+                        powerResources.setIdUser(SecurityUtils.getAuthentication().getDetails().getId());
+                        powerResources.setDateCreate(date); //new Date(Calendar.getInstance().getTime().getTime())
+                        powerResources.setDelete(0L);
+                        powerResources.setTimeCreate(offsettime);
 
-                    powerResourcesService.saveAll(powerResources);
-                    close();
+                        powerResourcesService.saveAll(powerResources);
+
+                        //Получаем ежедневную разницу показаний между текущими и предыдущими для воды
+                        List<PowerResources> waterList = powerResourcesService.getAllByResourceId(1L);
+                        double varWater = 0;
+                        if (waterList.size() != 0 && waterList.size() > 1) {
+                            for (int j = waterList.size() - 1; j >= waterList.size() - 2; j--) {
+                                varWater -= waterList.get(j).getValue();
+                            }
+                            powerResourcesService.updateValueDaily(powerResources.getId(), varWater);
+                        }
+                        //Получаем ежедневную разницу показаний между текущими и предыдущими для газа
+                        List<PowerResources> gasList = powerResourcesService.getAllByResourceId(4L);
+                        double varGas = 0;
+                        if (gasList.size() != 0 && gasList.size() > 1) {
+                            for (int j = gasList.size() - 1; j >= gasList.size() - 2; j--) {
+                                varGas -= gasList.get(j).getValue();
+                            }
+                            powerResourcesService.updateValueDaily(powerResources.getId(), varGas);
+                        }
+                        //Получаем еженедельную сумму показаний для газа
+                        List<PowerResources> gasListWeekly = powerResourcesService.getAllByResourceId(4L);
+                        double varGasWeekly = 0;
+                        if (gasListWeekly.size() != 0 && gasListWeekly.size() > 7) {
+                            for (int j = gasListWeekly.size() - 1; j >= gasListWeekly.size() - 7; j--) {
+                                varGasWeekly += gasListWeekly.get(j).getValue();
+                            }
+                            powerResourcesService.updateValueWeekly(powerResources.getId(), varGasWeekly);
+                        }
+                    }
                 }
                 catch (Exception ex) {
                     Notification.show("Не могу сохранить показания в БД! " + ex.getMessage(), 5000, Notification.Position.MIDDLE);
                 }
             }
+            close();
         });
     }
 
     private Component initPower() {
         fContent = new FormLayout();
-        fContent.setWidth("681px");
+        fContent.setWidth("731px");
 
         powerResourceDictList = powerResourceDictService.getAll();
         if (powerResourceDictList.size() != 0) {
             for (int i = 0; i < powerResourceDictList.size(); i++) {
                 powerValue[i] = new NumberField(powerResourceDictList.get(i).getResourceName());
-                powerValue[i].setWidth("121px");
+                powerValue[i].setWidth("191px");
                 fContent.add(powerValue[i]);
-                fContent.setResponsiveSteps(new FormLayout.ResponsiveStep("121px", 3));
+                fContent.setResponsiveSteps(new FormLayout.ResponsiveStep("191px", 3));
                 powerValueFieldLink.add(powerValue[i]);
             }
-            powerValue[9].setVisible(false);//Поле Итого с id = 9 не показываем в интерфейсе
-            powerValue[9].setValue(0.00);
+            powerValue[5].setVisible(false);//Поле Итого с id = 5 не показываем в интерфейсе
+            powerValue[5].setValue(0.00);
         }
         return fContent;
     }

@@ -1,6 +1,5 @@
 package com.vaadin.tutorial.crm.service.powerresources;
 
-
 import com.vaadin.tutorial.crm.entity.powerresources.PowerResourceDict;
 import org.springframework.stereotype.Service;
 

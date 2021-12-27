@@ -21,7 +21,7 @@ public class WriteToDB implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String description;
-    private long writeOff;
+    private String writeOff;
     private long repeatTime;
     private long idController;
     private long idUser;

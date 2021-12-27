@@ -14,7 +14,7 @@ import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.admin.PlcSignalPage;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
 import com.vaadin.tutorial.crm.ui.users.UsersCreate;
-import com.vaadin.tutorial.crm.ui.writetodb.WriteToDB;
+import com.vaadin.tutorial.crm.ui.writetodb.WriteToDBValue;
 
 /**
  * Класс реализующий шапку и боковое меню для меню Администрирование
@@ -77,7 +77,7 @@ public class AdminLayout extends AppLayout {
             Icon icon5 = new Icon(VaadinIcon.LINES_LIST);
             hMenu5.add(icon5, plcSignalsList);
 
-            RouterLink writeToDBList = new RouterLink("Управление записью в БД", WriteToDB.class);
+            RouterLink writeToDBList = new RouterLink("Управление записью в БД", WriteToDBValue.class);
             writeToDBList.setHighlightCondition(HighlightConditions.sameLocation());
             Icon icon6 = new Icon(VaadinIcon.DATABASE);
             hMenu6.add(icon6, writeToDBList);

@@ -20,4 +20,8 @@ public interface PowerResourcesService {
     List<PowerResources> getResourceBySearch(Date dateBegin, Date dateEnd);
 
     void updateValue(PowerResources powerResources);
+
+    void updateValueDaily(PowerResources powerResources);
+
+    void updateValueWeekly(PowerResources powerResources);
 }

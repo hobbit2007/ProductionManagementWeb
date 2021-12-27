@@ -87,7 +87,7 @@ public class AdminLayout extends AppLayout {
 
 
 
-        addToDrawer(new VerticalLayout(hMenu3, hMenu1, hMenu2, hMenu4, hMenu5));
+        addToDrawer(new VerticalLayout(hMenu3, hMenu1, hMenu2, hMenu4, hMenu5, hMenu6));
 
         //Закрываем меню на стороне клиента
         //т.к. при первом запуске меню показывается автоматически

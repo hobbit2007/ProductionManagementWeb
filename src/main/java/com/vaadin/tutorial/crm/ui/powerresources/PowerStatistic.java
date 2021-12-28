@@ -64,7 +64,7 @@ public class PowerStatistic extends VerticalLayout {
         labelChart2.setSizeUndefined();
         labelChart2.setVisible(false);
 
-        vMain.add(new AnyComponent().labelTitle("Статистика по показаниям энергоресурсов"), initChart(), initChartElectric(), update);
+        vMain.add(new AnyComponent().labelTitle("Статистика по показаниям энергоресурсов"), initChartGas(), initChart(), initChartElectric(), update);
         vMain.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         add(vMain);
 
@@ -234,7 +234,7 @@ public class PowerStatistic extends VerticalLayout {
                 for (int j = 0; j < powerResourcesList.size(); j++) {
                     item[i] = new DataSeriesItem();
                     item[i].setX(powerResourcesList.get(j).getDateCreate());
-                    item[i].setY(powerResourcesList.get(j).getValue());
+                    item[i].setY(powerResourcesList.get(j).getValueWeekly());
                     waterWellSeries[i].add(item[i]);
                 }
             }

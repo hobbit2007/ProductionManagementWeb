@@ -12,6 +12,6 @@ import java.util.List;
  */
 @Repository
 public interface WriteToDBRepository extends JpaRepository<WriteToDB, Long> {
-    @Query("select s from settings s where s.delete = 0")
+    @Query("select s from settings s where s.delete = 0 order by s.id asc")
     List<WriteToDB> getAll();
 }

@@ -64,6 +64,13 @@ public class PowerStatistic extends VerticalLayout {
         labelChart2.setSizeUndefined();
         labelChart2.setVisible(false);
 
+        labelGas.setText("");
+        labelGas.getStyle().set("color", "red");
+        labelGas.getStyle().set("font-weight", "bold");
+        labelGas.getStyle().set("font-size", "11pt");
+        labelGas.setSizeUndefined();
+        labelGas.setVisible(false);
+
         vMain.add(new AnyComponent().labelTitle("Статистика по показаниям энергоресурсов"), initChartGas(), initChart(), initChartElectric(), update);
         vMain.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         add(vMain);

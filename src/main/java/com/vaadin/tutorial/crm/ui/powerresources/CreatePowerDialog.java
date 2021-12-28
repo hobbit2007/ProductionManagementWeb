@@ -136,7 +136,7 @@ public class CreatePowerDialog extends Dialog {
                 for (int j = waterList.size() - 1; j >= waterList.size() - 2; j--) {
                     varWater = waterList.get(j).getValue() - varWater;
                 }
-                powerResourcesService.updateValueDaily(waterList.get(waterList.size() - 1).getId(), varWater * -1);
+                powerResourcesService.updateValueWeekly(waterList.get(waterList.size() - 1).getId(), varWater * -1);
             }
             //Получаем ежедневную разницу показаний между текущими и предыдущими для газа
             List<PowerResources> gasList = powerResourcesService.getAllByResourceId(4L);

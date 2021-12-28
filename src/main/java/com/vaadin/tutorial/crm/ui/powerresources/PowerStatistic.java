@@ -90,7 +90,7 @@ public class PowerStatistic extends VerticalLayout {
 
             YAxis yAxis = new YAxis();
             Labels label = new Labels();
-            label.setFormatter("function() { return (this.value > 0 ? ' + ' : '') + this.value + '%'; }");
+            label.setFormatter("function() { return this.value; }"); //"function() { return (this.value > 0 ? ' + ' : '') + this.value + '%'; }"
             yAxis.setLabels(label);
 
             PlotLine plotLine = new PlotLine();
@@ -99,7 +99,7 @@ public class PowerStatistic extends VerticalLayout {
             configuration.addyAxis(yAxis);
 
             Tooltip tooltip = new Tooltip();
-            tooltip.setPointFormat("<span>{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>");
+            tooltip.setPointFormat("<span>{series.name}</span>: <b>{point.y}</b><br/>"); //"<span>{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>"
             tooltip.setValueDecimals(2);
             configuration.setTooltip(tooltip);
 
@@ -147,7 +147,7 @@ public class PowerStatistic extends VerticalLayout {
 
             YAxis yAxis = new YAxis();
             Labels label = new Labels();
-            label.setFormatter("function() { return (this.value > 0 ? ' + ' : '') + this.value + '%'; }");
+            label.setFormatter("function() { return this.value }"); //"function() { return (this.value > 0 ? ' + ' : '') + this.value + '%'; }"
             yAxis.setLabels(label);
 
             PlotLine plotLine = new PlotLine();
@@ -156,7 +156,7 @@ public class PowerStatistic extends VerticalLayout {
             configuration.addyAxis(yAxis);
 
             Tooltip tooltip = new Tooltip();
-            tooltip.setPointFormat("<span>{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>");
+            tooltip.setPointFormat("<span>{series.name}</span>: <b>{point.y}</b><br/>"); //"<span>{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>"
             tooltip.setValueDecimals(2);
             configuration.setTooltip(tooltip);
             DataSeries[] waterWellSeries = new DataSeries[100];
@@ -202,7 +202,7 @@ public class PowerStatistic extends VerticalLayout {
 
             YAxis yAxisElectric = new YAxis();
             Labels label = new Labels();
-            label.setFormatter("function() { return (this.value > 0 ? ' + ' : '') + this.value + '%'; }");
+            label.setFormatter("function() { return this.value }"); //"function() { return (this.value > 0 ? ' + ' : '') + this.value + '%'; }"
             yAxisElectric.setLabels(label);
 
             PlotLine plotLine = new PlotLine();
@@ -211,7 +211,7 @@ public class PowerStatistic extends VerticalLayout {
             configuration.addyAxis(yAxisElectric);
 
             Tooltip tooltip = new Tooltip();
-            tooltip.setPointFormat("<span>{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>");
+            tooltip.setPointFormat("<span>{series.name}</span>: <b>{point.y}</b><br/>"); //"<span>{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>"
             tooltip.setValueDecimals(2);
             configuration.setTooltip(tooltip);
 

@@ -200,6 +200,7 @@ public class CreatePowerDialog extends Dialog {
                     varTotalElectric = listTotalElectric.get(j).getValue() - varTotalElectric;
                 }
                 powerResourcesService.updateTotalValueWeekly(listTotalElectric.get(listTotalElectric.size() - 1).getId(), varTotalElectric * -1);
+                powerResourcesService.updateValueWeekly(listTotalElectric.get(listTotalElectric.size() - 1).getId(), varTotalElectric * -1);
             }
 
             close();

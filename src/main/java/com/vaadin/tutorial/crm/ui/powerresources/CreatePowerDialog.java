@@ -45,20 +45,7 @@ public class CreatePowerDialog extends Dialog {
     List<NumberField> powerValueFieldLink = new ArrayList<>();
     DatePicker datePicker = new DatePicker(LocalDate.now());
     TimePicker timePicker = new TimePicker(LocalTime.now());
-    /*HorizontalLayout hMain1 = new HorizontalLayout();
-    HorizontalLayout hMain2 = new HorizontalLayout();
-    HorizontalLayout hMain3 = new HorizontalLayout();
-    HorizontalLayout hMain4 = new HorizontalLayout();
-    HorizontalLayout hButton = new HorizontalLayout();
-    NumberField waterWell = new NumberField("Арт, вода с скважины:");
-    NumberField waterProduction = new NumberField("Арт вода на производство:");
-    NumberField waterBoiler = new NumberField("Вода на котельную:");
-    NumberField gas = new NumberField("Газ:");
-    NumberField enter1 = new NumberField("Ввод 1(983):");
-    NumberField enter2 = new NumberField("Ввод 2(740):");
-    NumberField enter3 = new NumberField("Ввод 3(434):");
-    NumberField enter4 = new NumberField("Ввод 4(457):");
-    NumberField drains = new NumberField("Стоки:");*/
+
     double totalElectricity = 0.00;
     Button save, cancel;
     PowerResourceDictService powerResourceDictService;
@@ -74,25 +61,7 @@ public class CreatePowerDialog extends Dialog {
         setCloseOnEsc(false);
         setCloseOnOutsideClick(false);
         setDraggable(true);
-        /*waterWell.setRequiredIndicatorVisible(true);
-        waterWell.setWidth("401px");
-        waterProduction.setRequiredIndicatorVisible(true);
-        waterProduction.setWidth("401px");
-        waterBoiler.setRequiredIndicatorVisible(true);
-        waterBoiler.setWidth("401px");
-        gas.setRequiredIndicatorVisible(true);
-        enter1.setRequiredIndicatorVisible(true);
-        enter2.setRequiredIndicatorVisible(true);
-        enter3.setRequiredIndicatorVisible(true);
-        enter4.setRequiredIndicatorVisible(true);
-        drains.setRequiredIndicatorVisible(true);
 
-        hMain1.add(waterWell, waterProduction, waterBoiler);
-        hMain2.add(gas);
-        hMain3.add(enter1, enter2, enter3, enter4);
-        hMain4.add(drains);
-        hButton.add(save, cancel);
-        vMain.add(new AnyComponent().labelTitle("Добавить показания"), hMain1, hMain2, hMain3, hMain4, hButton);*/
         save = new Button("Сохранить");
         save.setEnabled(true);
         cancel = new Button("Отмена");
@@ -131,12 +100,7 @@ public class CreatePowerDialog extends Dialog {
             save.setEnabled(false);
             cancel.setEnabled(false);
             powerResourceDictList = powerResourceDictService.getAll();
-            //for (int i = 0; i < powerValueFieldLink.size(); i++) {
-                //if (powerValueFieldLink.get(i).isEmpty()) {
-                //    Notification.show("Не все поля заполнены!", 5000, Notification.Position.MIDDLE);
-                //    return;
-                //}
-            //}
+
             if (powerResourceDictList.size() != 0) {
                 for (int i = 0; i < powerResourceDictList.size(); i++) {
                     if (powerResourceDictList.get(i).getCategory() == 1 && !powerValueFieldLink.get(i).isEmpty()) {
@@ -165,98 +129,79 @@ public class CreatePowerDialog extends Dialog {
                     Notification.show("Не могу сохранить показания в БД! " + ex.getMessage(), 5000, Notification.Position.MIDDLE);
                 }
             }
-          //  for (int i = 0; i < powerValueFieldLink.size(); i++) {
+            //Получаем ежедневную разницу показаний между текущими и предыдущими для воды
+            List<PowerResources> waterList = powerResourcesService.getAllByResourceId(1L);
+            double varWater = 0;
+            if (waterList.size() != 0 && waterList.size() >= 2) {
+                for (int j = waterList.size() - 1; j >= waterList.size() - 2; j--) {
+                    varWater = waterList.get(j).getValue() - varWater;
+                }
+                powerResourcesService.updateValueDaily(waterList.get(waterList.size() - 1).getId(), varWater * -1);
+            }
+            //Получаем ежедневную разницу показаний между текущими и предыдущими для газа
+            List<PowerResources> gasList = powerResourcesService.getAllByResourceId(4L);
+            double varGas = 0;
+            if (gasList.size() != 0 && gasList.size() >= 2) {
+                for (int j = gasList.size() - 1; j >= gasList.size() - 2; j--) {
+                    varGas = gasList.get(j).getValue() - varGas;
+                }
+                powerResourcesService.updateValueDaily(gasList.get(gasList.size() - 1).getId(), varGas * -1);
+            }
+            //Получаем еженедельную сумму показаний для газа
+            List<PowerResources> gasListWeekly = powerResourcesService.getAllByResourceId(4L);
+            double varGasWeekly = 0;
+            if (gasListWeekly.size() != 0 && gasListWeekly.size() % 7 == 0) {
+                for (int j = gasListWeekly.size() - 1; j >= gasListWeekly.size() - 7; j--) {
+                    varGasWeekly += gasListWeekly.get(j).getValueDaily();
+                }
+                powerResourcesService.updateValueWeekly(gasListWeekly.get(gasListWeekly.size() - 1).getId(), varGasWeekly);
+            }
+            //Получаем разницу показаний текущей недели и предыдущей для газа
+            List<PowerResources> gasListTotalWeekly = powerResourcesService.getAllByResourceId(4L);
+            double varGasTotalWeekly = 0;
+            if (gasListTotalWeekly.size() != 0 && gasListTotalWeekly.size() % 14 == 0) {
+                for (int j = gasListTotalWeekly.size() - 1; j >= gasListTotalWeekly.size() - 14; j--) {
+                    varGasTotalWeekly = gasListTotalWeekly.get(j).getValueWeekly() - varGasTotalWeekly;
+                }
+                powerResourcesService.updateTotalValueWeekly(gasListTotalWeekly.get(gasListTotalWeekly.size() - 1).getId(), varGasTotalWeekly * -1);
+            }
+            //Получаем разницу показаний между текущими и предыдущими для стоков
+            List<PowerResources> listStock = powerResourcesService.getAllByResourceId(10L);
+            double varStock = 0;
+            if (listStock.size() != 0 && listStock.size() >= 2) {
+                for (int j = listStock.size() - 1; j >= listStock.size() - 2; j--) {
+                    varStock = listStock.get(j).getValue() - varStock;
+                }
+                powerResourcesService.updateValueWeekly(listStock.get(listStock.size() - 1).getId(), varStock * -1);
+            }
+            //Получаем разницу показаний между текущими и предыдущими для ввода №1
+            List<PowerResources> listEnter1 = powerResourcesService.getAllByResourceId(5L);
+            double varEnter1 = 0;
+            if (listEnter1.size() != 0 && listEnter1.size() >= 2) {
+                for (int j = listEnter1.size() - 1; j >= listEnter1.size() - 2; j--) {
+                    varEnter1 = listEnter1.get(j).getValue() - varEnter1;
+                }
+                powerResourcesService.updateValueWeekly(listEnter1.get(listEnter1.size() - 1).getId(), varEnter1 * writeToDBService.getAll().get(6).getRepeatTime() * -1);
+            }
+            //Получаем разницу показаний между текущими и предыдущими для ввода №2
+            List<PowerResources> listEnter2 = powerResourcesService.getAllByResourceId(6L);
+            double varEnter2 = 0;
+            if (listEnter2.size() != 0 && listEnter2.size() >= 2) {
+                for (int j = listEnter2.size() - 1; j >= listEnter2.size() - 2; j--) {
+                    varEnter2 = listEnter2.get(j).getValue() - varEnter2;
+                }
+                powerResourcesService.updateValueWeekly(listEnter2.get(listEnter2.size() - 1).getId(), varEnter2 * writeToDBService.getAll().get(6).getRepeatTime() * -1);
+            }
+            //Получаем разницу показаний между текущими и предыдущими для суммарной электроэнергии
+            List<PowerResources> listTotalElectric = powerResourcesService.getAllByResourceId(9L);
+            double varTotalElectric = 0;
+            if (listTotalElectric.size() != 0 && listTotalElectric.size() >= 2) {
+                for (int j = listTotalElectric.size() - 1; j >= listTotalElectric.size() - 2; j--) {
+                    varTotalElectric = listTotalElectric.get(j).getValue() - varTotalElectric;
+                }
+                powerResourcesService.updateTotalValueWeekly(listTotalElectric.get(listTotalElectric.size() - 1).getId(), varTotalElectric * -1);
+            }
 
-           //         if (!powerValueFieldLink.get(i).isEmpty() && powerValueFieldLink.get(i).getValue() != 0) {
-                        //Получаем ежедневную разницу показаний между текущими и предыдущими для воды
-
-                        List<PowerResources> waterList = powerResourcesService.getAllByResourceId(1L);
-                        double varWater = 0;
-                        if (waterList.size() != 0 && waterList.size() >= 2) {
-                            for (int j = waterList.size() - 1; j >= waterList.size() - 2; j--) {
-                                varWater = waterList.get(j).getValue() - varWater;
-                            }
-                            powerResourcesService.updateValueDaily(waterList.get(waterList.size() - 1).getId(), varWater * -1);
-                        }
-            //        }
-            //    if (!powerValueFieldLink.get(i).isEmpty() && powerValueFieldLink.get(i).getValue() != 0) {
-                    //Получаем ежедневную разницу показаний между текущими и предыдущими для газа
-                    List<PowerResources> gasList = powerResourcesService.getAllByResourceId(4L);
-                    double varGas = 0;
-                    if (gasList.size() != 0 && gasList.size() >= 2) {
-                        for (int j = gasList.size() - 1; j >= gasList.size() - 2; j--) {
-                            varGas = gasList.get(j).getValue() - varGas;
-                        }
-                        powerResourcesService.updateValueDaily(gasList.get(gasList.size() - 1).getId(), varGas * -1);
-                    }
-            //    }
-           //     if (!powerValueFieldLink.get(i).isEmpty() && powerValueFieldLink.get(i).getValue() != 0) {
-                    //Получаем еженедельную сумму показаний для газа
-                    List<PowerResources> gasListWeekly = powerResourcesService.getAllByResourceId(4L);
-                    double varGasWeekly = 0;
-                    if (gasListWeekly.size() != 0 && gasListWeekly.size() % 7 == 0) {
-                        for (int j = gasListWeekly.size() - 1; j >= gasListWeekly.size() - 7; j--) {
-                            varGasWeekly += gasListWeekly.get(j).getValueDaily();
-                        }
-                        powerResourcesService.updateValueWeekly(gasListWeekly.get(gasListWeekly.size() - 1).getId(), varGasWeekly);
-                    }
-             //   }
-             //   if (!powerValueFieldLink.get(i).isEmpty() && powerValueFieldLink.get(i).getValue() != 0) {
-                    //Получаем разницу показаний текущей недели и предыдущей для газа
-                    List<PowerResources> gasListTotalWeekly = powerResourcesService.getAllByResourceId(4L);
-                    double varGasTotalWeekly = 0;
-                    if (gasListTotalWeekly.size() != 0 && gasListTotalWeekly.size() % 14 == 0) {
-                        for (int j = gasListTotalWeekly.size() - 1; j >= gasListTotalWeekly.size() - 14; j--) {
-                            varGasTotalWeekly = gasListTotalWeekly.get(j).getValueWeekly() - varGasTotalWeekly;
-                        }
-                        powerResourcesService.updateTotalValueWeekly(gasListTotalWeekly.get(gasListTotalWeekly.size() - 1).getId(), varGasTotalWeekly * -1);
-                    }
-             //   }
-            //    if (!powerValueFieldLink.get(i).isEmpty() && powerValueFieldLink.get(i).getValue() != 0) {
-                    //Получаем разницу показаний между текущими и предыдущими для стоков
-                    List<PowerResources> listStock = powerResourcesService.getAllByResourceId(10L);
-                    double varStock = 0;
-                    if (listStock.size() != 0 && listStock.size() >= 2) {
-                        for (int j = listStock.size() - 1; j >= listStock.size() - 2; j--) {
-                            varStock = listStock.get(j).getValue() - varStock;
-                        }
-                        powerResourcesService.updateValueWeekly(listStock.get(listStock.size() - 1).getId(), varStock * -1);
-                    }
-             //   }
-             //   if (!powerValueFieldLink.get(i).isEmpty() && powerValueFieldLink.get(i).getValue() != 0) {
-                    //Получаем разницу показаний между текущими и предыдущими для ввода №1
-                    List<PowerResources> listEnter1 = powerResourcesService.getAllByResourceId(5L);
-                    double varEnter1 = 0;
-                    if (listEnter1.size() != 0 && listEnter1.size() >= 2) {
-                        for (int j = listEnter1.size() - 1; j >= listEnter1.size() - 2; j--) {
-                            varEnter1 = listEnter1.get(j).getValue() - varEnter1;
-                        }
-                        powerResourcesService.updateValueWeekly(listEnter1.get(listEnter1.size() - 1).getId(), varEnter1 * writeToDBService.getAll().get(6).getRepeatTime() * -1);
-                    }
-             //   }
-             //   if (!powerValueFieldLink.get(i).isEmpty() && powerValueFieldLink.get(i).getValue() != 0) {
-                    //Получаем разницу показаний между текущими и предыдущими для ввода №2
-                    List<PowerResources> listEnter2 = powerResourcesService.getAllByResourceId(6L);
-                    double varEnter2 = 0;
-                    if (listEnter2.size() != 0 && listEnter2.size() >= 2) {
-                        for (int j = listEnter2.size() - 1; j >= listEnter2.size() - 2; j--) {
-                            varEnter2 = listEnter2.get(j).getValue() - varEnter2;
-                        }
-                        powerResourcesService.updateValueWeekly(listEnter2.get(listEnter2.size() - 1).getId(), varEnter2 * writeToDBService.getAll().get(6).getRepeatTime() * -1);
-                    }
-             //   }
-            //    if (!powerValueFieldLink.get(i).isEmpty() && powerValueFieldLink.get(i).getValue() != 0) {
-                    //Получаем разницу показаний между текущими и предыдущими для суммарной электроэнергии
-                    List<PowerResources> listTotalElectric = powerResourcesService.getAllByResourceId(9L);
-                    double varTotalElectric = 0;
-                    if (listTotalElectric.size() != 0 && listTotalElectric.size() >= 2) {
-                        for (int j = listTotalElectric.size() - 1; j >= listTotalElectric.size() - 2; j--) {
-                            varTotalElectric = listTotalElectric.get(j).getValue() - varTotalElectric;
-                        }
-                        powerResourcesService.updateTotalValueWeekly(listTotalElectric.get(listTotalElectric.size() - 1).getId(), varTotalElectric * -1);
-                    }
-              //  }
-           // }
             close();
         });
     }

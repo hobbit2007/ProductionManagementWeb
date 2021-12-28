@@ -12,6 +12,6 @@ import java.util.List;
  */
 @Repository
 public interface PowerResourceDictRepository extends JpaRepository<PowerResourceDict, Long> {
-    @Query("select prd from power_resource_dict prd where prd.delete = 0")
+    @Query("select prd from power_resource_dict prd where prd.delete = 0 order by prd.id asc")
     List<PowerResourceDict> getAll();
 }

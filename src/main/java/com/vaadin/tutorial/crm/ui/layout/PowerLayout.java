@@ -13,6 +13,7 @@ import com.vaadin.tutorial.crm.security.SecurityConfiguration;
 import com.vaadin.tutorial.crm.security.SecurityUtils;
 import com.vaadin.tutorial.crm.service.powerresources.PowerResourceDictService;
 import com.vaadin.tutorial.crm.service.powerresources.PowerResourcesService;
+import com.vaadin.tutorial.crm.service.writetodb.WriteToDBService;
 import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
 import com.vaadin.tutorial.crm.ui.powerresources.CreatePowerDialog;
@@ -34,12 +35,14 @@ public class PowerLayout extends AppLayout {
     HorizontalLayout hMenu4 = new HorizontalLayout();
     private final PowerResourceDictService powerResourceDictService;
     private final PowerResourcesService powerResourcesService;
+    private final WriteToDBService writeToDBService;
     private final String ROLE = "ADMIN";
 
-    public PowerLayout(SecurityConfiguration securityConfiguration, PowerResourceDictService powerResourceDictService, PowerResourcesService powerResourcesService) {
+    public PowerLayout(SecurityConfiguration securityConfiguration, PowerResourceDictService powerResourceDictService, PowerResourcesService powerResourcesService, WriteToDBService writeToDBService) {
         this.securityConfiguration = securityConfiguration;
         this.powerResourceDictService = powerResourceDictService;
         this.powerResourcesService = powerResourcesService;
+        this.writeToDBService = writeToDBService;
         createHeader();
         createDrawer();
     }
@@ -58,7 +61,7 @@ public class PowerLayout extends AppLayout {
         createPower.getStyle().set("background-color", "#d3b342");
         createPower.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         createPower.addClickListener(e -> {
-           new CreatePowerDialog(powerResourceDictService, powerResourcesService).open();
+           new CreatePowerDialog(powerResourceDictService, powerResourcesService, writeToDBService).open();
         });
 
         RouterLink powerView = new RouterLink("Таблица показаний", TableView.class);

@@ -22,4 +22,14 @@ public class WriteToDBImpl implements WriteToDBService {
     public List<WriteToDB> getAll() {
         return writeToDBRepository.getAll();
     }
+
+    @Override
+    public void updateCoefficient1(Long value) {
+        writeToDBRepository.updateCoefficient1(value);
+    }
+
+    @Override
+    public void updateCoefficient2(Long value) {
+        writeToDBRepository.updateCoefficient2(value);
+    }
 }

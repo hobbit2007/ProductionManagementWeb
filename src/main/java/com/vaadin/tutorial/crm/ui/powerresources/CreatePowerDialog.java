@@ -148,14 +148,14 @@ public class CreatePowerDialog extends Dialog {
                 powerResourcesService.updateValueWeekly(waterList.get(waterList.size() - 1).getId(), varWater * -1);
             }
             //Получаем ежедневную разницу показаний между текущими и предыдущими для газа
-            List<PowerResources> gasList = powerResourcesService.getAllByResourceId(4L);
-            double varGas = 0;
-            if (gasList.size() != 0 && gasList.size() >= 2) {
-                for (int j = gasList.size() - 1; j >= gasList.size() - 2; j--) {
-                    varGas = gasList.get(j).getValue() - varGas;
-                }
-                powerResourcesService.updateValueDaily(gasList.get(gasList.size() - 1).getId(), varGas * -1);
-            }
+            //List<PowerResources> gasList = powerResourcesService.getAllByResourceId(4L);
+            //double varGas = 0;
+            //if (gasList.size() != 0 && gasList.size() >= 2) {
+            //    for (int j = gasList.size() - 1; j >= gasList.size() - 2; j--) {
+            //        varGas = gasList.get(j).getValue() - varGas;
+            //    }
+            //    powerResourcesService.updateValueDaily(gasList.get(gasList.size() - 1).getId(), varGas * -1);
+            //}
             //Получаем еженедельную сумму показаний для газа
             List<PowerResources> gasListWeekly = powerResourcesService.getAllByResourceId(4L);
             double varGasWeekly = 0;

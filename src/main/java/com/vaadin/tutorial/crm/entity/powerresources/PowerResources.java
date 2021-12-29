@@ -49,9 +49,11 @@ public class PowerResources implements Serializable {
         this.parent = parent;
     }
 
-    public PowerResources(double value, Date dateCreate, OffsetTime timeCreate,
+    public PowerResources(double value, double valueDaily, double valueWeekly, Date dateCreate, OffsetTime timeCreate,
                           long id, PowerResources parent) {
         this.value = value;
+        this.valueDaily = valueDaily;
+        this.valueWeekly = valueWeekly;
         this.dateCreate = dateCreate;
         this.timeCreate = timeCreate;
         this.id = id;

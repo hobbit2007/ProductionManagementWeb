@@ -11,4 +11,10 @@ import java.util.List;
 @Service
 public interface WriteToDBService {
     List<WriteToDB> getAll();
+
+    //Обновления коэффициентов трансформации ввод1
+    void updateCoefficient1(Long value);
+
+    //Обновления коэффициентов трансформации ввод2
+    void updateCoefficient2(Long value);
 }

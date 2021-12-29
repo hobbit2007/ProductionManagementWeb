@@ -127,7 +127,7 @@ public class PowerStatistic extends VerticalLayout {
                 for (int j = 0; j < powerResourcesList.size(); j++) {
                     item[i] = new DataSeriesItem();
                     item[i].setX(powerResourcesList.get(j).getDateCreate().toInstant());
-                    item[i].setY(powerResourcesList.get(j).getValueDaily());
+                    item[i].setY(powerResourcesList.get(j).getValue());
                     waterWellSeries[i].add(item[i]); //new DataSeriesItem(powerResourcesList.get(j).getDateCreate(), powerResourcesList.get(j).getValueDaily())
                 }
             }

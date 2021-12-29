@@ -24,12 +24,12 @@ public class WriteToDBImpl implements WriteToDBService {
     }
 
     @Override
-    public void updateCoefficient1(Long value) {
+    public void updateCoefficient1(Double value) {
         writeToDBRepository.updateCoefficient1(value);
     }
 
     @Override
-    public void updateCoefficient2(Long value) {
+    public void updateCoefficient2(Double value) {
         writeToDBRepository.updateCoefficient2(value);
     }
 }

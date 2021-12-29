@@ -36,7 +36,7 @@ public class EditPower extends VerticalLayout {
     VerticalLayout vMain = new VerticalLayout();
     HorizontalLayout hSort = new HorizontalLayout();
     TreeGrid<PowerResources> grid;
-    Grid.Column<PowerResources> colId, colDesc, colValue, colDate, colTime;
+    Grid.Column<PowerResources> colId, colDesc, colValue, colValueDaily, colValueWeekly, colDate, colTime;
     DatePicker dateBegin = new DatePicker("с:");
     DatePicker dateEnd = new DatePicker("по:");
     Button sortButton = new Button("Сортировка");
@@ -122,7 +122,7 @@ public class EditPower extends VerticalLayout {
             index = childData.size() - 1;
             for (int i = 0; i < data.size(); i++) {
                 if (data.get(i).getIdPowerResource() == parentData.get(g).getId()) {
-                    childData.add(new PowerResources(data.get(i).getValue(), data.get(i).getDateCreate(), data.get(i).getTimeCreate(), data.get(i).getId(), childData.get(index)));
+                    childData.add(new PowerResources(data.get(i).getValue(), data.get(i).getValueDaily(), data.get(i).getValueWeekly(), data.get(i).getDateCreate(), data.get(i).getTimeCreate(), data.get(i).getId(), childData.get(index)));
                     parentFlag = true;
                 }
             }
@@ -146,6 +146,8 @@ public class EditPower extends VerticalLayout {
 
         colDesc = grid.addHierarchyColumn(powerResources -> powerResources.getDescription() == null ? "" : powerResources.getDescription()).setHeader("Группы энергоресурсов");
         colValue = grid.addColumn(powerResources -> powerResources.getValue() == 0.0 ? "" : powerResources.getValue()).setHeader("Показания");
+        colValueDaily = grid.addColumn(powerResources -> powerResources.getValue() == 0.0 ? "" : powerResources.getValueDaily()).setHeader("Разница показаний(ежедневно)");
+        colValueWeekly = grid.addColumn(powerResources -> powerResources.getValue() == 0.0 ? "" : powerResources.getValueWeekly()).setHeader("Разница показаний(еженедельно)");
         colDate = grid.addColumn(powerResources -> powerResources.getDateCreate()).setHeader("Дата снятия");
         colTime = grid.addColumn(powerResources -> powerResources.getTimeCreate()).setHeader("Время снятия");
         colId = grid.addColumn(powerResources -> powerResources.getId()).setHeader("ID");
@@ -153,6 +155,8 @@ public class EditPower extends VerticalLayout {
 
         colDesc.setResizable(true);
         colValue.setResizable(true);
+        colValueDaily.setResizable(true);
+        colValueWeekly.setResizable(true);
         colDate.setResizable(true);
         colTime.setResizable(true);
 

@@ -13,8 +13,8 @@ public interface WriteToDBService {
     List<WriteToDB> getAll();
 
     //Обновления коэффициентов трансформации ввод1
-    void updateCoefficient1(Long value);
+    void updateCoefficient1(Double value);
 
     //Обновления коэффициентов трансформации ввод2
-    void updateCoefficient2(Long value);
+    void updateCoefficient2(Double value);
 }

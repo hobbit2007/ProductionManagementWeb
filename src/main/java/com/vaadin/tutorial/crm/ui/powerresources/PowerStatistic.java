@@ -22,6 +22,7 @@ import com.vaadin.tutorial.crm.ui.component.AnyComponent;
 import com.vaadin.tutorial.crm.ui.layout.PowerLayout;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -90,15 +91,21 @@ public class PowerStatistic extends VerticalLayout {
         powerResourceDictList = powerResourceDictService.getAll();
 
         if (powerResourcesService.getAll().size() != 0) {
-            chart.setTimeline(true);
+            //chart.setTimeline(true);
 
             Configuration configuration = chart.getConfiguration();
+            configuration.getChart().setType(ChartType.LINE);
             configuration.getTitle().setText("Газ (ежедневно)");
 
             YAxis yAxis = new YAxis();
             Labels label = new Labels();
             label.setFormatter("function() { return this.value; }"); //"function() { return (this.value > 0 ? ' + ' : '') + this.value + '%'; }"
             yAxis.setLabels(label);
+            yAxis.setTitle("Значение");
+
+            XAxis xAxis = configuration.getxAxis();
+            xAxis.setType(AxisType.DATETIME);
+            xAxis.setTickPixelInterval(150);
 
             PlotLine plotLine = new PlotLine();
             plotLine.setValue(2);
@@ -119,15 +126,13 @@ public class PowerStatistic extends VerticalLayout {
                 waterWellSeries[i].setName(powerResourceDictList.get(i).getResourceName());
                 for (int j = 0; j < powerResourcesList.size(); j++) {
                     item[i] = new DataSeriesItem();
-                    item[i].setX(powerResourcesList.get(j).getDateCreate());
+                    item[i].setX(powerResourcesList.get(j).getDateCreate().toInstant());
                     item[i].setY(powerResourcesList.get(j).getValueDaily());
-                    waterWellSeries[i].add(item[i]);
+                    waterWellSeries[i].add(item[i]); //new DataSeriesItem(powerResourcesList.get(j).getDateCreate(), powerResourcesList.get(j).getValueDaily())
                 }
             }
             configuration.setSeries(waterWellSeries[1]);
-            PlotOptionsSeries plotOptionsSeries = new PlotOptionsSeries();
-            plotOptionsSeries.setCompare(Compare.PERCENT);
-            configuration.setPlotOptions(plotOptionsSeries);
+
 
             RangeSelector rangeSelector = new RangeSelector();
             rangeSelector.setSelected(9);
@@ -147,15 +152,21 @@ public class PowerStatistic extends VerticalLayout {
         powerResourceDictList = powerResourceDictService.getAll();
 
         if (powerResourcesService.getAll().size() != 0) {
-            chart.setTimeline(true);
+            //chart.setTimeline(true);
 
             Configuration configuration = chart.getConfiguration();
+            configuration.getChart().setType(ChartType.LINE);
             configuration.getTitle().setText("Вода, газ (еженедельно)");
 
             YAxis yAxis = new YAxis();
             Labels label = new Labels();
             label.setFormatter("function() { return this.value }"); //"function() { return (this.value > 0 ? ' + ' : '') + this.value + '%'; }"
             yAxis.setLabels(label);
+            yAxis.setTitle("Значение");
+
+            XAxis xAxis = configuration.getxAxis();
+            xAxis.setType(AxisType.DATETIME);
+            xAxis.setTickPixelInterval(150);
 
             PlotLine plotLine = new PlotLine();
             plotLine.setValue(2);
@@ -175,12 +186,12 @@ public class PowerStatistic extends VerticalLayout {
                 waterWellSeries[i].setName(powerResourceDictList.get(i).getResourceName());
                 for (int j = 0; j < powerResourcesList.size(); j++) {
                     item[i] = new DataSeriesItem();
-                    item[i].setX(powerResourcesList.get(j).getDateCreate());
+                    item[i].setX(powerResourcesList.get(j).getDateCreate().toInstant());
                     item[i].setY(powerResourcesList.get(j).getValueWeekly());
-                    waterWellSeries[i].add(item[i]);
+                    waterWellSeries[i].add(item[i]); //new DataSeriesItem(powerResourcesList.get(j).getDateCreate().toInstant(), powerResourcesList.get(j).getValueWeekly())
                 }
             }
-            configuration.setSeries(waterWellSeries[0], waterWellSeries[1]);
+            configuration.setSeries(waterWellSeries[0], waterWellSeries[1]); //, waterWellSeries[1]
             PlotOptionsSeries plotOptionsSeries = new PlotOptionsSeries();
             plotOptionsSeries.setCompare(Compare.PERCENT);
             configuration.setPlotOptions(plotOptionsSeries);
@@ -202,15 +213,21 @@ public class PowerStatistic extends VerticalLayout {
         final Chart chartElectric = new Chart();
         powerResourceDictList = powerResourceDictService.getAll();
         if (powerResourcesService.getAll().size() != 0) {
-            chartElectric.setTimeline(true);
+            //chartElectric.setTimeline(true);
 
             Configuration configuration = chartElectric.getConfiguration();
+            configuration.getChart().setType(ChartType.LINE);
             configuration.getTitle().setText("Электроэнергия (еженедельно)");
 
             YAxis yAxisElectric = new YAxis();
             Labels label = new Labels();
             label.setFormatter("function() { return this.value }"); //"function() { return (this.value > 0 ? ' + ' : '') + this.value + '%'; }"
             yAxisElectric.setLabels(label);
+            yAxisElectric.setTitle("Значение");
+
+            XAxis xAxis = configuration.getxAxis();
+            xAxis.setType(AxisType.DATETIME);
+            xAxis.setTickPixelInterval(150);
 
             PlotLine plotLine = new PlotLine();
             plotLine.setValue(2);

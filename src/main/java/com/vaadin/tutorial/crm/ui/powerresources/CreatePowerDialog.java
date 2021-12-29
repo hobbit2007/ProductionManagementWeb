@@ -47,6 +47,8 @@ public class CreatePowerDialog extends Dialog {
     TimePicker timePicker = new TimePicker(LocalTime.now());
 
     double totalElectricity = 0.00;
+    long coefficient1, coefficient2;
+    int count = 0;//Счетчик для суммы вводов, т.к. ввода два и коэффициента трансформации два, то при count = 1 умножаем на coefficient1, а при count = 2 на coefficient2
     Button save, cancel;
     PowerResourceDictService powerResourceDictService;
     PowerResourcesService powerResourcesService;
@@ -93,6 +95,9 @@ public class CreatePowerDialog extends Dialog {
         cancel.getStyle().set("background-color", "#d3b342");
         cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+        coefficient1 = writeToDBService.getAll().get(6).getRepeatTime();
+        coefficient2 = writeToDBService.getAll().get(7).getRepeatTime();
+
         cancel.addClickListener(e -> {
            close();
         });
@@ -104,7 +109,11 @@ public class CreatePowerDialog extends Dialog {
             if (powerResourceDictList.size() != 0) {
                 for (int i = 0; i < powerResourceDictList.size(); i++) {
                     if (powerResourceDictList.get(i).getCategory() == 1 && !powerValueFieldLink.get(i).isEmpty()) {
-                        totalElectricity += powerValueFieldLink.get(i).getValue();
+                        count = count + 1;
+                        if (count == 1)
+                            totalElectricity = totalElectricity + powerValueFieldLink.get(i).getValue() * coefficient1;
+                        if (count == 2)
+                            totalElectricity = totalElectricity + powerValueFieldLink.get(i).getValue() * coefficient1;
                     }
                 }
                 powerValue[4].setValue(totalElectricity);
@@ -152,7 +161,7 @@ public class CreatePowerDialog extends Dialog {
             double varGasWeekly = 0;
             if (gasListWeekly.size() != 0 && gasListWeekly.size() % 7 == 0) {
                 for (int j = gasListWeekly.size() - 1; j >= gasListWeekly.size() - 7; j--) {
-                    varGasWeekly += gasListWeekly.get(j).getValueDaily();
+                    varGasWeekly += gasListWeekly.get(j).getValue();
                 }
                 powerResourcesService.updateValueWeekly(gasListWeekly.get(gasListWeekly.size() - 1).getId(), varGasWeekly);
             }
@@ -181,7 +190,7 @@ public class CreatePowerDialog extends Dialog {
                 for (int j = listEnter1.size() - 1; j >= listEnter1.size() - 2; j--) {
                     varEnter1 = listEnter1.get(j).getValue() - varEnter1;
                 }
-                powerResourcesService.updateValueWeekly(listEnter1.get(listEnter1.size() - 1).getId(), varEnter1 * writeToDBService.getAll().get(6).getRepeatTime() * -1);
+                powerResourcesService.updateValueWeekly(listEnter1.get(listEnter1.size() - 1).getId(), varEnter1 * coefficient1 * -1);
             }
             //Получаем разницу показаний между текущими и предыдущими для ввода №2
             List<PowerResources> listEnter2 = powerResourcesService.getAllByResourceId(6L);
@@ -190,7 +199,7 @@ public class CreatePowerDialog extends Dialog {
                 for (int j = listEnter2.size() - 1; j >= listEnter2.size() - 2; j--) {
                     varEnter2 = listEnter2.get(j).getValue() - varEnter2;
                 }
-                powerResourcesService.updateValueWeekly(listEnter2.get(listEnter2.size() - 1).getId(), varEnter2 * writeToDBService.getAll().get(6).getRepeatTime() * -1);
+                powerResourcesService.updateValueWeekly(listEnter2.get(listEnter2.size() - 1).getId(), varEnter2 * coefficient2 * -1);
             }
             //Получаем разницу показаний между текущими и предыдущими для суммарной электроэнергии
             List<PowerResources> listTotalElectric = powerResourcesService.getAllByResourceId(9L);

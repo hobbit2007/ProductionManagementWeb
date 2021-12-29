@@ -1,6 +1,8 @@
 package com.vaadin.tutorial.crm.ui.layout;
 
 import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -10,9 +12,11 @@ import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.tutorial.crm.security.SecurityConfiguration;
 import com.vaadin.tutorial.crm.security.SecurityUtils;
+import com.vaadin.tutorial.crm.service.writetodb.WriteToDBService;
 import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.admin.PlcSignalPage;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
+import com.vaadin.tutorial.crm.ui.powerresources.ChangeCoefficient;
 import com.vaadin.tutorial.crm.ui.users.UsersCreate;
 import com.vaadin.tutorial.crm.ui.writetodb.WriteToDBValue;
 
@@ -31,10 +35,13 @@ public class AdminLayout extends AppLayout {
     HorizontalLayout hMenu4 = new HorizontalLayout();
     HorizontalLayout hMenu5 = new HorizontalLayout();
     HorizontalLayout hMenu6 = new HorizontalLayout();
+    Button coefficient = new Button("Коэфф. трансформации");
     private final String ROLE = "ADMIN";
+    private final WriteToDBService writeToDBService;
 
-    public AdminLayout(SecurityConfiguration securityConfiguration) {
+    public AdminLayout(SecurityConfiguration securityConfiguration, WriteToDBService writeToDBService) {
         this.securityConfiguration = securityConfiguration;
+        this.writeToDBService = writeToDBService;
         hMenu1.setVisible(false);
         hMenu2.setVisible(false);
         createHeader();
@@ -81,13 +88,21 @@ public class AdminLayout extends AppLayout {
             writeToDBList.setHighlightCondition(HighlightConditions.sameLocation());
             Icon icon6 = new Icon(VaadinIcon.DATABASE);
             hMenu6.add(icon6, writeToDBList);
+
+            Icon icon7 = new Icon(VaadinIcon.EXCHANGE);
+            coefficient.setIcon(icon7);
+            coefficient.getStyle().set("background-color", "#d3b342");
+            coefficient.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+            coefficient.addClickListener(e -> {
+                new ChangeCoefficient(writeToDBService).open();
+            });
         }
 
 
 
 
 
-        addToDrawer(new VerticalLayout(hMenu3, hMenu1, hMenu2, hMenu4, hMenu5, hMenu6));
+        addToDrawer(new VerticalLayout(hMenu3, hMenu1, hMenu2, hMenu4, hMenu5, hMenu6, coefficient));
 
         //Закрываем меню на стороне клиента
         //т.к. при первом запуске меню показывается автоматически

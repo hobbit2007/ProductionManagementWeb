@@ -22,11 +22,11 @@ public interface WriteToDBRepository extends JpaRepository<WriteToDB, Long> {
     @Modifying
     @Transactional
     @Query("update settings s set s.repeatTime = :value where s.id = 7")
-    void updateCoefficient1(@Param("value") Long value);
+    void updateCoefficient1(@Param("value") Double value);
 
     //Обновление коэффициентов трансформации для ввода2
     @Modifying
     @Transactional
     @Query("update settings s set s.repeatTime = :value where s.id = 8")
-    void updateCoefficient2(@Param("value") Long value);
+    void updateCoefficient2(@Param("value") Double value);
 }

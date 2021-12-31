@@ -20,7 +20,7 @@ public interface PowerResourcesRepository extends JpaRepository<PowerResources, 
     List<PowerResources> getAll();
 
     //Выбираем список показаний по конкретному ресурсу
-    @Query("select pr from power_resources pr where pr.idPowerResource = :resourceID and pr.delete = 0 order by pr.id asc")
+    @Query("select pr from power_resources pr where pr.idPowerResource = :resourceID and pr.delete = 0 order by pr.dateCreate asc")
     List<PowerResources> getAllByResourceId(@Param("resourceID") Long resourceID);
 
     //Выбирает список показаний за указанные даты

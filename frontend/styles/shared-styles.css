@@ -93,16 +93,20 @@ a[highlight] {
 }
 :host(.CompareMultipleSeries) .highcharts-color-0 {
   stroke: #3090F0;
+  stroke-width: 2px;
 }
 
 :host(.CompareMultipleSeries) .highcharts-color-1 {
   stroke: #ec6464;
+  stroke-width: 2px;
 }
 
 :host(.CompareMultipleSeries) .highcharts-color-2 {
   stroke: #98df58;
+  stroke-width: 2px;
 }
 
 :host(.CompareMultipleSeries) .highcharts-plot-lines-0 .highcharts-plot-line {
   stroke: #c0c0c0;
+  stroke-width: 2px;
 }

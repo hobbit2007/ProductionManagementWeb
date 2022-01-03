@@ -62,4 +62,9 @@ public class PowerResourcesImpl implements PowerResourcesService {
     public void updateTotalValueWeekly(Long id, double value) {
         powerResourcesRepository.updateTotalValueWeekly(id, value);
     }
+
+    @Override
+    public List<PowerResources> getAllByResourceWashing() {
+        return powerResourcesRepository.getAllByResourceWashing();
+    }
 }

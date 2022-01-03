@@ -26,4 +26,6 @@ public interface PowerResourcesService {
     void updateValueWeekly(Long id, double value);
 
     void updateTotalValueWeekly(Long id, double value);
+
+    List<PowerResources> getAllByResourceWashing();
 }

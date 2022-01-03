@@ -50,4 +50,10 @@ public interface PowerResourcesRepository extends JpaRepository<PowerResources, 
     @Transactional
     @Query("update power_resources pr set pr.totalValueWeekly = :value where pr.id = :ID")
     void updateTotalValueWeekly(@Param("ID") Long ID, @Param("value") Double value);
+
+    //Выбираем список показаний по воде для отчета
+    @Query("select prd.resourceName, pr.value, pr.valueDaily from power_resources pr " +
+            "join power_resource_dict prd on prd.id = pr.idPowerResource " +
+            "where pr.idPowerResource = 1 and pr.delete = 0 and prd.delete = 0 order by pr.dateCreate asc")
+    List<PowerResources> getAllByResourceWashing();
 }

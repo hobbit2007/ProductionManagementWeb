@@ -24,8 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class ReportLayout extends AppLayout {
     private final SecurityConfiguration securityConfiguration;
     LabelComponent labelComponent;
-    HorizontalLayout hMenu1 = new HorizontalLayout();
-
     private final PowerResourcesService powerResourcesService;
     private final PowerReportModel powerReportModel;
     @Autowired
@@ -42,22 +40,35 @@ public class ReportLayout extends AppLayout {
         addToNavbar(labelComponent.labelHead());
     }
     private void createDrawer() {
-        RouterLink back = new RouterLink("Назад", MainView.class);
-        back.setHighlightCondition(HighlightConditions.sameLocation());
+        //RouterLink back = new RouterLink("Назад", MainView.class);
+        //back.setHighlightCondition(HighlightConditions.sameLocation());
+        //Icon icon1 = new Icon(VaadinIcon.ARROW_BACKWARD);
+        //hMenu1.add(icon1, back);
+
+        Button back = new Button("Назад");
+        back.setWidth("220px");
+        back.getStyle().set("text-align", "left");
         Icon icon1 = new Icon(VaadinIcon.ARROW_BACKWARD);
-        hMenu1.add(icon1, back);
+        back.setIcon(icon1);
+        back.addClickListener(e -> {
+           UI.getCurrent().navigate(MainView.class);
+        });
 
         Button powerWaterValue = new Button("Отчет вода");
+        powerWaterValue.setWidth("220px");
+        powerWaterValue.getStyle().set("text-align", "left");
         Icon icon2 = new Icon(VaadinIcon.PIN_POST);
         powerWaterValue.setIcon(icon2);
         powerWaterValue.addClickListener(e -> {
             UI.getCurrent().navigate(PowerReportEmpty.class);
-            powerReportModel.setMsg("Отчет по использованию воды ");
+            powerReportModel.setMsg("Отчет по использованию воды");
             powerReportModel.setId(1);
             UI.getCurrent().navigate(new PowerResourceReport(powerResourcesService, powerReportModel).getClass());
         });
 
-        Button powerGasValue = new Button("Отчет газ  ");
+        Button powerGasValue = new Button("Отчет газ");
+        powerGasValue.setWidth("220px");
+        powerGasValue.getStyle().set("text-align", "left");
         Icon icon3 = new Icon(VaadinIcon.PIN_POST);
         powerGasValue.setIcon(icon3);
         powerGasValue.addClickListener(e -> {
@@ -68,6 +79,8 @@ public class ReportLayout extends AppLayout {
         });
 
         Button powerEnter1Value = new Button("Отчет Ввод1");
+        powerEnter1Value.setWidth("220px");
+        powerEnter1Value.getStyle().set("text-align", "left");
         Icon icon4 = new Icon(VaadinIcon.PIN_POST);
         powerEnter1Value.setIcon(icon4);
         powerEnter1Value.addClickListener(e -> {
@@ -78,6 +91,8 @@ public class ReportLayout extends AppLayout {
         });
 
         Button powerEnter2Value = new Button("Отчет Ввод2");
+        powerEnter2Value.setWidth("220px");
+        powerEnter2Value.getStyle().set("text-align", "left");
         Icon icon5 = new Icon(VaadinIcon.PIN_POST);
         powerEnter2Value.setIcon(icon5);
         powerEnter2Value.addClickListener(e -> {
@@ -88,16 +103,20 @@ public class ReportLayout extends AppLayout {
         });
 
         Button powerTotalEnterValue = new Button("Отчет электроэнергия");
+        powerTotalEnterValue.setWidth("220px");
+        powerTotalEnterValue.getStyle().set("text-align", "left");
         Icon icon6 = new Icon(VaadinIcon.PIN_POST);
         powerTotalEnterValue.setIcon(icon6);
         powerTotalEnterValue.addClickListener(e -> {
             UI.getCurrent().navigate(PowerReportEmpty.class);
-            powerReportModel.setMsg("Отчет по использованию электроэнергия суммарно");
+            powerReportModel.setMsg("Отчет по использованию электроэнергии, суммарно");
             powerReportModel.setId(9);
             UI.getCurrent().navigate(new PowerResourceReport(powerResourcesService, powerReportModel).getClass());
         });
 
         Button powerStockValue = new Button("Отчет стоки");
+        powerStockValue.setWidth("220px");
+        powerStockValue.getStyle().set("text-align", "left");
         Icon icon7 = new Icon(VaadinIcon.PIN_POST);
         powerStockValue.setIcon(icon7);
         powerStockValue.addClickListener(e -> {
@@ -107,6 +126,6 @@ public class ReportLayout extends AppLayout {
             UI.getCurrent().navigate(new PowerResourceReport(powerResourcesService, powerReportModel).getClass());
         });
 
-        addToDrawer(new VerticalLayout(hMenu1, powerWaterValue, powerGasValue, powerEnter1Value, powerEnter2Value, powerTotalEnterValue, powerStockValue));
+        addToDrawer(new VerticalLayout(back, powerWaterValue, powerGasValue, powerEnter1Value, powerEnter2Value, powerTotalEnterValue, powerStockValue));
     }
 }

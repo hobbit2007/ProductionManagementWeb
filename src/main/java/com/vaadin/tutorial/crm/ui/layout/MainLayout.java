@@ -15,6 +15,7 @@ import com.vaadin.tutorial.crm.ui.component.LabelComponent;
 import com.vaadin.tutorial.crm.ui.plccontrollersui.PlcValueController;
 import com.vaadin.tutorial.crm.ui.plccontrollersui.PlcValueWashing;
 import com.vaadin.tutorial.crm.ui.powerresources.PowerStatistic;
+import com.vaadin.tutorial.crm.ui.report.PowerReportEmpty;
 import com.vaadin.tutorial.crm.ui.report.PowerResourceReport;
 
 /**
@@ -61,7 +62,7 @@ public class MainLayout extends AppLayout {
         Icon icon3 = new Icon(VaadinIcon.POWER_OFF);
         hMenu4.add(icon3, powerLink);
 
-        RouterLink reportLink = new RouterLink("Отчеты", PowerResourceReport.class);
+        RouterLink reportLink = new RouterLink("Отчеты", PowerReportEmpty.class);
         reportLink.setHighlightCondition(HighlightConditions.sameLocation());
         Icon icon4 = new Icon(VaadinIcon.MODAL_LIST);
         hMenu5.add(icon4, reportLink);

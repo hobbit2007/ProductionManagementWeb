@@ -28,4 +28,7 @@ public interface PowerResourcesService {
     void updateTotalValueWeekly(Long id, double value);
 
     List<PowerResources> getAllByResourceWashing();
+
+    //выбирает список показаний за указанные даты по указанному id ресурса(для сортировки отчета по дате)
+    List<PowerResources> getResourceBySort(Date dateBegin, Date dateEnd, Long id);
 }

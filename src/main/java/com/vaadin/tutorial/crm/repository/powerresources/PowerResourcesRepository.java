@@ -27,6 +27,10 @@ public interface PowerResourcesRepository extends JpaRepository<PowerResources, 
     @Query("select pr from power_resources pr where pr.dateCreate between :dateBegin and :dateEnd and pr.delete = 0 order by pr.id asc")
     List<PowerResources> getResourceBySearch(@Param("dateBegin") Date dateBegin, @Param("dateEnd") Date dateEnd);
 
+    //Выбирает список показаний за указанные даты по указанному id ресурса(для сортировки отчета по дате)
+    @Query("select pr from power_resources pr where pr.dateCreate between :dateBegin and :dateEnd and pr.delete = 0 and pr.idPowerResource = :resourceID order by pr.dateCreate asc")
+    List<PowerResources> getResourceBySort(@Param("dateBegin") Date dateBegin, @Param("dateEnd") Date dateEnd, @Param("resourceID") Long resourceID);
+
     //Обновление значения показания
     @Modifying
     @Transactional

@@ -8,10 +8,17 @@ import ar.com.fdvs.dj.domain.constants.Border;
 import ar.com.fdvs.dj.domain.constants.Font;
 import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
 import ar.com.fdvs.dj.domain.constants.VerticalAlign;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.data.provider.hierarchy.TreeData;
+import com.vaadin.flow.data.provider.hierarchy.TreeDataProvider;
 import com.vaadin.flow.function.SerializableSupplier;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -19,13 +26,16 @@ import com.vaadin.flow.server.StreamResource;
 import com.vaadin.tutorial.crm.entity.powerresources.PowerReportModel;
 import com.vaadin.tutorial.crm.entity.powerresources.PowerResources;
 import com.vaadin.tutorial.crm.service.powerresources.PowerResourcesService;
+import com.vaadin.tutorial.crm.ui.component.AnyComponent;
 import com.vaadin.tutorial.crm.ui.layout.ReportLayout;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.vaadin.reports.PrintPreviewReport;
 import java.awt.*;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -39,11 +49,62 @@ import java.util.List;
 public class PowerResourceReport extends VerticalLayout {
     PowerResourcesService powerResourcesService;
     PowerReportModel powerReportModel;
+    DatePicker dateBegin = new DatePicker("с:");
+    DatePicker dateEnd = new DatePicker("по:");
+    Button sortButton = new Button("Сортировка");
+    Button allViewButton = new Button("Показать все");
+    Anchor pdf;
+    PrintPreviewReport<PowerResources> report;
+    HorizontalLayout hSort = new HorizontalLayout();
 
     public PowerResourceReport(PowerResourcesService powerResourcesService, PowerReportModel powerReportModel) {
         this.powerResourcesService = powerResourcesService;
         this.powerReportModel = powerReportModel;
 
+        dateBegin.setI18n(new AnyComponent().datePickerRus());
+        dateEnd.setI18n(new AnyComponent().datePickerRus());
+
+        hSort.add(new AnyComponent().labelTitle("Сортировка по дате:"), dateBegin, dateEnd, sortButton, allViewButton);
+        hSort.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
+
+        reportGenerate(powerResourcesService.getAllByResourceId(powerReportModel.getId()));
+
+        add(hSort, report, pdf);
+        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+
+        allViewButton.addClickListener(e -> {
+            reportGenerate(powerResourcesService.getAllByResourceId(powerReportModel.getId()));
+            removeAll();
+            add(hSort, report, pdf);
+        });
+
+        sortButton.addClickListener(e -> {
+            if (!dateBegin.isEmpty() && !dateEnd.isEmpty()) {
+                if (java.sql.Date.valueOf(dateBegin.getValue()).getTime() <= java.sql.Date.valueOf(dateEnd.getValue()).getTime()) {
+                    if (java.sql.Date.valueOf(dateEnd.getValue()).getTime() <= new java.util.Date().getTime()) {
+                        reportGenerate(powerResourcesService.getResourceBySort(java.sql.Date.valueOf(dateBegin.getValue().toString()),
+                            java.sql.Date.valueOf(dateEnd.getValue().toString()), powerReportModel.getId()));
+                        removeAll();
+                        add(hSort, report, pdf);
+                    }
+                    else {
+                        Notification.show("Дата окончания не может быть больше текущей!", 3000, Notification.Position.MIDDLE);
+                        return;
+                    }
+                }
+                else {
+                    Notification.show("Дата начала не может быть больше даты окончания!", 3000, Notification.Position.MIDDLE);
+                    return;
+                }
+            }
+            else {
+                Notification.show("Не выбраны даты для сортировки!", 3000, Notification.Position.MIDDLE);
+                return;
+            }
+        });
+    }
+
+    private void reportGenerate(List<PowerResources> list) {
         Font fontHeader = new Font(14, "Times New Roman", "/fonts/times.ttf", Font.PDF_ENCODING_CP1251_Cyrillic, true);
         fontHeader.setBold(true);
         Style headerStyle = new StyleBuilder(true)
@@ -61,7 +122,7 @@ public class PowerResourceReport extends VerticalLayout {
                 .build();
         Style style = new StyleBuilder(true).setFont(Font.ARIAL_MEDIUM).build();
 
-        PrintPreviewReport<PowerResources> report = new PrintPreviewReport<>();
+        report = new PrintPreviewReport<>();
         report.getReportBuilder()
                 .setMargins(20, 20, 40, 40)
                 .setTitle(powerReportModel.getMsg())
@@ -96,15 +157,12 @@ public class PowerResourceReport extends VerticalLayout {
                         .setHeaderStyle(headerStyle)
                         .build());
 
-        report.setItems(powerResourcesService.getAllByResourceId(powerReportModel.getId()));//powerResourcesService.getAll()
+        report.setItems(list);//powerResourcesService.getAll()
 
-        SerializableSupplier<List<? extends PowerResources>> itemsSupplier = () -> powerResourcesService.getAllByResourceId(powerReportModel.getId());
+        SerializableSupplier<List<? extends PowerResources>> itemsSupplier = () -> list;
 
         StreamResource streamResource = report.getStreamResource(
                 "report.pdf", itemsSupplier, PrintPreviewReport.Format.PDF);
-        Anchor pdf = new Anchor(streamResource, "Экспорт и печать");
-
-        add(report, pdf);
-        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+        pdf = new Anchor(streamResource, "Экспорт и печать");
     }
 }

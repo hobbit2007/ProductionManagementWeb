@@ -67,4 +67,16 @@ public class PowerResourcesImpl implements PowerResourcesService {
     public List<PowerResources> getAllByResourceWashing() {
         return powerResourcesRepository.getAllByResourceWashing();
     }
+
+    /**
+     * выбирает список показаний за указанные даты по указанному id ресурса(для сортировки отчета по дате)
+     * @param dateBegin - дата начала
+     * @param dateEnd - дата окончания
+     * @param id - id ресурса
+     * @return - массив значений
+     */
+    @Override
+    public List<PowerResources> getResourceBySort(Date dateBegin, Date dateEnd, Long id) {
+        return powerResourcesRepository.getResourceBySort(dateBegin, dateEnd, id);
+    }
 }

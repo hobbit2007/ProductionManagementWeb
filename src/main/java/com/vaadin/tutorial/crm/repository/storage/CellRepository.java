@@ -12,6 +12,6 @@ import java.util.List;
  */
 @Repository
 public interface CellRepository extends JpaRepository<CellEntity, Long> {
-    @Query("select c from cells c where c.delete = 0")
+    @Query("select c from cells c where c.delete = 0 order by c.cellName asc")
     List<CellEntity> getAll();
 }

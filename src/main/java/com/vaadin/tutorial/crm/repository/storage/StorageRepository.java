@@ -12,6 +12,6 @@ import java.util.List;
  */
 @Repository
 public interface StorageRepository extends JpaRepository<StorageEntity, Long> {
-    @Query("select s from storage s where s.delete = 0")
+    @Query("select s from storage s where s.delete = 0 order by s.storageName asc")
     List<StorageEntity> getAll();
 }

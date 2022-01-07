@@ -33,7 +33,7 @@ public class MaterialInfoEntity implements Serializable {
     private double balanceWeight;
     private Date dateCreate;
     private long idUser;
-    private long writeOff;
+    private long writeoff;
     private double costPrice;
     private double marketPrice;
     private double diffPrice;

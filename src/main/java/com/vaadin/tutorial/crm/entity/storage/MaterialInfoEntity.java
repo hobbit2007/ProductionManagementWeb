@@ -21,13 +21,10 @@ public class MaterialInfoEntity implements Serializable {
     private long idCell;
     private String materialName;
     private String article;
-    private long quantity;
-    private double weight;
+    private double quantity;
     private long idMeas;
-    private long expense;
-    private double expenseWeight;
-    private long balance;
-    private double balanceWeight;
+    private double expense;
+    private double balance;
     private Date dateCreate;
     private long idUser;
     private long writeoff;

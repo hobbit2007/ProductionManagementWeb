@@ -3,10 +3,7 @@ package com.vaadin.tutorial.crm.entity.storage;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -39,4 +36,16 @@ public class MaterialInfoEntity implements Serializable {
     private double diffPrice;
     private long flagMove;
     private long delete;
+
+    @ManyToOne
+    @JoinColumn(name = "idStorage", referencedColumnName = "id", insertable = false, updatable = false)
+    private StorageEntity storage;
+
+    @ManyToOne
+    @JoinColumn(name = "idCell", referencedColumnName = "id", insertable = false, updatable = false)
+    private CellEntity cell;
+
+    @ManyToOne
+    @JoinColumn(name = "idMeas", referencedColumnName = "id", insertable = false, updatable = false)
+    private MeasEntity meas;
 }

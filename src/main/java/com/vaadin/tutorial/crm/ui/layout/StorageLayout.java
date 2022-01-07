@@ -10,6 +10,7 @@ import com.vaadin.flow.router.RouterLink;
 import com.vaadin.tutorial.crm.security.SecurityConfiguration;
 import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
+import com.vaadin.tutorial.crm.ui.storage.StorageSearch;
 
 /**
  * Класс реализующий шапку и боковое меню для меню Склад
@@ -17,6 +18,7 @@ import com.vaadin.tutorial.crm.ui.component.LabelComponent;
 public class StorageLayout extends AppLayout {
     LabelComponent labelComponent;
     HorizontalLayout hMenu1 = new HorizontalLayout();
+    HorizontalLayout hMenu2 = new HorizontalLayout();
     private final SecurityConfiguration securityConfiguration;
 
     public StorageLayout(SecurityConfiguration securityConfiguration) {
@@ -34,6 +36,11 @@ public class StorageLayout extends AppLayout {
         Icon icon1 = new Icon(VaadinIcon.ARROW_BACKWARD);
         hMenu1.add(icon1, back);
 
-        addToDrawer(new VerticalLayout(hMenu1));
+        RouterLink search = new RouterLink("Поиск по складу", StorageSearch.class);
+        search.setHighlightCondition(HighlightConditions.sameLocation());
+        Icon icon2 = new Icon(VaadinIcon.SEARCH);
+        hMenu2.add(icon2, search);
+
+        addToDrawer(new VerticalLayout(hMenu1, hMenu2));
     }
 }

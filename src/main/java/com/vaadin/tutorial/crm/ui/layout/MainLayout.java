@@ -17,6 +17,7 @@ import com.vaadin.tutorial.crm.ui.plccontrollersui.PlcValueWashing;
 import com.vaadin.tutorial.crm.ui.powerresources.PowerStatistic;
 import com.vaadin.tutorial.crm.ui.report.PowerReportEmpty;
 import com.vaadin.tutorial.crm.ui.report.PowerResourceReport;
+import com.vaadin.tutorial.crm.ui.storage.StorageSearch;
 
 /**
  * Класс создающий титульный заголовок вверху страницы
@@ -31,6 +32,7 @@ public class MainLayout extends AppLayout {
     HorizontalLayout hMenu3 = new HorizontalLayout();
     HorizontalLayout hMenu4 = new HorizontalLayout();
     HorizontalLayout hMenu5 = new HorizontalLayout();
+    HorizontalLayout hMenu6 = new HorizontalLayout();
 
     public MainLayout(SecurityConfiguration securityConfiguration) {
         this.securityConfiguration = securityConfiguration;
@@ -62,12 +64,17 @@ public class MainLayout extends AppLayout {
         Icon icon3 = new Icon(VaadinIcon.POWER_OFF);
         hMenu4.add(icon3, powerLink);
 
+        RouterLink storageLink = new RouterLink("Склад", StorageSearch.class);
+        storageLink.setHighlightCondition(HighlightConditions.sameLocation());
+        Icon icon5 = new Icon(VaadinIcon.STORAGE);
+        hMenu6.add(icon5, storageLink);
+
         RouterLink reportLink = new RouterLink("Отчеты", PowerReportEmpty.class);
         reportLink.setHighlightCondition(HighlightConditions.sameLocation());
         Icon icon4 = new Icon(VaadinIcon.MODAL_LIST);
         hMenu5.add(icon4, reportLink);
 
-        addToDrawer(new VerticalLayout(hMenu1, hMenu2, hMenu4, hMenu3, hMenu5));
+        addToDrawer(new VerticalLayout(hMenu1, hMenu2, hMenu4, hMenu3, hMenu6, hMenu5));
 
         //Закрываем меню на стороне клиента
         //т.к. при первом запуске меню показывается автоматически

@@ -11,6 +11,7 @@ import com.vaadin.tutorial.crm.security.SecurityConfiguration;
 import com.vaadin.tutorial.crm.service.storage.StorageService;
 import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
+import com.vaadin.tutorial.crm.ui.storage.CreateCellDialog;
 import com.vaadin.tutorial.crm.ui.storage.CreateStorageDialog;
 import com.vaadin.tutorial.crm.ui.storage.StorageSearch;
 
@@ -52,7 +53,7 @@ public class StorageLayout extends AppLayout {
         Icon icon3 = new Icon(VaadinIcon.ADD_DOCK);
         hMenu3.add(icon3, addStore);
 
-        RouterLink addCell = new RouterLink("Добавить ячейку", CreateStorageDialog.class);
+        RouterLink addCell = new RouterLink("Добавить ячейку", CreateCellDialog.class);
         addStore.setHighlightCondition(HighlightConditions.sameLocation());
         Icon icon4 = new Icon(VaadinIcon.ADD_DOCK);
         hMenu4.add(icon4, addCell);

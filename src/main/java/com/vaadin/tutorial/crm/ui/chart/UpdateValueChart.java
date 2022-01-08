@@ -51,7 +51,7 @@ public class UpdateValueChart extends Thread{
                                 float readData = S7.GetFloatAt(buffer, array.get(i).getPosition());
                                 double scale = Math.pow(10, 2);
                                 series.setName(array.get(i).getSignalName());
-                                series.add(new DataSeriesItem(System.currentTimeMillis(), (Math.ceil(readData * scale) / scale)), true, true);
+                                series.add(new DataSeriesItem(System.currentTimeMillis() + 3, (Math.ceil(readData * scale) / scale)), true, true);
 
                                 configuration.setSeries(series);
 

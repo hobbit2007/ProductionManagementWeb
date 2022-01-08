@@ -57,6 +57,6 @@ public class StorageLayout extends AppLayout {
         Icon icon4 = new Icon(VaadinIcon.ADD_DOCK);
         hMenu4.add(icon4, addCell);
 
-        addToDrawer(new VerticalLayout(hMenu1, hMenu3, hMenu2));
+        addToDrawer(new VerticalLayout(hMenu1, hMenu3, hMenu4, hMenu2));
     }
 }

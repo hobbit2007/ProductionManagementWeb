@@ -33,9 +33,7 @@ public class StorageImpl implements StorageService {
     public void saveAll(StorageEntity storageEntity) {
         if (storageEntity != null)
             storageRepository.saveAndFlush(storageEntity);
-        else {
+        else
             Notification.show("Нет данных для записи!", 5000, Notification.Position.MIDDLE);
-            return;
-        }
     }
 }

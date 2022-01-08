@@ -8,8 +8,10 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.tutorial.crm.security.SecurityConfiguration;
+import com.vaadin.tutorial.crm.service.storage.StorageService;
 import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
+import com.vaadin.tutorial.crm.ui.storage.CreateStorageDialog;
 import com.vaadin.tutorial.crm.ui.storage.StorageSearch;
 
 /**
@@ -19,10 +21,13 @@ public class StorageLayout extends AppLayout {
     LabelComponent labelComponent;
     HorizontalLayout hMenu1 = new HorizontalLayout();
     HorizontalLayout hMenu2 = new HorizontalLayout();
+    HorizontalLayout hMenu3 = new HorizontalLayout();
     private final SecurityConfiguration securityConfiguration;
+    private final StorageService storageService;
 
-    public StorageLayout(SecurityConfiguration securityConfiguration) {
+    public StorageLayout(SecurityConfiguration securityConfiguration, StorageService storageService) {
         this.securityConfiguration = securityConfiguration;
+        this.storageService = storageService;
         createHeader();
         createDrawer();
     }
@@ -41,6 +46,11 @@ public class StorageLayout extends AppLayout {
         Icon icon2 = new Icon(VaadinIcon.SEARCH);
         hMenu2.add(icon2, search);
 
-        addToDrawer(new VerticalLayout(hMenu1, hMenu2));
+        RouterLink addStore = new RouterLink("Добавить склад", CreateStorageDialog.class);
+        addStore.setHighlightCondition(HighlightConditions.sameLocation());
+        Icon icon3 = new Icon(VaadinIcon.ADD_DOCK);
+        hMenu3.add(icon3, addStore);
+
+        addToDrawer(new VerticalLayout(hMenu1, hMenu3, hMenu2));
     }
 }

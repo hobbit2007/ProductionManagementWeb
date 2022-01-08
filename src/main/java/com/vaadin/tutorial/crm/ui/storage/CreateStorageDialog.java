@@ -6,16 +6,21 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.tutorial.crm.entity.storage.StorageEntity;
+import com.vaadin.tutorial.crm.security.SecurityUtils;
 import com.vaadin.tutorial.crm.service.storage.StorageService;
 import com.vaadin.tutorial.crm.ui.component.AnyComponent;
 import com.vaadin.tutorial.crm.ui.layout.StorageLayout;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Date;
 
 /**
  * Класс диалог реализующий добавление склада
@@ -27,14 +32,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class CreateStorageDialog extends Dialog {
     VerticalLayout vMain = new VerticalLayout();
     HorizontalLayout hMain = new HorizontalLayout();
-    private final StorageService storageService;
     TextField storageName = new TextField("Введите имя склада:");
     Button save = new Button("Сохранить");
     Button cancel = new Button("Отмена");
 
     @Autowired
     public CreateStorageDialog(StorageService storageService) {
-        this.storageService = storageService;
         this.open();
         setCloseOnOutsideClick(false);
         setCloseOnEsc(false);
@@ -57,8 +60,51 @@ public class CreateStorageDialog extends Dialog {
         vMain.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         add(vMain);
 
-        cancel.addClickListener(e -> {
-           close();
+        cancel.addClickListener(e -> close());
+        save.addClickListener(e -> {
+            if (!storageName.isEmpty() || storageName.getValue().length() != 0) {
+                if (storageService.getCheckStorage(storageName.getValue()).size() == 0) {
+                    if (storageName.getValue().charAt(0) != ' ' && storageName.getValue().charAt(0) != '~' &&
+                            storageName.getValue().charAt(0) != '`' && storageName.getValue().charAt(0) != '"' &&
+                            storageName.getValue().charAt(0) != ':' && storageName.getValue().charAt(0) != ';' &&
+                            storageName.getValue().charAt(0) != ',' && storageName.getValue().charAt(0) != '.' &&
+                            storageName.getValue().charAt(0) != '!' && storageName.getValue().charAt(0) != '@' &&
+                            storageName.getValue().charAt(0) != '#' && storageName.getValue().charAt(0) != '$' &&
+                            storageName.getValue().charAt(0) != '%' && storageName.getValue().charAt(0) != '^' &&
+                            storageName.getValue().charAt(0) != '&' && storageName.getValue().charAt(0) != '*' &&
+                            storageName.getValue().charAt(0) != '(' && storageName.getValue().charAt(0) != ')' &&
+                            storageName.getValue().charAt(0) != '-' && storageName.getValue().charAt(0) != '_' &&
+                            storageName.getValue().charAt(0) != '+' && storageName.getValue().charAt(0) != '+' &&
+                            storageName.getValue().charAt(0) != '\'') {
+                        StorageEntity storageEntity = new StorageEntity();
+                        storageEntity.setStorageName(storageName.getValue());
+                        storageEntity.setDateCreate(new Date());
+                        storageEntity.setIdUser(SecurityUtils.getAuthentication().getDetails().getId());
+                        storageEntity.setDelete(0L);
+
+                        try {
+                            storageService.saveAll(storageEntity);
+                            close();
+                        }
+                        catch (Exception ex) {
+                            Notification.show("Не могу сохранить запись!" + ex.getMessage(), 5000, Notification.Position.MIDDLE);
+                            return;
+                        }
+                    }
+                    else {
+                        Notification.show("Имя склада не может начинаться со спецсимволов!", 5000, Notification.Position.MIDDLE);
+                        return;
+                    }
+                }
+                else {
+                    Notification.show("Внимание! Склад с таким названием уже существует!", 5000, Notification.Position.MIDDLE);
+                    return;
+                }
+            }
+            else {
+                Notification.show("Внимание! Не все поля заполнены!", 5000, Notification.Position.MIDDLE);
+                return;
+            }
         });
     }
 }

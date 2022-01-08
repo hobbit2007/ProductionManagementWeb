@@ -102,7 +102,6 @@ public class StorageSearch extends VerticalLayout {
         vMain.setPadding(false);
 
         add(vMain, vSearch, grid);
-        //setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
         storageSelect.addValueChangeListener(e -> {
             if (e.getValue() != null) {

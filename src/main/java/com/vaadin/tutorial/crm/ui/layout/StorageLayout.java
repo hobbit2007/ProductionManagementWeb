@@ -25,11 +25,9 @@ public class StorageLayout extends AppLayout {
     HorizontalLayout hMenu3 = new HorizontalLayout();
     HorizontalLayout hMenu4 = new HorizontalLayout();
     private final SecurityConfiguration securityConfiguration;
-    private final StorageService storageService;
 
-    public StorageLayout(SecurityConfiguration securityConfiguration, StorageService storageService) {
+    public StorageLayout(SecurityConfiguration securityConfiguration) {
         this.securityConfiguration = securityConfiguration;
-        this.storageService = storageService;
         createHeader();
         createDrawer();
     }

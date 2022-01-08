@@ -22,6 +22,7 @@ public class StorageLayout extends AppLayout {
     HorizontalLayout hMenu1 = new HorizontalLayout();
     HorizontalLayout hMenu2 = new HorizontalLayout();
     HorizontalLayout hMenu3 = new HorizontalLayout();
+    HorizontalLayout hMenu4 = new HorizontalLayout();
     private final SecurityConfiguration securityConfiguration;
     private final StorageService storageService;
 
@@ -50,6 +51,11 @@ public class StorageLayout extends AppLayout {
         addStore.setHighlightCondition(HighlightConditions.sameLocation());
         Icon icon3 = new Icon(VaadinIcon.ADD_DOCK);
         hMenu3.add(icon3, addStore);
+
+        RouterLink addCell = new RouterLink("Добавить ячейку", CreateStorageDialog.class);
+        addStore.setHighlightCondition(HighlightConditions.sameLocation());
+        Icon icon4 = new Icon(VaadinIcon.ADD_DOCK);
+        hMenu4.add(icon4, addCell);
 
         addToDrawer(new VerticalLayout(hMenu1, hMenu3, hMenu2));
     }

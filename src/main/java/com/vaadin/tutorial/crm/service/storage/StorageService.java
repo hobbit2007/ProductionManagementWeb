@@ -11,4 +11,17 @@ import java.util.List;
 @Service
 public interface StorageService {
     List<StorageEntity> getAll();
+
+    /**
+     * Метод проверяет наличие склада в БД
+     * @param storeName - название проверяемого склада
+     * @return - возвращает массив значений, если склад есть в БД или пустой массив, если нет
+     */
+    List<StorageEntity> getCheckStorage(String storeName);
+
+    /**
+     * Метод сохраняет данные в таблице storage
+     * @param storageEntity - объект класса StorageEntity с заполненными свойствами для сохранения
+     */
+    void saveAll(StorageEntity storageEntity);
 }

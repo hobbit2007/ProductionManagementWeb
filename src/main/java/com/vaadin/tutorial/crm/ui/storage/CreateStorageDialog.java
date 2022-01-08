@@ -1,5 +1,6 @@
 package com.vaadin.tutorial.crm.ui.storage;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -60,7 +61,10 @@ public class CreateStorageDialog extends Dialog {
         vMain.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         add(vMain);
 
-        cancel.addClickListener(e -> close());
+        cancel.addClickListener(e -> {
+            UI.getCurrent().navigate(StorageSearch.class);
+            close();
+        });
         save.addClickListener(e -> {
             if (!storageName.isEmpty() || storageName.getValue().length() != 0) {
                 if (storageService.getCheckStorage(storageName.getValue()).size() == 0) {
@@ -84,6 +88,7 @@ public class CreateStorageDialog extends Dialog {
 
                         try {
                             storageService.saveAll(storageEntity);
+                            UI.getCurrent().navigate(StorageSearch.class);
                             close();
                         }
                         catch (Exception ex) {

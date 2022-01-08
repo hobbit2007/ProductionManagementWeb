@@ -11,4 +11,17 @@ import java.util.List;
 @Service
 public interface CellService {
     List<CellEntity> getAll();
+
+    /**
+     * Метод, который проверяет наличие ячейки в БД
+     * @param cellName - имя ячейки
+     * @return - возвращает массив значений, если ячейка существует в БД или пустой массив
+     */
+    List<CellEntity> getCheckCell(String cellName);
+
+    /**
+     * Метод сохраняет созданную ячейку в таблице cells
+     * @param cellEntity - объект класса CellEntity
+     */
+    void saveAll(CellEntity cellEntity);
 }

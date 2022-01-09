@@ -82,18 +82,7 @@ public class CreateCellDialog extends Dialog {
             CellEntity cellEntity = new CellEntity();
             if ((!cellName.isEmpty() || cellName.getValue().length() != 0) && (!storage.isEmpty())) {
                 if (cellService.getCheckCell(cellName.getValue()).size() == 0) {
-                    if (cellName.getValue().charAt(0) != ' ' && cellName.getValue().charAt(0) != '~' &&
-                            cellName.getValue().charAt(0) != '`' && cellName.getValue().charAt(0) != '"' &&
-                            cellName.getValue().charAt(0) != ':' && cellName.getValue().charAt(0) != ';' &&
-                            cellName.getValue().charAt(0) != ',' && cellName.getValue().charAt(0) != '.' &&
-                            cellName.getValue().charAt(0) != '!' && cellName.getValue().charAt(0) != '@' &&
-                            cellName.getValue().charAt(0) != '#' && cellName.getValue().charAt(0) != '$' &&
-                            cellName.getValue().charAt(0) != '%' && cellName.getValue().charAt(0) != '^' &&
-                            cellName.getValue().charAt(0) != '&' && cellName.getValue().charAt(0) != '*' &&
-                            cellName.getValue().charAt(0) != '(' && cellName.getValue().charAt(0) != ')' &&
-                            cellName.getValue().charAt(0) != '-' && cellName.getValue().charAt(0) != '_' &&
-                            cellName.getValue().charAt(0) != '+' && cellName.getValue().charAt(0) != '+' &&
-                            cellName.getValue().charAt(0) != '\'') {
+                    if (AnyComponent.checkEscSymbol(cellName)) {
 
                         cellEntity.setCellName(cellName.getValue());
                         cellEntity.setIdStorage(storageID);

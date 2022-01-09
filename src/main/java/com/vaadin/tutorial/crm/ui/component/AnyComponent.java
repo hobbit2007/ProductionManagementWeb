@@ -4,6 +4,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,5 +82,28 @@ public class AnyComponent extends VerticalLayout {
         dp.setDateFormat("dd-MM-yyyy");
 
         return dp;
+    }
+
+    /**
+     * Метод проверки на наличие в начале вводимого текста спецсимволов
+     * @param text - объект класса TextField
+     * @return - возвращает true, если спецсимволы в начале не найдены или false, если найдены
+     */
+    public static boolean checkEscSymbol(TextField text) {
+        if (text.getValue().charAt(0) != ' ' && text.getValue().charAt(0) != '~' &&
+                text.getValue().charAt(0) != '`' && text.getValue().charAt(0) != '"' &&
+                text.getValue().charAt(0) != ':' && text.getValue().charAt(0) != ';' &&
+                text.getValue().charAt(0) != ',' && text.getValue().charAt(0) != '.' &&
+                text.getValue().charAt(0) != '!' && text.getValue().charAt(0) != '@' &&
+                text.getValue().charAt(0) != '#' && text.getValue().charAt(0) != '$' &&
+                text.getValue().charAt(0) != '%' && text.getValue().charAt(0) != '^' &&
+                text.getValue().charAt(0) != '&' && text.getValue().charAt(0) != '*' &&
+                text.getValue().charAt(0) != '(' && text.getValue().charAt(0) != ')' &&
+                text.getValue().charAt(0) != '-' && text.getValue().charAt(0) != '_' &&
+                text.getValue().charAt(0) != '+' && text.getValue().charAt(0) != '+' &&
+                text.getValue().charAt(0) != '\'')
+            return true;
+        else
+            return false;
     }
 }

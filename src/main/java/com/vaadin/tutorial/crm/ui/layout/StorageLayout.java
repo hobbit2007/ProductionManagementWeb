@@ -12,6 +12,7 @@ import com.vaadin.tutorial.crm.service.storage.StorageService;
 import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
 import com.vaadin.tutorial.crm.ui.storage.CreateCellDialog;
+import com.vaadin.tutorial.crm.ui.storage.CreateMaterialDialog;
 import com.vaadin.tutorial.crm.ui.storage.CreateStorageDialog;
 import com.vaadin.tutorial.crm.ui.storage.StorageSearch;
 
@@ -24,6 +25,7 @@ public class StorageLayout extends AppLayout {
     HorizontalLayout hMenu2 = new HorizontalLayout();
     HorizontalLayout hMenu3 = new HorizontalLayout();
     HorizontalLayout hMenu4 = new HorizontalLayout();
+    HorizontalLayout hMenu5 = new HorizontalLayout();
     private final SecurityConfiguration securityConfiguration;
 
     public StorageLayout(SecurityConfiguration securityConfiguration) {
@@ -56,6 +58,11 @@ public class StorageLayout extends AppLayout {
         Icon icon4 = new Icon(VaadinIcon.ADD_DOCK);
         hMenu4.add(icon4, addCell);
 
-        addToDrawer(new VerticalLayout(hMenu1, hMenu3, hMenu4, hMenu2));
+        RouterLink addMaterial = new RouterLink("Добавить объект хранения", CreateMaterialDialog.class);
+        addMaterial.setHighlightCondition(HighlightConditions.sameLocation());
+        Icon icon5 = new Icon(VaadinIcon.INVOICE);
+        hMenu5.add(icon5, addMaterial);
+
+        addToDrawer(new VerticalLayout(hMenu1, hMenu3, hMenu4, hMenu5, hMenu2));
     }
 }

@@ -68,18 +68,7 @@ public class CreateStorageDialog extends Dialog {
         save.addClickListener(e -> {
             if (!storageName.isEmpty() || storageName.getValue().length() != 0) {
                 if (storageService.getCheckStorage(storageName.getValue()).size() == 0) {
-                    if (storageName.getValue().charAt(0) != ' ' && storageName.getValue().charAt(0) != '~' &&
-                            storageName.getValue().charAt(0) != '`' && storageName.getValue().charAt(0) != '"' &&
-                            storageName.getValue().charAt(0) != ':' && storageName.getValue().charAt(0) != ';' &&
-                            storageName.getValue().charAt(0) != ',' && storageName.getValue().charAt(0) != '.' &&
-                            storageName.getValue().charAt(0) != '!' && storageName.getValue().charAt(0) != '@' &&
-                            storageName.getValue().charAt(0) != '#' && storageName.getValue().charAt(0) != '$' &&
-                            storageName.getValue().charAt(0) != '%' && storageName.getValue().charAt(0) != '^' &&
-                            storageName.getValue().charAt(0) != '&' && storageName.getValue().charAt(0) != '*' &&
-                            storageName.getValue().charAt(0) != '(' && storageName.getValue().charAt(0) != ')' &&
-                            storageName.getValue().charAt(0) != '-' && storageName.getValue().charAt(0) != '_' &&
-                            storageName.getValue().charAt(0) != '+' && storageName.getValue().charAt(0) != '+' &&
-                            storageName.getValue().charAt(0) != '\'') {
+                    if (AnyComponent.checkEscSymbol(storageName)) {
                         StorageEntity storageEntity = new StorageEntity();
                         storageEntity.setStorageName(storageName.getValue());
                         storageEntity.setDateCreate(new Date());

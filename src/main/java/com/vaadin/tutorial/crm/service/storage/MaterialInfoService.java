@@ -11,4 +11,17 @@ import java.util.List;
 @Service
 public interface MaterialInfoService {
     List<MaterialInfoEntity> getAll();
+
+    /**
+     * Метод проверяет наличие объекта хранения по артикулу в БД
+     * @param article - введенный артикул
+     * @return - возвращает массив, если не пустой, то объект хранения существует в БД, если пустой, то не существует
+     */
+    List<MaterialInfoEntity> getCheckArticle(String article);
+
+    /**
+     * Метод сохраняет в БД введенную информацию по объекту хранения
+     * @param materialInfoEntity - объект класса MaterialInfoEntity
+     */
+    void saveAll(MaterialInfoEntity materialInfoEntity);
 }

@@ -1,5 +1,6 @@
 package com.vaadin.tutorial.crm.service.impl.storage;
 
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.tutorial.crm.entity.storage.MaterialInfoEntity;
 import com.vaadin.tutorial.crm.repository.storage.MaterialInfoRepository;
 import com.vaadin.tutorial.crm.service.storage.MaterialInfoService;
@@ -21,5 +22,18 @@ public class MaterialInfoImpl implements MaterialInfoService {
     @Override
     public List<MaterialInfoEntity> getAll() {
         return materialInfoRepository.getAll();
+    }
+
+    @Override
+    public List<MaterialInfoEntity> getCheckArticle(String article) {
+        return materialInfoRepository.getCheckArticle(article);
+    }
+
+    @Override
+    public void saveAll(MaterialInfoEntity materialInfoEntity) {
+        if (materialInfoEntity != null)
+            materialInfoRepository.saveAndFlush(materialInfoEntity);
+        else
+            Notification.show("Нет данных для сохранения!", 5000, Notification.Position.MIDDLE);
     }
 }

@@ -30,4 +30,10 @@ public interface MaterialInfoService {
      * @param materialInfoEntity - объект класса MaterialInfoEntity
      */
     void updateValue(MaterialInfoEntity materialInfoEntity);
+
+    /**
+     * Метод, который обновляет только поле приход
+     * @param materialInfoEntity - объект класса MaterialInfoEntity
+     */
+    void updatePrihod(MaterialInfoEntity materialInfoEntity);
 }

@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Repository
 public interface MaterialInfoRepository extends JpaRepository<MaterialInfoEntity, Long> {
-    @Query("select mi from materialinfo mi where mi.delete = 0 order by mi.materialName asc")
+    @Query("select mi from materialinfo mi where mi.delete = 0 order by mi.dateCreate asc")
     List<MaterialInfoEntity> getAll();
 
     //Проверяем наличие объекта хранения по артикулу в БД

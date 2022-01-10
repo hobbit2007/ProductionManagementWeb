@@ -1,5 +1,6 @@
 package com.vaadin.tutorial.crm.service.impl.storage;
 
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.tutorial.crm.entity.storage.StorageComingEntity;
 import com.vaadin.tutorial.crm.repository.storage.StorageComingRepository;
 import com.vaadin.tutorial.crm.service.storage.StorageComingService;
@@ -21,5 +22,13 @@ public class StorageComingImpl implements StorageComingService {
     @Override
     public List<StorageComingEntity> getAll() {
         return storageComingRepository.getAll();
+    }
+
+    @Override
+    public void saveAll(StorageComingEntity storageComingEntity) {
+        if (storageComingEntity != null)
+            storageComingRepository.saveAndFlush(storageComingEntity);
+        else
+            Notification.show("Нет данных для записи!", 3000, Notification.Position.MIDDLE);
     }
 }

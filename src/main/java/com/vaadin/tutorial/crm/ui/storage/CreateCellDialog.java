@@ -19,6 +19,7 @@ import com.vaadin.tutorial.crm.entity.storage.CellEntity;
 import com.vaadin.tutorial.crm.entity.storage.StorageEntity;
 import com.vaadin.tutorial.crm.security.SecurityUtils;
 import com.vaadin.tutorial.crm.service.storage.CellService;
+import com.vaadin.tutorial.crm.service.storage.StorageService;
 import com.vaadin.tutorial.crm.ui.component.AnyComponent;
 import com.vaadin.tutorial.crm.ui.layout.StorageLayout;
 
@@ -33,6 +34,7 @@ import java.util.Date;
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 public class CreateCellDialog extends Dialog {
     private final CellService cellService;
+    private final StorageService storageService;
     ComboBox<StorageEntity> storage = new ComboBox<>("Выберите склад:");
     VerticalLayout vMain = new VerticalLayout();
     HorizontalLayout hMain = new HorizontalLayout();
@@ -41,8 +43,9 @@ public class CreateCellDialog extends Dialog {
     Button cancel = new Button("Отмена");
     long storageID = 0;
 
-    public CreateCellDialog(CellService cellService) {
+    public CreateCellDialog(CellService cellService, StorageService storageService) {
         this.cellService = cellService;
+        this.storageService = storageService;
         this.open();
         setCloseOnEsc(false);
         setCloseOnOutsideClick(false);
@@ -50,8 +53,12 @@ public class CreateCellDialog extends Dialog {
 
         cellName.setWidth("255px");
         cellName.setEnabled(false);
+        cellName.setRequired(true);
 
         storage.setWidth("255px");
+        storage.setItems(storageService.getAll());
+        storage.setItemLabelGenerator(StorageEntity::getStorageName);
+        storage.setRequired(true);
 
         Icon icon1 = new Icon(VaadinIcon.DISC);
         save.setIcon(icon1);

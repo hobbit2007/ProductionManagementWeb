@@ -18,6 +18,22 @@ public interface MaterialInfoRepository extends JpaRepository<MaterialInfoEntity
     @Query("select mi from materialinfo mi where mi.delete = 0 and mi.writeoff = 0 order by mi.dateCreate asc")
     List<MaterialInfoEntity> getAll();
 
+    //Поиск по заданному складу
+    @Query("select mi from materialinfo mi where mi.delete = 0 and mi.writeoff = 0 and mi.idStorage = :idStorage order by mi.dateCreate asc")
+    List<MaterialInfoEntity> getAllByStorage(@Param("idStorage") Long idStorage);
+
+    //Поиск по заданному складу и ячейке
+    @Query("select mi from materialinfo mi where mi.delete = 0 and mi.writeoff = 0 and mi.idStorage = :idStorage and mi.idCell = :idCell order by mi.dateCreate asc")
+    List<MaterialInfoEntity> getAllByStorageCell(@Param("idStorage") Long idStorage, @Param("idCell") Long idCell);
+
+    //Поиск по заданному артикулу
+    @Query("select mi from materialinfo mi where mi.delete = 0 and mi.writeoff = 0 and mi.article = :article order by mi.dateCreate asc")
+    List<MaterialInfoEntity> getAllByArticle(@Param("article") String article);
+
+    //Поиск по названию объекта хранения
+    @Query("select mi from materialinfo mi where mi.delete = 0 and mi.writeoff = 0 and mi.materialName = :materialName order by mi.dateCreate asc")
+    List<MaterialInfoEntity> getAllByMaterialName(@Param("materialName") String materialName);
+
     //Проверяем наличие объекта хранения по артикулу в БД
     @Query("select mi from materialinfo mi where mi.article = :article and mi.delete = 0")
     List<MaterialInfoEntity> getCheckArticle(@Param("article") String article);

@@ -10,14 +10,14 @@ import java.util.List;
  */
 @Service
 public interface CellService {
-    List<CellEntity> getAll();
+    List<CellEntity> getAll(Long storageID);
 
     /**
      * Метод, который проверяет наличие ячейки в БД
      * @param cellName - имя ячейки
      * @return - возвращает массив значений, если ячейка существует в БД или пустой массив
      */
-    List<CellEntity> getCheckCell(String cellName);
+    List<CellEntity> getCheckCell(String cellName, Long storageID);
 
     /**
      * Метод сохраняет созданную ячейку в таблице cells

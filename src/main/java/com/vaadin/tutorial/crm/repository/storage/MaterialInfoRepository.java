@@ -32,9 +32,9 @@ public interface MaterialInfoRepository extends JpaRepository<MaterialInfoEntity
                         @Param("costPrice") double costPrice, @Param("marketPrice") double marketPrice, @Param("id") long id,
                      @Param("diffPrice") double diffPrice, @Param("balance") double balance);
 
-    //Обновляем только поле приход
+    //Обновляем только поле приход и остаток
     @Modifying
     @Transactional
-    @Query("update materialinfo mi set mi.quantity = :prihodNew where mi.id = :id")
-    void updatePrihod(@Param("prihodNew") double prihodNew, @Param("id") long id);
+    @Query("update materialinfo mi set mi.quantity = :prihodNew, mi.balance = :balance where mi.id = :id")
+    void updatePrihod(@Param("prihodNew") double prihodNew, @Param("id") long id, @Param("balance") double balance);
 }

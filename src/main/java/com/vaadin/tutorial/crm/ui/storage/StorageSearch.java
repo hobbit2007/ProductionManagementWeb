@@ -9,7 +9,7 @@ import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.component.treegrid.TreeGrid;
+import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.tutorial.crm.entity.storage.CellEntity;
@@ -44,6 +44,7 @@ public class StorageSearch extends VerticalLayout {
     private final MaterialInfoService materialInfoService;
     private final StorageService storageService;
     private final CellService cellService;
+    private ListDataProvider<MaterialInfoEntity> dataProvider;
 
     public StorageSearch(MaterialInfoService materialInfoService, StorageService storageService, CellService cellService) {
         this.materialInfoService = materialInfoService;
@@ -89,6 +90,7 @@ public class StorageSearch extends VerticalLayout {
         btnMaterialSearch.setEnabled(false);
 
         configureGrid();
+        updateGrid();
 
         hSearch.add(articleNumber, btnArticleSearch, materialName, btnMaterialSearch);
         hSearch.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
@@ -138,5 +140,10 @@ public class StorageSearch extends VerticalLayout {
         colQuantity.setResizable(true);
         colExpense.setResizable(true);
         colBalance.setResizable(true);
+    }
+    private void updateGrid() {
+        dataProvider = new ListDataProvider<>(
+                materialInfoService.getAll());
+        grid.setItems(dataProvider);
     }
 }

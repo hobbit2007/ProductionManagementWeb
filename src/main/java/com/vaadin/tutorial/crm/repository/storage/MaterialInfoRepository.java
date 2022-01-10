@@ -26,8 +26,9 @@ public interface MaterialInfoRepository extends JpaRepository<MaterialInfoEntity
     @Modifying
     @Transactional //Добавляем эту аннотацию, чтоб насильно сделать апдейт, даже если он запрещен
     @Query("update materialinfo mi set mi.materialName = :materialName, mi.article = :article, mi.quantity = :qty, " +
-            "mi.costPrice = :costPrice, mi.marketPrice = :marketPrice " +
+            "mi.costPrice = :costPrice, mi.marketPrice = :marketPrice, mi.diffPrice = :diffPrice, mi.balance = :balance " +
             "where mi.id = :id")
     void updateValue(@Param("materialName") String materialName, @Param("article") String article, @Param("qty") double qty,
-                        @Param("costPrice") double costPrice, @Param("marketPrice") double marketPrice, @Param("id") long id);
+                        @Param("costPrice") double costPrice, @Param("marketPrice") double marketPrice, @Param("id") long id,
+                     @Param("diffPrice") double diffPrice, @Param("balance") double balance);
 }

@@ -36,4 +36,13 @@ public class MaterialInfoImpl implements MaterialInfoService {
         else
             Notification.show("Нет данных для сохранения!", 5000, Notification.Position.MIDDLE);
     }
+
+    @Override
+    public void updateValue(MaterialInfoEntity materialInfoEntity) {
+        if (materialInfoEntity != null)
+            materialInfoRepository.updateValue(materialInfoEntity.getMaterialName(), materialInfoEntity.getArticle(), materialInfoEntity.getQuantity(),
+                    materialInfoEntity.getCostPrice(), materialInfoEntity.getMarketPrice(), materialInfoEntity.getId());
+        else
+            Notification.show("Нет данных для обновления!", 5000, Notification.Position.MIDDLE);
+    }
 }

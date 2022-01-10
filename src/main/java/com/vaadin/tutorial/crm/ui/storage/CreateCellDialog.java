@@ -88,7 +88,7 @@ public class CreateCellDialog extends Dialog {
         save.addClickListener(e -> {
             CellEntity cellEntity = new CellEntity();
             if ((!cellName.isEmpty() || cellName.getValue().length() != 0) && (!storage.isEmpty())) {
-                if (cellService.getCheckCell(cellName.getValue()).size() == 0) {
+                if (cellService.getCheckCell(cellName.getValue(), storageID).size() == 0) {
                     if (AnyComponent.checkEscSymbol(cellName)) {
 
                         cellEntity.setCellName(cellName.getValue());

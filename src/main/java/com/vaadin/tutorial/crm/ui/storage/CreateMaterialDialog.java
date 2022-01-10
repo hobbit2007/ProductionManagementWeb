@@ -79,8 +79,6 @@ public class CreateMaterialDialog extends Dialog {
         storage.setItemLabelGenerator(StorageEntity::getStorageName);
 
         cell.setRequired(true);
-        cell.setItems(cellService.getAll());
-        cell.setItemLabelGenerator(CellEntity::getCellName);
 
         material.setRequired(true);
         material.setWidth("235px");
@@ -110,8 +108,11 @@ public class CreateMaterialDialog extends Dialog {
         cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
         storage.addValueChangeListener(e -> {
-           if (e.getValue() != null)
+           if (e.getValue() != null) {
                storageID = e.getValue().getId();
+               cell.setItems(cellService.getAll(storageID));
+               cell.setItemLabelGenerator(CellEntity::getCellName);
+           }
         });
         cell.addValueChangeListener(e -> {
            if (e.getValue() != null)

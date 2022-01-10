@@ -3,10 +3,7 @@ package com.vaadin.tutorial.crm.entity.storage;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -29,4 +26,12 @@ public class StorageComingEntity implements Serializable {
     private double qtyOldCome;
     private double balanceOld;
     private double balanceNew;
+
+    @ManyToOne
+    @JoinColumn(name = "idMeas", referencedColumnName = "id", insertable = false, updatable = false)
+    private MeasEntity meas;
+
+    @ManyToOne
+    @JoinColumn(name = "idMaterial", referencedColumnName = "id", insertable = false, updatable = false)
+    private MaterialInfoEntity materialInfo;
 }

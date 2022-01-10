@@ -1,6 +1,7 @@
 package com.vaadin.tutorial.crm.ui.storage;
 
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
@@ -24,14 +25,19 @@ public class PrihodHistoryDialog extends Dialog {
 
     public PrihodHistoryDialog(StorageComingService storageComingService) {
         this.storageComingService = storageComingService;
+        setSizeFull();
         setCloseOnEsc(false);
         setCloseOnOutsideClick(false);
         setDraggable(true);
         configureGrid();
         updateGrid();
 
+        close.getStyle().set("background-color", "#d3b342");
+        close.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
         vMain.add(new AnyComponent().labelTitle("История приход"), grid, close);
         vMain.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
+        vMain.setSizeFull();
         add(vMain);
 
         close.addClickListener(e -> {

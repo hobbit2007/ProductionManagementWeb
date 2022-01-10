@@ -6,6 +6,7 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -17,6 +18,7 @@ import com.vaadin.tutorial.crm.entity.storage.MaterialInfoEntity;
 import com.vaadin.tutorial.crm.entity.storage.StorageEntity;
 import com.vaadin.tutorial.crm.service.storage.CellService;
 import com.vaadin.tutorial.crm.service.storage.MaterialInfoService;
+import com.vaadin.tutorial.crm.service.storage.StorageComingService;
 import com.vaadin.tutorial.crm.service.storage.StorageService;
 import com.vaadin.tutorial.crm.ui.component.AnyComponent;
 import com.vaadin.tutorial.crm.ui.layout.StorageLayout;
@@ -44,14 +46,21 @@ public class StorageSearch extends VerticalLayout {
     private final MaterialInfoService materialInfoService;
     private final StorageService storageService;
     private final CellService cellService;
+    private final StorageComingService storageComingService;
     private ListDataProvider<MaterialInfoEntity> dataProvider;
+    Div content;
+    FormMaterialDetail formMaterialDetail;
 
-    public StorageSearch(MaterialInfoService materialInfoService, StorageService storageService, CellService cellService) {
+    public StorageSearch(MaterialInfoService materialInfoService, StorageService storageService, CellService cellService, StorageComingService storageComingService) {
         this.materialInfoService = materialInfoService;
         this.storageService = storageService;
         this.cellService = cellService;
+        this.storageComingService = storageComingService;
         addClassName("list-view");
         setSizeFull();
+
+        configureGrid();
+        updateGrid();
 
         vMain.add(new AnyComponent().labelTitle("Поиск по складу"));
         vMain.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
@@ -65,7 +74,7 @@ public class StorageSearch extends VerticalLayout {
         btnArticleSearch.setEnabled(false);
 
         materialName = new ComboBox<>();
-        materialName.setLabel("Поиск по материалу:");
+        materialName.setLabel("Поиск по объекту хранения:");
         materialName.setWidth("399px");
         materialName.setItems(materialInfoService.getAll());
         materialName.setItemLabelGenerator(MaterialInfoEntity::getMaterialName);
@@ -89,8 +98,12 @@ public class StorageSearch extends VerticalLayout {
         btnMaterialSearch.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         btnMaterialSearch.setEnabled(false);
 
-        configureGrid();
-        updateGrid();
+        formMaterialDetail = new FormMaterialDetail(materialInfoService, storageComingService);
+        formMaterialDetail.addListener(FormMaterialDetail.ContactFormEvent.CloseEvent.class, e -> close());
+
+        content = new Div(grid, formMaterialDetail);
+        content.addClassName("content");
+        content.setSizeFull();
 
         hSearch.add(articleNumber, btnArticleSearch, materialName, btnMaterialSearch);
         hSearch.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
@@ -103,8 +116,8 @@ public class StorageSearch extends VerticalLayout {
         vSearch.setPadding(false);
         vMain.setPadding(false);
 
-        add(vMain, vSearch, grid);
-
+        add(vMain, vSearch, content);
+        close();
         storageSelect.addValueChangeListener(e -> {
             if (e.getValue() != null) {
                 articleNumber.setEnabled(true);
@@ -140,10 +153,30 @@ public class StorageSearch extends VerticalLayout {
         colQuantity.setResizable(true);
         colExpense.setResizable(true);
         colBalance.setResizable(true);
+
+        grid.asSingleSelect().addValueChangeListener(e -> {
+            if (e.getValue() != null) {
+                editForm(e.getValue());
+            }
+            else
+                close();
+        });
     }
     private void updateGrid() {
         dataProvider = new ListDataProvider<>(
                 materialInfoService.getAll());
         grid.setItems(dataProvider);
+    }
+    private void editForm(MaterialInfoEntity materialInfoEntity) {
+        if (materialInfoEntity == null)
+            close();
+        formMaterialDetail.setMaterialInfo(materialInfoEntity);
+        formMaterialDetail.setVisible(true);
+        addClassName("editing");
+    }
+    private void close() {
+        formMaterialDetail.setMaterialInfo(null);
+        formMaterialDetail.setVisible(false);
+        //updateList();
     }
 }

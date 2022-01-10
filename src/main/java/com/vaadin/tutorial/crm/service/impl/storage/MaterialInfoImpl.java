@@ -52,4 +52,24 @@ public class MaterialInfoImpl implements MaterialInfoService {
         else
             Notification.show("Нет данных для обновления!", 5000, Notification.Position.MIDDLE);
     }
+
+    @Override
+    public List<MaterialInfoEntity> getAllByStorage(Long idStorage) {
+        return materialInfoRepository.getAllByStorage(idStorage);
+    }
+
+    @Override
+    public List<MaterialInfoEntity> getAllByStorageCell(Long idStorage, Long idCell) {
+        return materialInfoRepository.getAllByStorageCell(idStorage, idCell);
+    }
+
+    @Override
+    public List<MaterialInfoEntity> getAllByArticle(String article) {
+        return materialInfoRepository.getAllByArticle(article);
+    }
+
+    @Override
+    public List<MaterialInfoEntity> getAllByMaterialName(String materialName) {
+        return materialInfoRepository.getAllByMaterialName(materialName);
+    }
 }

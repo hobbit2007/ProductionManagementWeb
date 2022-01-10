@@ -1,5 +1,6 @@
 package com.vaadin.tutorial.crm.entity.storage;
 
+import com.vaadin.tutorial.crm.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -45,4 +46,8 @@ public class MaterialInfoEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "idMeas", referencedColumnName = "id", insertable = false, updatable = false)
     private MeasEntity meas;
+
+    @ManyToOne
+    @JoinColumn(name = "idUser", referencedColumnName = "id", insertable = false, updatable = false)
+    private User user;
 }

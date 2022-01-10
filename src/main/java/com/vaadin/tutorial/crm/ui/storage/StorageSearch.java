@@ -7,6 +7,7 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -50,6 +51,8 @@ public class StorageSearch extends VerticalLayout {
     private ListDataProvider<MaterialInfoEntity> dataProvider;
     Div content;
     FormMaterialDetail formMaterialDetail;
+    long storageID = 0;
+    long cellID = 0;
 
     public StorageSearch(MaterialInfoService materialInfoService, StorageService storageService, CellService cellService, StorageComingService storageComingService) {
         this.materialInfoService = materialInfoService;
@@ -60,7 +63,6 @@ public class StorageSearch extends VerticalLayout {
         setSizeFull();
 
         configureGrid();
-        updateGrid();
 
         vMain.add(new AnyComponent().labelTitle("Поиск по складу"));
         vMain.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
@@ -76,8 +78,6 @@ public class StorageSearch extends VerticalLayout {
         materialName = new ComboBox<>();
         materialName.setLabel("Поиск по объекту хранения:");
         materialName.setWidth("399px");
-        materialName.setItems(materialInfoService.getAll());
-        materialName.setItemLabelGenerator(MaterialInfoEntity::getMaterialName);
         materialName.setEnabled(false);
 
         storageSelect = new ComboBox<>();
@@ -89,8 +89,6 @@ public class StorageSearch extends VerticalLayout {
         cellSelect = new ComboBox<>();
         cellSelect.setLabel("Выберите ячейку:");
         cellSelect.setWidth("135px");
-        cellSelect.setItems(cellService.getAll());
-        cellSelect.setItemLabelGenerator(CellEntity::getCellName);
         cellSelect.setEnabled(false);
 
         btnMaterialSearch = new Button("Поиск");
@@ -120,12 +118,45 @@ public class StorageSearch extends VerticalLayout {
         close();
         storageSelect.addValueChangeListener(e -> {
             if (e.getValue() != null) {
+                storageID = e.getValue().getId();
                 articleNumber.setEnabled(true);
                 btnArticleSearch.setEnabled(true);
                 materialName.setEnabled(true);
+
                 cellSelect.setEnabled(true);
+                cellSelect.setItems(cellService.getAll(storageID));
+                cellSelect.setItemLabelGenerator(CellEntity::getCellName);
+
                 btnMaterialSearch.setEnabled(true);
+
+                updateGridStore();
+                materialName.setItems(materialInfoService.getAllByStorage(storageID));
+                materialName.setItemLabelGenerator(MaterialInfoEntity::getMaterialName);
             }
+        });
+        cellSelect.addValueChangeListener(e -> {
+           if (e.getValue() != null) {
+               cellID = e.getValue().getId();
+               updateGridStoreCell();
+               materialName.setItems(materialInfoService.getAllByStorageCell(storageID, cellID));
+               materialName.setItemLabelGenerator(MaterialInfoEntity::getMaterialName);
+           }
+        });
+        btnArticleSearch.addClickListener(e -> {
+            if (!articleNumber.isEmpty())
+                updateGridArticle();
+            else {
+                Notification.show("Введите артикул!", 2000, Notification.Position.MIDDLE);
+                return;
+            }
+        });
+        btnMaterialSearch.addClickListener(e -> {
+           if (!materialName.isEmpty())
+               updateGridMaterialName();
+           else {
+               Notification.show("Выберите название объекта хранения!", 3000, Notification.Position.MIDDLE);
+               return;
+           }
         });
     }
     private void configureGrid() {
@@ -162,9 +193,24 @@ public class StorageSearch extends VerticalLayout {
                 close();
         });
     }
-    private void updateGrid() {
+    private void updateGridStore() {
         dataProvider = new ListDataProvider<>(
-                materialInfoService.getAll());
+                materialInfoService.getAllByStorage(storageID));
+        grid.setItems(dataProvider);
+    }
+    private void updateGridStoreCell() {
+        dataProvider = new ListDataProvider<>(
+                materialInfoService.getAllByStorageCell(storageID, cellID));
+        grid.setItems(dataProvider);
+    }
+    private void updateGridArticle() {
+        dataProvider = new ListDataProvider<>(
+                materialInfoService.getAllByArticle(articleNumber.getValue()));
+        grid.setItems(dataProvider);
+    }
+    private void updateGridMaterialName() {
+        dataProvider = new ListDataProvider<>(
+                materialInfoService.getAllByMaterialName(materialName.getValue().getMaterialName()));
         grid.setItems(dataProvider);
     }
     private void editForm(MaterialInfoEntity materialInfoEntity) {

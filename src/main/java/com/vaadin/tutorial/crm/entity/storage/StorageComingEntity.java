@@ -27,4 +27,6 @@ public class StorageComingEntity implements Serializable {
     private Date dateCreate;
     private long delete;
     private double qtyOldCome;
+    private double balanceOld;
+    private double balanceNew;
 }

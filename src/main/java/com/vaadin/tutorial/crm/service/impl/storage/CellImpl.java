@@ -20,13 +20,13 @@ public class CellImpl implements CellService {
     }
 
     @Override
-    public List<CellEntity> getAll() {
-        return cellRepository.getAll();
+    public List<CellEntity> getAll(Long storageID) {
+        return cellRepository.getAll(storageID);
     }
 
     @Override
-    public List<CellEntity> getCheckCell(String cellName) {
-        return cellRepository.getCheckCell(cellName);
+    public List<CellEntity> getCheckCell(String cellName, Long storageID) {
+        return cellRepository.getCheckCell(cellName, storageID);
     }
 
     @Override

@@ -24,4 +24,10 @@ public interface MaterialInfoService {
      * @param materialInfoEntity - объект класса MaterialInfoEntity
      */
     void saveAll(MaterialInfoEntity materialInfoEntity);
+
+    /**
+     * Метод, который обновляет некоторые значения в таблице materialinfo
+     * @param materialInfoEntity - объект класса MaterialInfoEntity
+     */
+    void updateValue(MaterialInfoEntity materialInfoEntity);
 }

@@ -36,4 +36,33 @@ public interface MaterialInfoService {
      * @param materialInfoEntity - объект класса MaterialInfoEntity
      */
     void updatePrihod(MaterialInfoEntity materialInfoEntity);
+
+    /**
+     * Метод совершающий поиск по заданному складу
+     * @param idStorage - id склада
+     * @return - возвращает набор данных по выбранному складу
+     */
+    List<MaterialInfoEntity> getAllByStorage(Long idStorage);
+
+    /**
+     * Метод совершающий поиск по заданному складу и ячейке
+     * @param idStorage - id склада
+     * @param idCell - id ячейки
+     * @return - возвращает набор данных по выбранному складу и ячейке
+     */
+    List<MaterialInfoEntity> getAllByStorageCell(Long idStorage, Long idCell);
+
+    /**
+     * Метод совершающий поиск по заданному артикулу
+     * @param article - артикул объекта хранения
+     * @return - возвращает набор данных по выбранному артикулу
+     */
+    List<MaterialInfoEntity> getAllByArticle(String article);
+
+    /**
+     * Метод осуществляющий поиск по названию объекта хранения
+     * @param materialName - наименование объекта хранения
+     * @return - возвращает набор данных по выбранному объекту хранения
+     */
+    List<MaterialInfoEntity> getAllByMaterialName(String materialName);
 }

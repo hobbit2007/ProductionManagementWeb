@@ -8,7 +8,9 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ListDataProvider;
@@ -31,7 +33,7 @@ import com.vaadin.tutorial.crm.ui.layout.StorageLayout;
 @PageTitle("Поиск по складу | Система управления производством")
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
-public class StorageSearch extends VerticalLayout {
+public class StorageSearch extends Scroller {
     VerticalLayout vMain = new VerticalLayout();
     VerticalLayout vSearch = new VerticalLayout();
     HorizontalLayout hSearch = new HorizontalLayout();
@@ -65,7 +67,7 @@ public class StorageSearch extends VerticalLayout {
         configureGrid();
 
         vMain.add(new AnyComponent().labelTitle("Поиск по складу"));
-        vMain.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+        vMain.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         articleNumber = new TextField();
         articleNumber.setLabel("Поиск по артикулу:");
         articleNumber.setEnabled(false);
@@ -96,7 +98,7 @@ public class StorageSearch extends VerticalLayout {
         btnMaterialSearch.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         btnMaterialSearch.setEnabled(false);
 
-        formMaterialDetail = new FormMaterialDetail(materialInfoService, storageComingService);
+        formMaterialDetail = new FormMaterialDetail(materialInfoService, storageComingService, storageService, cellService);
         formMaterialDetail.addListener(FormMaterialDetail.ContactFormEvent.CloseEvent.class, e -> close());
 
         content = new Div(grid, formMaterialDetail);
@@ -104,17 +106,19 @@ public class StorageSearch extends VerticalLayout {
         content.setSizeFull();
 
         hSearch.add(articleNumber, btnArticleSearch, materialName, btnMaterialSearch);
-        hSearch.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
+        hSearch.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.BASELINE);
 
         hSelect.add(storageSelect, cellSelect);
 
         vSearch.add(hSelect, hSearch);
-        vSearch.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+        vSearch.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
 
         vSearch.setPadding(false);
         vMain.setPadding(false);
+        vMain.add(vSearch, content);
+        vMain.setSizeFull();
 
-        add(vMain, vSearch, content);
+        setContent(vMain);
         close();
         storageSelect.addValueChangeListener(e -> {
             if (e.getValue() != null) {

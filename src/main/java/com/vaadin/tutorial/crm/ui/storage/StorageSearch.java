@@ -205,12 +205,12 @@ public class StorageSearch extends VerticalLayout {
     }
     private void updateGridArticle() {
         dataProvider = new ListDataProvider<>(
-                materialInfoService.getAllByArticle(articleNumber.getValue()));
+                materialInfoService.getAllByArticle(articleNumber.getValue(), storageID));
         grid.setItems(dataProvider);
     }
     private void updateGridMaterialName() {
         dataProvider = new ListDataProvider<>(
-                materialInfoService.getAllByMaterialName(materialName.getValue().getMaterialName()));
+                materialInfoService.getAllByMaterialName(materialName.getValue().getMaterialName(), storageID));
         grid.setItems(dataProvider);
     }
     private void editForm(MaterialInfoEntity materialInfoEntity) {

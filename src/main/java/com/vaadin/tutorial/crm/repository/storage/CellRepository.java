@@ -19,4 +19,8 @@ public interface CellRepository extends JpaRepository<CellEntity, Long> {
     //Запрос проверяет наличие ячейки в БД
     @Query("select c from cells c where c.cellName = :cellName and c.delete = 0 and c.idStorage = :idStorage")
     List<CellEntity> getCheckCell(@Param("cellName") String cellName, @Param("idStorage") Long idStorage);
+
+    //Поиск ячейки по ID
+    @Query("select c from cells c where c.id = :cellID and c.delete = 0 and c.idStorage = :idStorage")
+    List<CellEntity> getFindCellByID(@Param("cellID") String cellID, @Param("idStorage") Long idStorage);
 }

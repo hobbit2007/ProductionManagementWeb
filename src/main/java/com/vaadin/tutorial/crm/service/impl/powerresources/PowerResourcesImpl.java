@@ -83,10 +83,11 @@ public class PowerResourcesImpl implements PowerResourcesService {
     /**
      * Метод проверяет наличие показаний в БД на указанную дату
      * @param dateValue - дата, выбранная при вводе показаний
+     * @param resourceID - id выбранного энергоресурса
      * @return - возвращает список, если на выбранную дату присутствуют показания
      */
     @Override
-    public List<PowerResources> getCheckDate(Date dateValue) {
-        return powerResourcesRepository.getCheckDate(dateValue);
+    public List<PowerResources> getCheckDate(Date dateValue, Long resourceID) {
+        return powerResourcesRepository.getCheckDate(dateValue, resourceID);
     }
 }

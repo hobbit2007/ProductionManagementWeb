@@ -19,10 +19,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.tutorial.crm.entity.storage.CellEntity;
 import com.vaadin.tutorial.crm.entity.storage.MaterialInfoEntity;
 import com.vaadin.tutorial.crm.entity.storage.StorageEntity;
-import com.vaadin.tutorial.crm.service.storage.CellService;
-import com.vaadin.tutorial.crm.service.storage.MaterialInfoService;
-import com.vaadin.tutorial.crm.service.storage.StorageComingService;
-import com.vaadin.tutorial.crm.service.storage.StorageService;
+import com.vaadin.tutorial.crm.service.storage.*;
 import com.vaadin.tutorial.crm.ui.component.AnyComponent;
 import com.vaadin.tutorial.crm.ui.layout.StorageLayout;
 
@@ -50,17 +47,19 @@ public class StorageSearch extends Scroller {
     private final StorageService storageService;
     private final CellService cellService;
     private final StorageComingService storageComingService;
+    private final MaterialMoveService materialMoveService;
     private ListDataProvider<MaterialInfoEntity> dataProvider;
     Div content;
     FormMaterialDetail formMaterialDetail;
     long storageID = 0;
     long cellID = 0;
 
-    public StorageSearch(MaterialInfoService materialInfoService, StorageService storageService, CellService cellService, StorageComingService storageComingService) {
+    public StorageSearch(MaterialInfoService materialInfoService, StorageService storageService, CellService cellService, StorageComingService storageComingService, MaterialMoveService materialMoveService) {
         this.materialInfoService = materialInfoService;
         this.storageService = storageService;
         this.cellService = cellService;
         this.storageComingService = storageComingService;
+        this.materialMoveService = materialMoveService;
         addClassName("list-view");
         setSizeFull();
 
@@ -98,7 +97,7 @@ public class StorageSearch extends Scroller {
         btnMaterialSearch.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         btnMaterialSearch.setEnabled(false);
 
-        formMaterialDetail = new FormMaterialDetail(materialInfoService, storageComingService, storageService, cellService);
+        formMaterialDetail = new FormMaterialDetail(materialInfoService, storageComingService, storageService, cellService, materialMoveService);
         formMaterialDetail.addListener(FormMaterialDetail.ContactFormEvent.CloseEvent.class, e -> close());
 
         content = new Div(grid, formMaterialDetail);

@@ -150,6 +150,7 @@ public class FormMaterialDetail extends FormLayout {
 
                         balance.setValue(materialInfoEntity.getBalance());
                         flagPrihod = 0;
+                        prihodHistory.setEnabled(true);
                     } catch (Exception ex) {
                         Notification.show("Не могу обновить данные!" + ex.getMessage(), 5000, Notification.Position.MIDDLE);
                         return;
@@ -175,10 +176,18 @@ public class FormMaterialDetail extends FormLayout {
 
         //Обработка события нажатия кнопки Перемещение между складом/ячейкой
         moveStore.addClickListener(e -> {
-            if (storageID != 0 && cellID != 0)
-                new MoveStoreDialog(storageService, cellService, storageID, cellID, materialMoveService, materialID, materialInfoService).open();
-            else
-                Notification.show("Не могу найти склад или ячейку!", 3000, Notification.Position.MIDDLE);
+            if (materialInfoService.getCheckID(materialID).get(0).getBalance() > 0) {
+                if (storageID != 0 && cellID != 0)
+                    new MoveStoreDialog(storageService, cellService, storageID, cellID, materialMoveService, materialID, materialInfoService).open();
+                else {
+                    Notification.show("Не могу найти склад или ячейку!", 3000, Notification.Position.MIDDLE);
+                    return;
+                }
+            }
+            else {
+                Notification.show("Перемещение не возможно, нулевой остаток!", 3000, Notification.Position.MIDDLE);
+                return;
+            }
         });
     }
     public void setMaterialInfo(MaterialInfoEntity materialInfoEntity) {

@@ -40,6 +40,7 @@ public class PowerLayout extends AppLayout {
     private final PowerResourcesService powerResourcesService;
     private final WriteToDBService writeToDBService;
     private final String ROLE = "ADMIN";
+    private final String ROLE1 = "USER";
     RouterLink editLink= new RouterLink("Редактирование показаний", RuleOutEnergo.class);
 
     public PowerLayout(SecurityConfiguration securityConfiguration, PowerResourceDictService powerResourceDictService, PowerResourcesService powerResourcesService, WriteToDBService writeToDBService) {
@@ -47,10 +48,11 @@ public class PowerLayout extends AppLayout {
         this.powerResourceDictService = powerResourceDictService;
         this.powerResourcesService = powerResourcesService;
         this.writeToDBService = writeToDBService;
-
-        Icon icon5 = new Icon(VaadinIcon.EDIT);
-        editLink.setHighlightCondition(HighlightConditions.sameLocation());
-        hMenu4.add(icon5, editLink);
+        if (SecurityUtils.getAuthentication().getDetails().getRole().equals(ROLE1)) {
+            Icon icon5 = new Icon(VaadinIcon.EDIT);
+            editLink.setHighlightCondition(HighlightConditions.sameLocation());
+            hMenu4.add(icon5, editLink);
+        }
 
         createHeader();
         createDrawer();

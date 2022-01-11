@@ -98,7 +98,7 @@ public class StorageSearch extends Scroller {
         btnMaterialSearch.setEnabled(false);
 
         formMaterialDetail = new FormMaterialDetail(materialInfoService, storageComingService, storageService, cellService, materialMoveService);
-        formMaterialDetail.addListener(FormMaterialDetail.ContactFormEvent.CloseEvent.class, e -> close());
+        formMaterialDetail.addListener(FormMaterialDetail.ContactFormEvent.CloseEvent.class, e -> btnClose());
 
         content = new Div(grid, formMaterialDetail);
         content.addClassName("content");
@@ -226,6 +226,10 @@ public class StorageSearch extends Scroller {
     private void close() {
         formMaterialDetail.setMaterialInfo(null);
         formMaterialDetail.setVisible(false);
-        //updateList();
+    }
+    private void btnClose() {
+        formMaterialDetail.setMaterialInfo(null);
+        formMaterialDetail.setVisible(false);
+        updateGridStore();
     }
 }

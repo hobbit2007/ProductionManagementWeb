@@ -64,12 +64,12 @@ public class MaterialInfoImpl implements MaterialInfoService {
     }
 
     @Override
-    public List<MaterialInfoEntity> getAllByArticle(String article) {
-        return materialInfoRepository.getAllByArticle(article);
+    public List<MaterialInfoEntity> getAllByArticle(String article, Long idStore) {
+        return materialInfoRepository.getAllByArticle(article, idStore);
     }
 
     @Override
-    public List<MaterialInfoEntity> getAllByMaterialName(String materialName) {
-        return materialInfoRepository.getAllByMaterialName(materialName);
+    public List<MaterialInfoEntity> getAllByMaterialName(String materialName, Long idStore) {
+        return materialInfoRepository.getAllByMaterialName(materialName, idStore);
     }
 }

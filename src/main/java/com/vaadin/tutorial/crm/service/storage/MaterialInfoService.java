@@ -57,12 +57,12 @@ public interface MaterialInfoService {
      * @param article - артикул объекта хранения
      * @return - возвращает набор данных по выбранному артикулу
      */
-    List<MaterialInfoEntity> getAllByArticle(String article);
+    List<MaterialInfoEntity> getAllByArticle(String article, Long idStore);
 
     /**
      * Метод осуществляющий поиск по названию объекта хранения
      * @param materialName - наименование объекта хранения
      * @return - возвращает набор данных по выбранному объекту хранения
      */
-    List<MaterialInfoEntity> getAllByMaterialName(String materialName);
+    List<MaterialInfoEntity> getAllByMaterialName(String materialName, Long idStore);
 }

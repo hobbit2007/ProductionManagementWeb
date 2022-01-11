@@ -31,9 +31,9 @@ public interface PowerResourcesRepository extends JpaRepository<PowerResources, 
     @Query("select pr from power_resources pr where pr.dateCreate between :dateBegin and :dateEnd and pr.delete = 0 and pr.idPowerResource = :resourceID order by pr.dateCreate asc")
     List<PowerResources> getResourceBySort(@Param("dateBegin") Date dateBegin, @Param("dateEnd") Date dateEnd, @Param("resourceID") Long resourceID);
 
-    //Проверяем наличие показаний в БД на выбранную дату
-    @Query("select pr from power_resources pr where pr.dateCreate = :dateValue and pr.delete = 0 order by pr.dateCreate asc")
-    List<PowerResources> getCheckDate(@Param("dateValue") Date dateValue);
+    //Проверяем наличие показаний в БД на выбранную дату и ресурс
+    @Query("select pr from power_resources pr where pr.dateCreate = :dateValue and pr.delete = 0 and pr.idPowerResource = :resourceID order by pr.dateCreate asc")
+    List<PowerResources> getCheckDate(@Param("dateValue") Date dateValue, @Param("resourceID") Long resourceID);
 
     //Обновление значения показания
     @Modifying

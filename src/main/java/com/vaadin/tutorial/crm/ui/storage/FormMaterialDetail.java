@@ -14,10 +14,7 @@ import com.vaadin.flow.shared.Registration;
 import com.vaadin.tutorial.crm.entity.storage.MaterialInfoEntity;
 import com.vaadin.tutorial.crm.entity.storage.StorageComingEntity;
 import com.vaadin.tutorial.crm.security.SecurityUtils;
-import com.vaadin.tutorial.crm.service.storage.CellService;
-import com.vaadin.tutorial.crm.service.storage.MaterialInfoService;
-import com.vaadin.tutorial.crm.service.storage.StorageComingService;
-import com.vaadin.tutorial.crm.service.storage.StorageService;
+import com.vaadin.tutorial.crm.service.storage.*;
 import org.apache.commons.math3.util.*;
 
 import java.util.Date;
@@ -56,7 +53,7 @@ public class FormMaterialDetail extends FormLayout {
     int flag = 0;//Флаг определяющий текст на кнопке 0 - Редактировать, 1 - Сохранить
     int flagPrihod = 0;//Флаг определяющий текст на кнопке 0 - Сделать приход, 1 - Сохранить
     public FormMaterialDetail(MaterialInfoService materialInfoService, StorageComingService storageComingService, StorageService storageService,
-                              CellService cellService) {
+                              CellService cellService, MaterialMoveService materialMoveService) {
         addClassName("contact-form");
 
         close.getStyle().set("background-color", "#d3b342");
@@ -179,7 +176,7 @@ public class FormMaterialDetail extends FormLayout {
         //Обработка события нажатия кнопки Перемещение между складом/ячейкой
         moveStore.addClickListener(e -> {
             if (storageID != 0 && cellID != 0)
-                new MoveStoreDialog(storageService, cellService, storageID, cellID).open();
+                new MoveStoreDialog(storageService, cellService, storageID, cellID, materialMoveService, materialID, materialInfoService).open();
             else
                 Notification.show("Не могу найти склад или ячейку!", 3000, Notification.Position.MIDDLE);
         });

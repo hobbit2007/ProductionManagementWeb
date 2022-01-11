@@ -24,4 +24,12 @@ public interface CellService {
      * @param cellEntity - объект класса CellEntity
      */
     void saveAll(CellEntity cellEntity);
+
+    /**
+     * Метод реализует поиск ячейки по ID
+     * @param cellID - id ячейки
+     * @param storageID - id склада
+     * @return - возвращает список свойств найденной ячейки
+     */
+    List<CellEntity> getFindCellByID(Long cellID, Long storageID);
 }

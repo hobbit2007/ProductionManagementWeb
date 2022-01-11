@@ -72,4 +72,10 @@ public interface MaterialInfoService {
      * @return - возвращает список свойств найденного объекта хранения
      */
     List<MaterialInfoEntity> getCheckID(Long id);
+
+    /**
+     * Метод, который обновляет информацию об объекте хранения после перемещения склад/ячейка
+     * @param materialInfoEntity - объект класса MaterialInfoEntity
+     */
+    void updateMaterialInfoStorageCell(MaterialInfoEntity materialInfoEntity);
 }

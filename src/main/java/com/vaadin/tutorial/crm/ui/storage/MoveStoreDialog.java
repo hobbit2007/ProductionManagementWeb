@@ -84,12 +84,6 @@ public class MoveStoreDialog extends Dialog {
         vMain.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         add(vMain);
 
-        expense.addValueChangeListener(e -> {
-           if (expense.getValue() > materialInfoService.getCheckID(materialID).get(0).getBalance()) {
-               Notification.show("Такого количества нет на складе!", 3000, Notification.Position.MIDDLE);
-               return;
-           }
-        });
         storageNew.addValueChangeListener(e -> {
            if (e.getValue() != null)
                storageNewID = e.getValue().getId();
@@ -100,39 +94,47 @@ public class MoveStoreDialog extends Dialog {
         });
         cancel.addClickListener(e -> close());
         move.addClickListener(e -> {
-           if (!storageNew.isEmpty() && !cellNew.isEmpty() && expense.isEmpty()) {
-               try {
-                   MaterialMoveEntity materialMoveEntity = new MaterialMoveEntity();
-                   materialMoveEntity.setIdMaterial(materialID);
-                   materialMoveEntity.setIdStorageOld(storageID);
-                   materialMoveEntity.setIdStorageNew(storageNewID);
-                   materialMoveEntity.setIdCellOld(cellID);
-                   materialMoveEntity.setIdCellNew(cellNewID);
-                   materialMoveEntity.setExpense(expense.getValue());
-                   materialMoveEntity.setIdShop(3);
-                   materialMoveEntity.setIdDepartment(10);
-                   materialMoveEntity.setIdUser(2);
-                   materialMoveEntity.setDescription("empty");
-                   materialMoveEntity.setWriteoff(0);
-                   materialMoveEntity.setAction("перемещение склад/ячейка");
-                   materialMoveEntity.setForWhom("empty");
-                   materialMoveEntity.setIdUserCreate(SecurityUtils.getAuthentication().getDetails().getId());
-                   materialMoveEntity.setDateCreate(new Date());
-                   materialMoveEntity.setDelete(0);
+           if (!storageNew.isEmpty() && !cellNew.isEmpty() && !expense.isEmpty()) {
+               if (expense.getValue() <= materialInfoService.getCheckID(materialID).get(0).getBalance()) {
+                   try {
+                       MaterialMoveEntity materialMoveEntity = new MaterialMoveEntity();
+                       materialMoveEntity.setIdMaterial(materialID);
+                       materialMoveEntity.setIdStorageOld(storageID);
+                       materialMoveEntity.setIdStorageNew(storageNewID);
+                       materialMoveEntity.setIdCellOld(cellID);
+                       materialMoveEntity.setIdCellNew(cellNewID);
+                       materialMoveEntity.setExpense(expense.getValue());
+                       materialMoveEntity.setIdShop(3);
+                       materialMoveEntity.setIdDepartment(10);
+                       materialMoveEntity.setIdUser(2);
+                       materialMoveEntity.setDescription("empty");
+                       materialMoveEntity.setWriteoff(0);
+                       materialMoveEntity.setAction("перемещение склад/ячейка");
+                       materialMoveEntity.setForWhom("empty");
+                       materialMoveEntity.setIdUserCreate(SecurityUtils.getAuthentication().getDetails().getId());
+                       materialMoveEntity.setDateCreate(new Date());
+                       materialMoveEntity.setDelete(0);
 
-                   materialMoveService.saveAll(materialMoveEntity);
+                       materialMoveService.saveAll(materialMoveEntity);
 
-                   MaterialInfoEntity materialInfoEntity = new MaterialInfoEntity();
-                   materialInfoEntity.setFlagMove(1);
-                   materialInfoEntity.setIdStorage(materialMoveEntity.getIdStorageNew());
-                   materialInfoEntity.setIdCell(materialMoveEntity.getIdCellNew());
-                   materialInfoEntity.setBalance(materialInfoService.getCheckID(materialID).get(0).getBalance() - expense.getValue());
-                   materialInfoEntity.setExpense(expense.getValue());
+                       MaterialInfoEntity materialInfoEntity = new MaterialInfoEntity();
+                       materialInfoEntity.setFlagMove(1);
+                       materialInfoEntity.setIdStorage(materialMoveEntity.getIdStorageNew());
+                       materialInfoEntity.setIdCell(materialMoveEntity.getIdCellNew());
+                       materialInfoEntity.setBalance(materialInfoService.getCheckID(materialID).get(0).getBalance() - expense.getValue());
+                       materialInfoEntity.setExpense(expense.getValue());
+                       materialInfoEntity.setId(materialID);
 
-                   materialInfoService.updateMaterialInfoStorageCell(materialInfoEntity);
+                       materialInfoService.updateMaterialInfoStorageCell(materialInfoEntity);
+
+                       close();
+                   } catch (Exception ex) {
+                       Notification.show("Не могу сохранить или обновить запись!" + ex.getMessage(), 5000, Notification.Position.MIDDLE);
+                       return;
+                   }
                }
-               catch (Exception ex) {
-                   Notification.show("Не могу сохранить или обновить запись!" + ex.getMessage(), 5000, Notification.Position.MIDDLE);
+               else {
+                   Notification.show("Такого количества нет на складе!", 3000, Notification.Position.MIDDLE);
                    return;
                }
            }

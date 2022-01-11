@@ -36,4 +36,9 @@ public class StorageImpl implements StorageService {
         else
             Notification.show("Нет данных для записи!", 5000, Notification.Position.MIDDLE);
     }
+
+    @Override
+    public List<StorageEntity> getFindStorageByID(Long storageID) {
+        return storageRepository.getFindStorageByID(storageID);
+    }
 }

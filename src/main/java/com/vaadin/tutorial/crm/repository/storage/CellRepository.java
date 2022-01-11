@@ -22,5 +22,5 @@ public interface CellRepository extends JpaRepository<CellEntity, Long> {
 
     //Поиск ячейки по ID
     @Query("select c from cells c where c.id = :cellID and c.delete = 0 and c.idStorage = :idStorage")
-    List<CellEntity> getFindCellByID(@Param("cellID") String cellID, @Param("idStorage") Long idStorage);
+    List<CellEntity> getFindCellByID(@Param("cellID") Long cellID, @Param("idStorage") Long idStorage);
 }

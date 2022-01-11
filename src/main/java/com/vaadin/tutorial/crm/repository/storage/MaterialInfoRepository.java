@@ -28,11 +28,11 @@ public interface MaterialInfoRepository extends JpaRepository<MaterialInfoEntity
 
     //Поиск по заданному артикулу
     @Query("select mi from materialinfo mi where mi.delete = 0 and mi.writeoff = 0 and mi.article = :article and mi.idStorage = :idStorage order by mi.dateCreate asc")
-    List<MaterialInfoEntity> getAllByArticle(@Param("article") String article, @Param("idCell") Long idCell);
+    List<MaterialInfoEntity> getAllByArticle(@Param("article") String article, @Param("idCell") Long idStorage);
 
     //Поиск по названию объекта хранения
     @Query("select mi from materialinfo mi where mi.delete = 0 and mi.writeoff = 0 and mi.materialName = :materialName and mi.idStorage = :idStorage order by mi.dateCreate asc")
-    List<MaterialInfoEntity> getAllByMaterialName(@Param("materialName") String materialName, @Param("idCell") Long idCell);
+    List<MaterialInfoEntity> getAllByMaterialName(@Param("materialName") String materialName, @Param("idCell") Long idStorage);
 
     //Проверяем наличие объекта хранения по артикулу в БД
     @Query("select mi from materialinfo mi where mi.article = :article and mi.delete = 0")

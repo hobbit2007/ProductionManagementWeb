@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Repository
 public interface PowerResourcesRepository extends JpaRepository<PowerResources, Long> {
-    @Query("select pr from power_resources pr where pr.delete = 0")
+    @Query("select pr from power_resources pr where pr.delete = 0 order by pr.dateCreate asc")
     List<PowerResources> getAll();
 
     //Выбираем список показаний по конкретному ресурсу
@@ -24,7 +24,7 @@ public interface PowerResourcesRepository extends JpaRepository<PowerResources, 
     List<PowerResources> getAllByResourceId(@Param("resourceID") Long resourceID);
 
     //Выбирает список показаний за указанные даты
-    @Query("select pr from power_resources pr where pr.dateCreate between :dateBegin and :dateEnd and pr.delete = 0 order by pr.id asc")
+    @Query("select pr from power_resources pr where pr.dateCreate between :dateBegin and :dateEnd and pr.delete = 0 order by pr.dateCreate asc")
     List<PowerResources> getResourceBySearch(@Param("dateBegin") Date dateBegin, @Param("dateEnd") Date dateEnd);
 
     //Выбирает список показаний за указанные даты по указанному id ресурса(для сортировки отчета по дате)

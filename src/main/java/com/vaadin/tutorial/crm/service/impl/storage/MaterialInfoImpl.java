@@ -72,4 +72,9 @@ public class MaterialInfoImpl implements MaterialInfoService {
     public List<MaterialInfoEntity> getAllByMaterialName(String materialName, Long idStore) {
         return materialInfoRepository.getAllByMaterialName(materialName, idStore);
     }
+
+    @Override
+    public List<MaterialInfoEntity> getCheckID(Long id) {
+        return materialInfoRepository.getCheckID(id);
+    }
 }

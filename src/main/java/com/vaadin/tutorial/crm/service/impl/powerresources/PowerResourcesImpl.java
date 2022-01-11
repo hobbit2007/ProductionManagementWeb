@@ -79,4 +79,14 @@ public class PowerResourcesImpl implements PowerResourcesService {
     public List<PowerResources> getResourceBySort(Date dateBegin, Date dateEnd, Long id) {
         return powerResourcesRepository.getResourceBySort(dateBegin, dateEnd, id);
     }
+
+    /**
+     * Метод проверяет наличие показаний в БД на указанную дату
+     * @param dateValue - дата, выбранная при вводе показаний
+     * @return - возвращает список, если на выбранную дату присутствуют показания
+     */
+    @Override
+    public List<PowerResources> getCheckDate(Date dateValue) {
+        return powerResourcesRepository.getCheckDate(dateValue);
+    }
 }

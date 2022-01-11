@@ -38,6 +38,10 @@ public interface MaterialInfoRepository extends JpaRepository<MaterialInfoEntity
     @Query("select mi from materialinfo mi where mi.article = :article and mi.delete = 0")
     List<MaterialInfoEntity> getCheckArticle(@Param("article") String article);
 
+    //Проверяем наличие объекта хранения по ID в БД
+    @Query("select mi from materialinfo mi where mi.id = :id and mi.delete = 0")
+    List<MaterialInfoEntity> getCheckID(@Param("id") Long id);
+
     //Обновляем некоторые значения в таблице materialinfo
     @Modifying
     @Transactional //Добавляем эту аннотацию, чтоб насильно сделать апдейт, даже если он запрещен

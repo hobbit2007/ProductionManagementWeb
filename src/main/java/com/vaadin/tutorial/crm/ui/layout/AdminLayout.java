@@ -39,6 +39,7 @@ public class AdminLayout extends AppLayout {
     HorizontalLayout hMenu6 = new HorizontalLayout();
     Button coefficient = new Button("Коэфф. трансформации");
     private final String ROLE = "ADMIN";
+    private final String ROLE1 = "USER";
     private final WriteToDBService writeToDBService;
     RouterLink usersAction = new RouterLink("Пользователи", RuleOut.class);
     RouterLink orgStructure = new RouterLink("Орг. структура", RuleOut.class);
@@ -49,28 +50,24 @@ public class AdminLayout extends AppLayout {
     public AdminLayout(SecurityConfiguration securityConfiguration, WriteToDBService writeToDBService) {
         this.securityConfiguration = securityConfiguration;
         this.writeToDBService = writeToDBService;
+        if (SecurityUtils.getAuthentication().getDetails().getRole().equals(ROLE1)) {
+            Icon icon = new Icon(VaadinIcon.USER);
+            usersAction.setHighlightCondition(HighlightConditions.sameLocation());
+            hMenu1.add(icon, usersAction);
+            Icon icon1 = new Icon(VaadinIcon.FACTORY);
+            orgStructure.setHighlightCondition(HighlightConditions.sameLocation());
+            hMenu2.add(icon1, orgStructure);
+            Icon icon4 = new Icon(VaadinIcon.LINES);
+            plcControllersList.setHighlightCondition(HighlightConditions.sameLocation());
+            hMenu4.add(icon4, plcControllersList);
+            Icon icon5 = new Icon(VaadinIcon.LINES_LIST);
+            plcSignalsList.setHighlightCondition(HighlightConditions.sameLocation());
+            hMenu5.add(icon5, plcSignalsList);
+            Icon icon6 = new Icon(VaadinIcon.DATABASE);
+            writeToDBList.setHighlightCondition(HighlightConditions.sameLocation());
+            hMenu6.add(icon6, writeToDBList);
+        }
 
-        Icon icon = new Icon(VaadinIcon.USER);
-        usersAction.setHighlightCondition(HighlightConditions.sameLocation());
-        hMenu1.add(icon, usersAction);
-        Icon icon1 = new Icon(VaadinIcon.FACTORY);
-        orgStructure.setHighlightCondition(HighlightConditions.sameLocation());
-        hMenu2.add(icon1, orgStructure);
-        Icon icon4 = new Icon(VaadinIcon.LINES);
-        plcControllersList.setHighlightCondition(HighlightConditions.sameLocation());
-        hMenu4.add(icon4, plcControllersList);
-        Icon icon5 = new Icon(VaadinIcon.LINES_LIST);
-        plcSignalsList.setHighlightCondition(HighlightConditions.sameLocation());
-        hMenu5.add(icon5, plcSignalsList);
-        Icon icon6 = new Icon(VaadinIcon.DATABASE);
-        writeToDBList.setHighlightCondition(HighlightConditions.sameLocation());
-        hMenu6.add(icon6, writeToDBList);
-
-        orgStructure.setEnabled(false);
-        plcControllersList.setEnabled(false);
-        plcSignalsList.setEnabled(false);
-        writeToDBList.setEnabled(false);
-        coefficient.setEnabled(false);
         createHeader();
         createDrawer();
     }
@@ -86,12 +83,6 @@ public class AdminLayout extends AppLayout {
         hMenu3.add(icon2, back);
 
         if (SecurityUtils.getAuthentication().getDetails().getRole().equals(ROLE)) {
-            usersAction.setEnabled(true);
-            orgStructure.setEnabled(true);
-            plcControllersList.setEnabled(true);
-            plcSignalsList.setEnabled(true);
-            writeToDBList.setEnabled(true);
-            coefficient.setEnabled(true);
 
             usersAction = new RouterLink("Пользователи", UsersCreate.class);
             usersAction.setHighlightCondition(HighlightConditions.sameLocation());

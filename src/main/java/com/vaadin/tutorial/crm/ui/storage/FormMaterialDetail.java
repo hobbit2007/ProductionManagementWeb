@@ -14,10 +14,11 @@ import com.vaadin.flow.shared.Registration;
 import com.vaadin.tutorial.crm.entity.storage.MaterialInfoEntity;
 import com.vaadin.tutorial.crm.entity.storage.StorageComingEntity;
 import com.vaadin.tutorial.crm.security.SecurityUtils;
+import com.vaadin.tutorial.crm.service.storage.CellService;
 import com.vaadin.tutorial.crm.service.storage.MaterialInfoService;
 import com.vaadin.tutorial.crm.service.storage.StorageComingService;
+import com.vaadin.tutorial.crm.service.storage.StorageService;
 import org.apache.commons.math3.util.*;
-import oshi.jna.platform.mac.SystemB;
 
 import java.util.Date;
 
@@ -48,11 +49,14 @@ public class FormMaterialDetail extends FormLayout {
     Button prihodHistory = new Button("История приход");
     private final String ROLE = "ADMIN";
     long materialID = 0;
+    long storageID = 0;
+    long cellID = 0;
     double qtyOld;
     double balanceOld;
     int flag = 0;//Флаг определяющий текст на кнопке 0 - Редактировать, 1 - Сохранить
     int flagPrihod = 0;//Флаг определяющий текст на кнопке 0 - Сделать приход, 1 - Сохранить
-    public FormMaterialDetail(MaterialInfoService materialInfoService, StorageComingService storageComingService) {
+    public FormMaterialDetail(MaterialInfoService materialInfoService, StorageComingService storageComingService, StorageService storageService,
+                              CellService cellService) {
         addClassName("contact-form");
 
         close.getStyle().set("background-color", "#d3b342");
@@ -93,7 +97,7 @@ public class FormMaterialDetail extends FormLayout {
             prihodHistory.setEnabled(false);
 
         close.addClickListener(event -> fireEvent(new ContactFormEvent.CloseEvent(this)));
-
+        //Обработка события кнопки Редактирование
         edit.addClickListener(e -> {
             material.setReadOnly(false);
             article.setReadOnly(false);
@@ -131,6 +135,7 @@ public class FormMaterialDetail extends FormLayout {
                 edit.setText("Редактировать");
         });
 
+        //Обработка события кнопки Сделать приход
         prihod.addClickListener(e -> {
             qty.setReadOnly(false);
             flagPrihod = 1;
@@ -166,8 +171,17 @@ public class FormMaterialDetail extends FormLayout {
                 prihod.setText("Сделать приход");
         });
 
+        //Обработка события кнопки История приход
         prihodHistory.addClickListener(e -> {
            new PrihodHistoryDialog(storageComingService).open();
+        });
+
+        //Обработка события нажатия кнопки Перемещение между складом/ячейкой
+        moveStore.addClickListener(e -> {
+            if (storageID != 0 && cellID != 0)
+                new MoveStoreDialog(storageService, cellService, storageID, cellID).open();
+            else
+                Notification.show("Не могу найти склад или ячейку!", 3000, Notification.Position.MIDDLE);
         });
     }
     public void setMaterialInfo(MaterialInfoEntity materialInfoEntity) {
@@ -226,6 +240,8 @@ public class FormMaterialDetail extends FormLayout {
             user.setReadOnly(true);
 
             materialID = materialInfoEntity.getId();
+            storageID = materialInfoEntity.getIdStorage();
+            cellID = materialInfoEntity.getIdCell();
         }
     }
     private void additionalPrihod(MaterialInfoService materialInfoService, StorageComingService storageComingService, Double qtyOld,

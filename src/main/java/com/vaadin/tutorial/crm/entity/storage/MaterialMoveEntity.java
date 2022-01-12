@@ -1,12 +1,12 @@
 package com.vaadin.tutorial.crm.entity.storage;
 
+import com.vaadin.tutorial.crm.entity.Department;
+import com.vaadin.tutorial.crm.entity.Shop;
+import com.vaadin.tutorial.crm.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -36,4 +36,28 @@ public class MaterialMoveEntity implements Serializable {
     private long idUserCreate;
     private Date dateCreate;
     private long delete;
+
+    @ManyToOne
+    @JoinColumn(name = "idStorage", referencedColumnName = "id", insertable = false, updatable = false)
+    private StorageEntity storage;
+
+    @ManyToOne
+    @JoinColumn(name = "idCell", referencedColumnName = "id", insertable = false, updatable = false)
+    private CellEntity cell;
+
+    @ManyToOne
+    @JoinColumn(name = "idUser", referencedColumnName = "id", insertable = false, updatable = false)
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "idMaterial", referencedColumnName = "id", insertable = false, updatable = false)
+    private MaterialInfoEntity material;
+
+    @ManyToOne
+    @JoinColumn(name = "idShop", referencedColumnName = "id", insertable = false, updatable = false)
+    private Shop shop;
+
+    @ManyToOne
+    @JoinColumn(name = "idDepartment", referencedColumnName = "id", insertable = false, updatable = false)
+    private Department department;
 }

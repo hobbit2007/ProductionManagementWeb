@@ -175,7 +175,7 @@ public class FormMaterialDetail extends FormLayout {
 
         //Обработка события кнопки История приход
         prihodHistory.addClickListener(e -> {
-           new PrihodHistoryDialog(storageComingService).open();
+           new PrihodHistoryDialog(storageComingService, materialID).open();
         });
 
         //Обработка события нажатия кнопки Перемещение между складом/ячейкой

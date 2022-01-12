@@ -35,7 +35,7 @@ public interface MaterialInfoRepository extends JpaRepository<MaterialInfoEntity
     List<MaterialInfoEntity> getAllByMaterialName(@Param("materialName") String materialName, @Param("idStorage") Long idStorage);
 
     //Проверяем наличие объекта хранения по артикулу в БД
-    @Query("select mi from materialinfo mi where mi.article = :article and mi.delete = 0")
+    @Query("select mi from materialinfo mi where mi.article = :article and mi.writeoff = 0 and mi.delete = 0")
     List<MaterialInfoEntity> getCheckArticle(@Param("article") String article);
 
     //Проверяем наличие объекта хранения по ID в БД

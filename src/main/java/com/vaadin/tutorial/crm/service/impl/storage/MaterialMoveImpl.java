@@ -31,4 +31,9 @@ public class MaterialMoveImpl implements MaterialMoveService {
         else
             Notification.show("Нет данных для записи!", 3000, Notification.Position.MIDDLE);
     }
+
+    @Override
+    public List<MaterialMoveEntity> getAllByID(Long id, String action) {
+        return materialMoveRepository.getAllByID(id, action);
+    }
 }

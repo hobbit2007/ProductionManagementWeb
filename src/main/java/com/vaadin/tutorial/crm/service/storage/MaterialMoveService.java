@@ -13,4 +13,12 @@ public interface MaterialMoveService {
     List<MaterialMoveEntity> getAll();
 
     void saveAll(MaterialMoveEntity materialMoveEntity);
+
+    /**
+     * Метод для поиска всех записей по id объекта хранения
+     * @param id - id объекта хранения
+     * @param action - действие по складу, например перемещение склад/ячейка
+     * @return - возвращает массив найденных значений
+     */
+    List<MaterialMoveEntity> getAllByID(Long id, String action);
 }

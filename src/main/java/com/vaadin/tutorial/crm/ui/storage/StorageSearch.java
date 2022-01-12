@@ -19,6 +19,9 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.tutorial.crm.entity.storage.CellEntity;
 import com.vaadin.tutorial.crm.entity.storage.MaterialInfoEntity;
 import com.vaadin.tutorial.crm.entity.storage.StorageEntity;
+import com.vaadin.tutorial.crm.service.DepartmentService;
+import com.vaadin.tutorial.crm.service.ShopService;
+import com.vaadin.tutorial.crm.service.UserService;
 import com.vaadin.tutorial.crm.service.storage.*;
 import com.vaadin.tutorial.crm.ui.component.AnyComponent;
 import com.vaadin.tutorial.crm.ui.layout.StorageLayout;
@@ -48,18 +51,24 @@ public class StorageSearch extends Scroller {
     private final CellService cellService;
     private final StorageComingService storageComingService;
     private final MaterialMoveService materialMoveService;
+    private final ShopService shopService;
+    private final DepartmentService departmentService;
+    private final UserService userService;
     private ListDataProvider<MaterialInfoEntity> dataProvider;
     Div content;
     FormMaterialDetail formMaterialDetail;
     long storageID = 0;
     long cellID = 0;
 
-    public StorageSearch(MaterialInfoService materialInfoService, StorageService storageService, CellService cellService, StorageComingService storageComingService, MaterialMoveService materialMoveService) {
+    public StorageSearch(MaterialInfoService materialInfoService, StorageService storageService, CellService cellService, StorageComingService storageComingService, MaterialMoveService materialMoveService, ShopService shopService, DepartmentService departmentService, UserService userService) {
         this.materialInfoService = materialInfoService;
         this.storageService = storageService;
         this.cellService = cellService;
         this.storageComingService = storageComingService;
         this.materialMoveService = materialMoveService;
+        this.shopService = shopService;
+        this.departmentService = departmentService;
+        this.userService = userService;
         addClassName("list-view");
         setSizeFull();
 
@@ -97,7 +106,8 @@ public class StorageSearch extends Scroller {
         btnMaterialSearch.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         btnMaterialSearch.setEnabled(false);
 
-        formMaterialDetail = new FormMaterialDetail(materialInfoService, storageComingService, storageService, cellService, materialMoveService);
+        formMaterialDetail = new FormMaterialDetail(materialInfoService, storageComingService, storageService, cellService, materialMoveService,
+                shopService, departmentService, userService);
         formMaterialDetail.addListener(FormMaterialDetail.ContactFormEvent.CloseEvent.class, e -> btnClose());
 
         content = new Div(grid, formMaterialDetail);

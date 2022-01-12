@@ -122,8 +122,8 @@ public class StorageSearch extends Scroller {
         vSearch.add(hSelect, hSearch);
         vSearch.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
 
-        vSearch.setPadding(false);
-        vMain.setPadding(false);
+        //vSearch.setPadding(false);
+        //vMain.setPadding(false);
         vMain.add(vSearch, content);
         vMain.setSizeFull();
 

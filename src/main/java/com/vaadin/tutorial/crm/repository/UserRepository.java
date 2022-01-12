@@ -23,6 +23,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select u from userslist u where u.delete = 0")
     List<User> getAll();
 
+    //Поиск пользователя по id отдела
+    @Query("select u from userslist u where u.idDepartment = :idDepartment and u.delete = 0")
+    List<User> getAllByIdDepartment(@Param("idDepartment") Long idDepartment);
+
     //Обновляем в БД дату захода пользователя в систему
     @Modifying
     @Transactional

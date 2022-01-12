@@ -22,4 +22,11 @@ public interface UserService {
     void updateDateActive(User user);
 
     void updateUserInfo(User user);
+
+    /**
+     * Метод выполняющий поиск пользователя по id отдела
+     * @param idDepartment - id отдела
+     * @return - возвращает список найденных пользователей
+     */
+    List<User> getAllByIdDepartment(Long idDepartment);
 }

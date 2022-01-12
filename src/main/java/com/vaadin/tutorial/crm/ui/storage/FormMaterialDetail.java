@@ -47,6 +47,7 @@ public class FormMaterialDetail extends FormLayout {
     Button moveInside = new Button("Внутреннее пер-ние");
     Button writeOff = new Button("Списать");
     Button prihodHistory = new Button("История приход");
+    Button moveSCHistory = new Button("История склад/ячейка");
     private final String ROLE = "ADMIN";
     long materialID = 0;
     long storageID = 0;
@@ -62,6 +63,8 @@ public class FormMaterialDetail extends FormLayout {
 
         close.getStyle().set("background-color", "#d3b342");
         close.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        close.getElement().setAttribute("data-title", close.getText());
+        close.setClassName("tooltip");
 
         edit.getStyle().set("background-color", "#d3b342");
         edit.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -81,6 +84,9 @@ public class FormMaterialDetail extends FormLayout {
         prihodHistory.getStyle().set("background-color", "#d3b342");
         prihodHistory.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+        moveSCHistory.getStyle().set("background-color", "#d3b342");
+        moveSCHistory.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
         setResponsiveSteps(new FormLayout.ResponsiveStep("50px", 4));
 
         //if (SecurityUtils.getAuthentication().getDetails().getRole().equals(ROLE))
@@ -89,13 +95,17 @@ public class FormMaterialDetail extends FormLayout {
         //    edit.setVisible(false);
 
         add(storage, cell, material, article, qty, expense, balance, meas, costPrice, marketPrice, diffPrice, dateCreate, user, close,
-                edit, prihod, moveStore, moveInside, writeOff, prihodHistory);
+                edit, prihod, moveStore, moveInside, writeOff, prihodHistory, moveSCHistory);
 
         //Если записи в таблице истории приходов есть, то кнопку активируем
         if (storageComingService.getAll().size() != 0)
             prihodHistory.setEnabled(true);
         else
             prihodHistory.setEnabled(false);
+        if (materialMoveService.getAll().size() != 0) //materialID, "перемещение склад/ячейка"
+            moveSCHistory.setEnabled(true);
+        else
+            moveSCHistory.setEnabled(false);
 
         close.addClickListener(event -> fireEvent(new ContactFormEvent.CloseEvent(this)));
         //Обработка события кнопки Редактирование
@@ -218,6 +228,11 @@ public class FormMaterialDetail extends FormLayout {
                 Notification.show("Списание не возможно, нулевой остаток!", 3000, Notification.Position.MIDDLE);
                 return;
             }
+        });
+
+        //Обработка нажатия кнопки История перемещений склад/ячейка
+        moveSCHistory.addClickListener(a -> {
+           new MoveSCHistory(materialMoveService, materialID).open();
         });
     }
     public void setMaterialInfo(MaterialInfoEntity materialInfoEntity) {

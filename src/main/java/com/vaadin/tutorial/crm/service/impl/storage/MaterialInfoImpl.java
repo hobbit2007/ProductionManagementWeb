@@ -87,4 +87,9 @@ public class MaterialInfoImpl implements MaterialInfoService {
         else
             Notification.show("Нет данных для обновления!", 5000, Notification.Position.MIDDLE);
     }
+
+    @Override
+    public void updateWriteOff(Long writeOff, Long id) {
+        materialInfoRepository.updateWriteOff(writeOff, id);
+    }
 }

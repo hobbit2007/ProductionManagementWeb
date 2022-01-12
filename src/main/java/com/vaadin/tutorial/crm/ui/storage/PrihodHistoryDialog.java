@@ -22,9 +22,15 @@ public class PrihodHistoryDialog extends Dialog {
     Button close = new Button("Закрыть");
     VerticalLayout vMain = new VerticalLayout();
     private final StorageComingService storageComingService;
+    double totalPrihodOld = 0.0;
+    double totalPrihodNew = 0.0;
+    double totalBalanceOld = 0.0;
+    double totalBalanceNew = 0.0;
+    Long materialID = 0L;
 
-    public PrihodHistoryDialog(StorageComingService storageComingService) {
+    public PrihodHistoryDialog(StorageComingService storageComingService, Long materialID) {
         this.storageComingService = storageComingService;
+        this.materialID = materialID;
         setSizeFull();
         setCloseOnEsc(false);
         setCloseOnOutsideClick(false);
@@ -52,11 +58,23 @@ public class PrihodHistoryDialog extends Dialog {
         grid.addClassName("contact-grid");
         grid.setSizeFull();
 
-        colMaterialName = grid.addColumn(storageComingEntity -> storageComingEntity.getMaterialInfo().getMaterialName()).setHeader("Наименование");
-        colPrihodOld = grid.addColumn(storageComingEntity -> storageComingEntity.getQtyOldCome()).setHeader("Приход");
-        colPrihodNew = grid.addColumn(storageComingEntity -> storageComingEntity.getQtyCome()).setHeader("Приход новый");
-        colBalanceOld = grid.addColumn(storageComingEntity -> storageComingEntity.getBalanceOld()).setHeader("Баланс");
-        colBalanceNew = grid.addColumn(storageComingEntity -> storageComingEntity.getBalanceNew()).setHeader("Баланс новый");
+        for (int i = 0; i < storageComingService.getAllByIdMaterial(materialID).size(); i++) {
+            totalPrihodOld += storageComingService.getAllByIdMaterial(materialID).get(i).getQtyOldCome();
+            totalPrihodNew += storageComingService.getAllByIdMaterial(materialID).get(i).getQtyCome();
+            totalBalanceOld += storageComingService.getAllByIdMaterial(materialID).get(i).getBalanceOld();
+            totalBalanceNew += storageComingService.getAllByIdMaterial(materialID).get(i).getBalanceNew();
+        }
+
+        colMaterialName = grid.addColumn(storageComingEntity -> storageComingEntity.getMaterialInfo().getMaterialName()).setHeader("Наименование")
+                .setFooter("ИТОГО:");
+        colPrihodOld = grid.addColumn(storageComingEntity -> storageComingEntity.getQtyOldCome()).setHeader("Приход")
+                .setFooter(String.valueOf(totalPrihodOld));
+        colPrihodNew = grid.addColumn(storageComingEntity -> storageComingEntity.getQtyCome()).setHeader("Приход новый")
+                .setFooter(String.valueOf(totalPrihodNew));
+        colBalanceOld = grid.addColumn(storageComingEntity -> storageComingEntity.getBalanceOld()).setHeader("Баланс")
+                .setFooter(String.valueOf(totalBalanceOld));
+        colBalanceNew = grid.addColumn(storageComingEntity -> storageComingEntity.getBalanceNew()).setHeader("Баланс новый")
+                .setFooter(String.valueOf(totalBalanceNew));
         colMeas = grid.addColumn(storageComingEntity -> storageComingEntity.getMeas().getMeasName()).setHeader("Ед. измерения");
         colDateCreate = grid.addColumn(storageComingEntity -> storageComingEntity.getDateCreate()).setHeader("Дата изменения");
 
@@ -70,7 +88,7 @@ public class PrihodHistoryDialog extends Dialog {
     }
     private void updateGrid() {
         dataProvider = new ListDataProvider<>(
-                storageComingService.getAll());
+                storageComingService.getAllByIdMaterial(materialID));
         grid.setItems(dataProvider);
     }
 }

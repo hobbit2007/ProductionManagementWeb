@@ -87,7 +87,7 @@ public class StorageSearch extends Scroller {
 
         materialName = new ComboBox<>();
         materialName.setLabel("Поиск по объекту хранения:");
-        materialName.setWidth("399px");
+        materialName.setWidth("299px");
         materialName.setEnabled(false);
 
         storageSelect = new ComboBox<>();

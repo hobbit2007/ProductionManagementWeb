@@ -14,6 +14,9 @@ import com.vaadin.flow.shared.Registration;
 import com.vaadin.tutorial.crm.entity.storage.MaterialInfoEntity;
 import com.vaadin.tutorial.crm.entity.storage.StorageComingEntity;
 import com.vaadin.tutorial.crm.security.SecurityUtils;
+import com.vaadin.tutorial.crm.service.DepartmentService;
+import com.vaadin.tutorial.crm.service.ShopService;
+import com.vaadin.tutorial.crm.service.UserService;
 import com.vaadin.tutorial.crm.service.storage.*;
 import org.apache.commons.math3.util.*;
 
@@ -53,7 +56,8 @@ public class FormMaterialDetail extends FormLayout {
     int flag = 0;//Флаг определяющий текст на кнопке 0 - Редактировать, 1 - Сохранить
     int flagPrihod = 0;//Флаг определяющий текст на кнопке 0 - Сделать приход, 1 - Сохранить
     public FormMaterialDetail(MaterialInfoService materialInfoService, StorageComingService storageComingService, StorageService storageService,
-                              CellService cellService, MaterialMoveService materialMoveService) {
+                              CellService cellService, MaterialMoveService materialMoveService, ShopService shopService,
+                              DepartmentService departmentService, UserService userService) {
         addClassName("contact-form");
 
         close.getStyle().set("background-color", "#d3b342");
@@ -183,6 +187,19 @@ public class FormMaterialDetail extends FormLayout {
                     Notification.show("Не могу найти склад или ячейку!", 3000, Notification.Position.MIDDLE);
                     return;
                 }
+            }
+            else {
+                Notification.show("Перемещение не возможно, нулевой остаток!", 3000, Notification.Position.MIDDLE);
+                return;
+            }
+        });
+
+        //Обработка нажатия кнопки Внутреннее перемещение
+        moveInside.addClickListener(e -> {
+            if (materialInfoService.getCheckID(materialID).get(0).getBalance() > 0) {
+                new MoveInsideDialog(shopService, departmentService, userService, materialInfoService, materialID,
+                        materialInfoService.getCheckID(materialID).get(0).getIdStorage(),
+                        materialInfoService.getCheckID(materialID).get(0).getIdCell(), materialMoveService).open();
             }
             else {
                 Notification.show("Перемещение не возможно, нулевой остаток!", 3000, Notification.Position.MIDDLE);

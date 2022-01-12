@@ -78,4 +78,11 @@ public interface MaterialInfoService {
      * @param materialInfoEntity - объект класса MaterialInfoEntity
      */
     void updateMaterialInfoStorageCell(MaterialInfoEntity materialInfoEntity);
+
+    /**
+     * Метод для списания объекта хранения со склада
+     * @param writeOff - флаг списания
+     * @param id - id объекта хранения
+     */
+    void updateWriteOff(Long writeOff, Long id);
 }

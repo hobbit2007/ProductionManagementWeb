@@ -142,7 +142,7 @@ public class PowerStatistic extends VerticalLayout {
                 waterWellSeries[i].setName(powerResourceDictList.get(i).getResourceName());
                 for (int j = 0; j < powerResourcesList.size(); j++) {
                     item[i] = new DataSeriesItem();
-                    item[i].setX(powerResourcesList.get(j).getDateCreate().toInstant());
+                    item[i].setX(powerResourcesList.get(j).getDateCreate());
                     item[i].setY(powerResourcesList.get(j).getValue());
                     waterWellSeries[i].add(item[i]); //new DataSeriesItem(powerResourcesList.get(j).getDateCreate(), powerResourcesList.get(j).getValueDaily())
                 }
@@ -201,7 +201,7 @@ public class PowerStatistic extends VerticalLayout {
                 waterWellSeries[i].setName(powerResourceDictList.get(i).getResourceName());
                 for (int j = 0; j < powerResourcesList.size(); j++) {
                     item[i] = new DataSeriesItem();
-                    item[i].setX(powerResourcesList.get(j).getDateCreate().toInstant());
+                    item[i].setX(powerResourcesList.get(j).getDateCreate());
                     item[i].setY(powerResourcesList.get(j).getValueWeekly());
                     waterWellSeries[i].add(item[i]); //new DataSeriesItem(powerResourcesList.get(j).getDateCreate().toInstant(), powerResourcesList.get(j).getValueWeekly())
                 }

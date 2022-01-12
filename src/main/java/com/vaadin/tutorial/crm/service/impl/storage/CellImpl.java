@@ -36,4 +36,9 @@ public class CellImpl implements CellService {
         else
             Notification.show("Нет данных для записи!", 5000, Notification.Position.MIDDLE);
     }
+
+    @Override
+    public List<CellEntity> getFindCellByID(Long cellID, Long storageID) {
+        return cellRepository.getFindCellByID(cellID, storageID);
+    }
 }

@@ -27,16 +27,20 @@ public interface MaterialInfoRepository extends JpaRepository<MaterialInfoEntity
     List<MaterialInfoEntity> getAllByStorageCell(@Param("idStorage") Long idStorage, @Param("idCell") Long idCell);
 
     //Поиск по заданному артикулу
-    @Query("select mi from materialinfo mi where mi.delete = 0 and mi.writeoff = 0 and mi.article = :article order by mi.dateCreate asc")
-    List<MaterialInfoEntity> getAllByArticle(@Param("article") String article);
+    @Query("select mi from materialinfo mi where mi.delete = 0 and mi.writeoff = 0 and mi.article = :article and mi.idStorage = :idStorage order by mi.dateCreate asc")
+    List<MaterialInfoEntity> getAllByArticle(@Param("article") String article, @Param("idStorage") Long idStorage);
 
     //Поиск по названию объекта хранения
-    @Query("select mi from materialinfo mi where mi.delete = 0 and mi.writeoff = 0 and mi.materialName = :materialName order by mi.dateCreate asc")
-    List<MaterialInfoEntity> getAllByMaterialName(@Param("materialName") String materialName);
+    @Query("select mi from materialinfo mi where mi.delete = 0 and mi.writeoff = 0 and mi.materialName = :materialName and mi.idStorage = :idStorage order by mi.dateCreate asc")
+    List<MaterialInfoEntity> getAllByMaterialName(@Param("materialName") String materialName, @Param("idStorage") Long idStorage);
 
     //Проверяем наличие объекта хранения по артикулу в БД
     @Query("select mi from materialinfo mi where mi.article = :article and mi.delete = 0")
     List<MaterialInfoEntity> getCheckArticle(@Param("article") String article);
+
+    //Проверяем наличие объекта хранения по ID в БД
+    @Query("select mi from materialinfo mi where mi.id = :id and mi.delete = 0")
+    List<MaterialInfoEntity> getCheckID(@Param("id") Long id);
 
     //Обновляем некоторые значения в таблице materialinfo
     @Modifying
@@ -50,4 +54,13 @@ public interface MaterialInfoRepository extends JpaRepository<MaterialInfoEntity
     @Transactional
     @Query("update materialinfo mi set mi.quantity = :prihodNew, mi.balance = :balance where mi.id = :id")
     void updatePrihod(@Param("prihodNew") double prihodNew, @Param("id") long id, @Param("balance") double balance);
+
+    //Обновляем информацию об объекте хранения после перемещения склад/ячейка
+    @Modifying
+    @Transactional
+    @Query("update materialinfo mi set mi.flagMove = :flagMove, mi.idStorage = :storageID, mi.idCell = :cellID, " +
+            "mi.balance = :balance, mi.expense = :expense where mi.id = :id")
+    void updateMaterialInfoStorageCell(@Param("flagMove") long flagMove, @Param("storageID") long storageID,
+                                       @Param("cellID") long cellID, @Param("balance") double balance, @Param("expense") double expense,
+                                       @Param("id") long id);
 }

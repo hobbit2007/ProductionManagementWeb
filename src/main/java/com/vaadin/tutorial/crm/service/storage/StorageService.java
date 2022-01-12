@@ -24,4 +24,11 @@ public interface StorageService {
      * @param storageEntity - объект класса StorageEntity с заполненными свойствами для сохранения
      */
     void saveAll(StorageEntity storageEntity);
+
+    /**
+     * Метод реализует поиск склада по ID
+     * @param storageID - id склада
+     * @return - возвратит список свойств найденного склада
+     */
+    List<StorageEntity> getFindStorageByID(Long storageID);
 }

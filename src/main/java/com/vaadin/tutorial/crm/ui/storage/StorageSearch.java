@@ -8,7 +8,9 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ListDataProvider;
@@ -17,10 +19,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.tutorial.crm.entity.storage.CellEntity;
 import com.vaadin.tutorial.crm.entity.storage.MaterialInfoEntity;
 import com.vaadin.tutorial.crm.entity.storage.StorageEntity;
-import com.vaadin.tutorial.crm.service.storage.CellService;
-import com.vaadin.tutorial.crm.service.storage.MaterialInfoService;
-import com.vaadin.tutorial.crm.service.storage.StorageComingService;
-import com.vaadin.tutorial.crm.service.storage.StorageService;
+import com.vaadin.tutorial.crm.service.storage.*;
 import com.vaadin.tutorial.crm.ui.component.AnyComponent;
 import com.vaadin.tutorial.crm.ui.layout.StorageLayout;
 
@@ -31,7 +30,7 @@ import com.vaadin.tutorial.crm.ui.layout.StorageLayout;
 @PageTitle("Поиск по складу | Система управления производством")
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
-public class StorageSearch extends VerticalLayout {
+public class StorageSearch extends Scroller {
     VerticalLayout vMain = new VerticalLayout();
     VerticalLayout vSearch = new VerticalLayout();
     HorizontalLayout hSearch = new HorizontalLayout();
@@ -48,24 +47,26 @@ public class StorageSearch extends VerticalLayout {
     private final StorageService storageService;
     private final CellService cellService;
     private final StorageComingService storageComingService;
+    private final MaterialMoveService materialMoveService;
     private ListDataProvider<MaterialInfoEntity> dataProvider;
     Div content;
     FormMaterialDetail formMaterialDetail;
     long storageID = 0;
     long cellID = 0;
 
-    public StorageSearch(MaterialInfoService materialInfoService, StorageService storageService, CellService cellService, StorageComingService storageComingService) {
+    public StorageSearch(MaterialInfoService materialInfoService, StorageService storageService, CellService cellService, StorageComingService storageComingService, MaterialMoveService materialMoveService) {
         this.materialInfoService = materialInfoService;
         this.storageService = storageService;
         this.cellService = cellService;
         this.storageComingService = storageComingService;
+        this.materialMoveService = materialMoveService;
         addClassName("list-view");
         setSizeFull();
 
         configureGrid();
 
         vMain.add(new AnyComponent().labelTitle("Поиск по складу"));
-        vMain.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+        vMain.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         articleNumber = new TextField();
         articleNumber.setLabel("Поиск по артикулу:");
         articleNumber.setEnabled(false);
@@ -96,25 +97,27 @@ public class StorageSearch extends VerticalLayout {
         btnMaterialSearch.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         btnMaterialSearch.setEnabled(false);
 
-        formMaterialDetail = new FormMaterialDetail(materialInfoService, storageComingService);
-        formMaterialDetail.addListener(FormMaterialDetail.ContactFormEvent.CloseEvent.class, e -> close());
+        formMaterialDetail = new FormMaterialDetail(materialInfoService, storageComingService, storageService, cellService, materialMoveService);
+        formMaterialDetail.addListener(FormMaterialDetail.ContactFormEvent.CloseEvent.class, e -> btnClose());
 
         content = new Div(grid, formMaterialDetail);
         content.addClassName("content");
         content.setSizeFull();
 
         hSearch.add(articleNumber, btnArticleSearch, materialName, btnMaterialSearch);
-        hSearch.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
+        hSearch.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.BASELINE);
 
         hSelect.add(storageSelect, cellSelect);
 
         vSearch.add(hSelect, hSearch);
-        vSearch.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+        vSearch.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
 
         vSearch.setPadding(false);
         vMain.setPadding(false);
+        vMain.add(vSearch, content);
+        vMain.setSizeFull();
 
-        add(vMain, vSearch, content);
+        setContent(vMain);
         close();
         storageSelect.addValueChangeListener(e -> {
             if (e.getValue() != null) {
@@ -205,12 +208,12 @@ public class StorageSearch extends VerticalLayout {
     }
     private void updateGridArticle() {
         dataProvider = new ListDataProvider<>(
-                materialInfoService.getAllByArticle(articleNumber.getValue()));
+                materialInfoService.getAllByArticle(articleNumber.getValue(), storageID));
         grid.setItems(dataProvider);
     }
     private void updateGridMaterialName() {
         dataProvider = new ListDataProvider<>(
-                materialInfoService.getAllByMaterialName(materialName.getValue().getMaterialName()));
+                materialInfoService.getAllByMaterialName(materialName.getValue().getMaterialName(), storageID));
         grid.setItems(dataProvider);
     }
     private void editForm(MaterialInfoEntity materialInfoEntity) {
@@ -223,6 +226,10 @@ public class StorageSearch extends VerticalLayout {
     private void close() {
         formMaterialDetail.setMaterialInfo(null);
         formMaterialDetail.setVisible(false);
-        //updateList();
+    }
+    private void btnClose() {
+        formMaterialDetail.setMaterialInfo(null);
+        formMaterialDetail.setVisible(false);
+        updateGridStore();
     }
 }

@@ -137,15 +137,23 @@ public class CreatePowerDialog extends Dialog {
                     if (!powerValueFieldLink.get(i).isEmpty() && powerValueFieldLink.get(i).getValue() != 0) {
                         PowerResources powerResources = new PowerResources();
                         Date date = Date.valueOf(datePicker.getValue());
-                        OffsetTime offsettime = OffsetTime.of(timePicker.getValue(), ZoneOffset.UTC);
-                        powerResources.setIdPowerResource(powerResourceDictList.get(i).getId());
-                        powerResources.setValue(powerValueFieldLink.get(i).getValue());
-                        powerResources.setIdUser(SecurityUtils.getAuthentication().getDetails().getId());
-                        powerResources.setDateCreate(date); //new Date(Calendar.getInstance().getTime().getTime())
-                        powerResources.setDelete(0L);
-                        powerResources.setTimeCreate(offsettime);
+                        if (powerResourcesService.getCheckDate(date, powerResourceDictList.get(i).getId()).size() == 0) {
+                            OffsetTime offsettime = OffsetTime.of(timePicker.getValue(), ZoneOffset.UTC);
+                            powerResources.setIdPowerResource(powerResourceDictList.get(i).getId());
+                            powerResources.setValue(powerValueFieldLink.get(i).getValue());
+                            powerResources.setIdUser(SecurityUtils.getAuthentication().getDetails().getId());
+                            powerResources.setDateCreate(date); //new Date(Calendar.getInstance().getTime().getTime())
+                            powerResources.setDelete(0L);
+                            powerResources.setTimeCreate(offsettime);
 
-                        powerResourcesService.saveAll(powerResources);
+                            powerResourcesService.saveAll(powerResources);
+                        }
+                        else {
+                            save.setEnabled(true);
+                            cancel.setEnabled(true);
+                            Notification.show("Показание на " + date + " для " + powerResourceDictList.get(i).getResourceName() +  " уже были внесены!", 5000, Notification.Position.MIDDLE);
+                            return;
+                        }
                     }
                 }
                 catch (Exception ex) {

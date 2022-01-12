@@ -31,4 +31,7 @@ public interface PowerResourcesService {
 
     //выбирает список показаний за указанные даты по указанному id ресурса(для сортировки отчета по дате)
     List<PowerResources> getResourceBySort(Date dateBegin, Date dateEnd, Long id);
+
+    //проверка наличия показаний в БД на выбранную дату и ресурс
+    List<PowerResources> getCheckDate(Date dateValue, Long resourceID);
 }

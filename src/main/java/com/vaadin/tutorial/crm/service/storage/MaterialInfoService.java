@@ -57,12 +57,25 @@ public interface MaterialInfoService {
      * @param article - артикул объекта хранения
      * @return - возвращает набор данных по выбранному артикулу
      */
-    List<MaterialInfoEntity> getAllByArticle(String article);
+    List<MaterialInfoEntity> getAllByArticle(String article, Long idStore);
 
     /**
      * Метод осуществляющий поиск по названию объекта хранения
      * @param materialName - наименование объекта хранения
      * @return - возвращает набор данных по выбранному объекту хранения
      */
-    List<MaterialInfoEntity> getAllByMaterialName(String materialName);
+    List<MaterialInfoEntity> getAllByMaterialName(String materialName, Long idStore);
+
+    /**
+     * Метод проверяет наличие объекта хранения по ID в БД
+     * @param id - id объекта хранения
+     * @return - возвращает список свойств найденного объекта хранения
+     */
+    List<MaterialInfoEntity> getCheckID(Long id);
+
+    /**
+     * Метод, который обновляет информацию об объекте хранения после перемещения склад/ячейка
+     * @param materialInfoEntity - объект класса MaterialInfoEntity
+     */
+    void updateMaterialInfoStorageCell(MaterialInfoEntity materialInfoEntity);
 }

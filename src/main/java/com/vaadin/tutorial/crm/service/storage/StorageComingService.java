@@ -13,4 +13,11 @@ public interface StorageComingService {
     List<StorageComingEntity> getAll();
 
     void saveAll(StorageComingEntity storageComingEntity);
+
+    /**
+     * Метод для поиска всех приходов объекта хранения по id
+     * @param idMaterial - id объекта хранения
+     * @return - возвращает список прихода для объекта хранения
+     */
+    List<StorageComingEntity> getAllByIdMaterial(Long idMaterial);
 }

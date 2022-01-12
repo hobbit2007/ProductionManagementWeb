@@ -38,12 +38,18 @@ public class MaterialMoveEntity implements Serializable {
     private long delete;
 
     @ManyToOne
-    @JoinColumn(name = "idStorage", referencedColumnName = "id", insertable = false, updatable = false)
-    private StorageEntity storage;
+    @JoinColumn(name = "idStorageOld", referencedColumnName = "id", insertable = false, updatable = false)
+    private StorageEntity storageOld;
+    @ManyToOne
+    @JoinColumn(name = "idStorageNew", referencedColumnName = "id", insertable = false, updatable = false)
+    private StorageEntity storageNew;
 
     @ManyToOne
-    @JoinColumn(name = "idCell", referencedColumnName = "id", insertable = false, updatable = false)
-    private CellEntity cell;
+    @JoinColumn(name = "idCellOld", referencedColumnName = "id", insertable = false, updatable = false)
+    private CellEntity cellOld;
+    @ManyToOne
+    @JoinColumn(name = "idCellNew", referencedColumnName = "id", insertable = false, updatable = false)
+    private CellEntity cellNew;
 
     @ManyToOne
     @JoinColumn(name = "idUser", referencedColumnName = "id", insertable = false, updatable = false)

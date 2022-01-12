@@ -206,6 +206,19 @@ public class FormMaterialDetail extends FormLayout {
                 return;
             }
         });
+
+        //Обработка нажатия кнопки Списать
+        writeOff.addClickListener(e -> {
+            if (materialInfoService.getCheckID(materialID).get(0).getBalance() > 0) {
+                new WriteOffDialog(materialInfoService, materialID, materialInfoService.getCheckID(materialID).get(0).getFlagMove(),
+                        materialInfoService.getCheckID(materialID).get(0).getIdStorage(),
+                        materialInfoService.getCheckID(materialID).get(0).getIdCell(), materialMoveService).open();
+            }
+            else {
+                Notification.show("Списание не возможно, нулевой остаток!", 3000, Notification.Position.MIDDLE);
+                return;
+            }
+        });
     }
     public void setMaterialInfo(MaterialInfoEntity materialInfoEntity) {
         if (materialInfoEntity != null) {

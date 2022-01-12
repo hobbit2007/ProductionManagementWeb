@@ -31,4 +31,9 @@ public class StorageComingImpl implements StorageComingService {
         else
             Notification.show("Нет данных для записи!", 3000, Notification.Position.MIDDLE);
     }
+
+    @Override
+    public List<StorageComingEntity> getAllByIdMaterial(Long idMaterial) {
+        return storageComingRepository.getAllByIdMaterial(idMaterial);
+    }
 }

@@ -17,6 +17,6 @@ public interface MaterialMoveRepository extends JpaRepository<MaterialMoveEntity
     List<MaterialMoveEntity> getAll();
 
     //Поиск записи по id
-    @Query("select mv from material_move mv where mv.idMaterial = :idMaterial and mv.writeoff = 0 and mv.delete = 0")
-    List<MaterialMoveEntity> getAllByID(@Param("idMaterial") Long idMaterial);
+    @Query("select mv from material_move mv where mv.idMaterial = :idMaterial and mv.writeoff = 0 and mv.action = :action and mv.delete = 0")
+    List<MaterialMoveEntity> getAllByID(@Param("idMaterial") Long idMaterial, @Param("action") String action);
 }

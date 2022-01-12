@@ -54,4 +54,9 @@ public class UserDetailsServiceImpl implements UserService {
         if (user != null)
             userRepository.updateUserInfo(user.getId(), user.getFio(), user.getEmail(), user.getRole());
     }
+
+    @Override
+    public List<User> getAllByIdDepartment(Long idDepartment) {
+        return userRepository.getAllByIdDepartment(idDepartment);
+    }
 }

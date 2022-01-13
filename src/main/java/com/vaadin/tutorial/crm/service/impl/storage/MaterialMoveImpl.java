@@ -36,4 +36,9 @@ public class MaterialMoveImpl implements MaterialMoveService {
     public List<MaterialMoveEntity> getAllByID(Long id, String action) {
         return materialMoveRepository.getAllByID(id, action);
     }
+
+    @Override
+    public List<MaterialMoveEntity> getAllWriteOffByID(Long id, String action) {
+        return materialMoveRepository.getAllWriteOffByID(id, action);
+    }
 }

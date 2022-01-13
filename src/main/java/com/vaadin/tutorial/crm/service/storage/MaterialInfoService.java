@@ -85,4 +85,10 @@ public interface MaterialInfoService {
      * @param id - id объекта хранения
      */
     void updateWriteOff(Long writeOff, Long id);
+
+    /**
+     * Метод для обновления цены объекта хранения
+     * @param materialInfoEntity - объект класс MaterialInfoEntity
+     */
+    void updatePrice(MaterialInfoEntity materialInfoEntity);
 }

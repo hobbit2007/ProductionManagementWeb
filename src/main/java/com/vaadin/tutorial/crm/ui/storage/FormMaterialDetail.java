@@ -287,6 +287,17 @@ public class FormMaterialDetail extends FormLayout {
                             changePriceEntity.setIdUserCreate(SecurityUtils.getAuthentication().getDetails().getId());
                             changePriceEntity.setDateCreate(new Date());
                             changePriceEntity.setDelete(0);
+                            try {
+                                changePriceService.saveAll(changePriceEntity);
+                            }
+                            catch (Exception ex) {
+                                Notification.show("Не могу записать данные!" + ex.getMessage(), 5000, Notification.Position.MIDDLE);
+                                return;
+                            }
+                        }
+                        else {
+                            Notification.show("Не все поля заполнены!", 3000, Notification.Position.MIDDLE);
+                            return;
                         }
 
                         flagPrice = 0;

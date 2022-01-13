@@ -54,13 +54,14 @@ public class StorageSearch extends Scroller {
     private final ShopService shopService;
     private final DepartmentService departmentService;
     private final UserService userService;
+    private final ChangePriceService changePriceService;
     private ListDataProvider<MaterialInfoEntity> dataProvider;
     Div content;
     FormMaterialDetail formMaterialDetail;
     long storageID = 0;
     long cellID = 0;
 
-    public StorageSearch(MaterialInfoService materialInfoService, StorageService storageService, CellService cellService, StorageComingService storageComingService, MaterialMoveService materialMoveService, ShopService shopService, DepartmentService departmentService, UserService userService) {
+    public StorageSearch(MaterialInfoService materialInfoService, StorageService storageService, CellService cellService, StorageComingService storageComingService, MaterialMoveService materialMoveService, ShopService shopService, DepartmentService departmentService, UserService userService, ChangePriceService changePriceService) {
         this.materialInfoService = materialInfoService;
         this.storageService = storageService;
         this.cellService = cellService;
@@ -69,6 +70,7 @@ public class StorageSearch extends Scroller {
         this.shopService = shopService;
         this.departmentService = departmentService;
         this.userService = userService;
+        this.changePriceService = changePriceService;
         addClassName("list-view");
         setSizeFull();
 
@@ -107,7 +109,7 @@ public class StorageSearch extends Scroller {
         btnMaterialSearch.setEnabled(false);
 
         formMaterialDetail = new FormMaterialDetail(materialInfoService, storageComingService, storageService, cellService, materialMoveService,
-                shopService, departmentService, userService);
+                shopService, departmentService, userService, changePriceService);
         formMaterialDetail.addListener(FormMaterialDetail.ContactFormEvent.CloseEvent.class, e -> btnClose());
 
         content = new Div(grid, formMaterialDetail);

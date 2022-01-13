@@ -319,7 +319,7 @@ public class FormMaterialDetail extends FormLayout {
                 moveInsideHistory.setEnabled(true);
             else
                 moveInsideHistory.setEnabled(false);
-            if (materialMoveService.getAllByID(materialID, "списание").size() != 0) //materialID, "перемещение склад/ячейка"
+            if (materialMoveService.getAllWriteOffByID(materialID, "списание").size() != 0) //materialID, "перемещение склад/ячейка"
                 writeOffHistory.setEnabled(true);
             else
                 writeOffHistory.setEnabled(false);

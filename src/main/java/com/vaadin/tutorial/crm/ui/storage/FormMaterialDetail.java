@@ -11,6 +11,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.shared.Registration;
+import com.vaadin.tutorial.crm.entity.storage.ChangePriceEntity;
 import com.vaadin.tutorial.crm.entity.storage.MaterialInfoEntity;
 import com.vaadin.tutorial.crm.entity.storage.StorageComingEntity;
 import com.vaadin.tutorial.crm.security.SecurityUtils;
@@ -50,19 +51,24 @@ public class FormMaterialDetail extends FormLayout {
     Button moveSCHistory = new Button("История склад/ячейка");
     Button moveInsideHistory = new Button("История ВП");
     Button writeOffHistory = new Button("История списания");
+    Button changePrice = new Button("Изменить цену");
     private final String ROLE = "ADMIN";
     long materialID = 0;
     long storageID = 0;
     long cellID = 0;
     double qtyOld;
     double balanceOld;
+    double costPriceOld;
+    double marketPriceOld;
+    double diffPriceOld;
     int flag = 0;//Флаг определяющий текст на кнопке 0 - Редактировать, 1 - Сохранить
     int flagPrihod = 0;//Флаг определяющий текст на кнопке 0 - Сделать приход, 1 - Сохранить
+    int flagPrice = 0;//Флаг определяющий текст на кнопке 0 - Изменить цену, 1 - Сохранить
     private final StorageComingService storageComingService;
     private final MaterialMoveService materialMoveService;
     public FormMaterialDetail(MaterialInfoService materialInfoService, StorageComingService storageComingService, StorageService storageService,
                               CellService cellService, MaterialMoveService materialMoveService, ShopService shopService,
-                              DepartmentService departmentService, UserService userService) {
+                              DepartmentService departmentService, UserService userService, ChangePriceService changePriceService) {
         addClassName("contact-form");
         this.storageComingService = storageComingService;
         this.materialMoveService = materialMoveService;
@@ -99,15 +105,18 @@ public class FormMaterialDetail extends FormLayout {
         writeOffHistory.getStyle().set("background-color", "#d3b342");
         writeOffHistory.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+        changePrice.getStyle().set("background-color", "#d3b342");
+        changePrice.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
         setResponsiveSteps(new FormLayout.ResponsiveStep("50px", 4));
 
-        //if (SecurityUtils.getAuthentication().getDetails().getRole().equals(ROLE))
-        //    edit.setVisible(true);
-        //else
-        //    edit.setVisible(false);
+        if (SecurityUtils.getAuthentication().getDetails().getRole().equals(ROLE))
+            changePrice.setEnabled(true);
+        else
+            changePrice.setEnabled(false);
 
         add(storage, cell, material, article, qty, expense, balance, meas, costPrice, marketPrice, diffPrice, dateCreate, user, close,
-                edit, prihod, moveStore, moveInside, writeOff, prihodHistory, moveSCHistory, moveInsideHistory, writeOffHistory);
+                edit, prihod, moveStore, moveInside, writeOff, changePrice, prihodHistory, moveSCHistory, moveInsideHistory, writeOffHistory);
 
         close.addClickListener(event -> fireEvent(new ContactFormEvent.CloseEvent(this)));
         //Обработка события кнопки Редактирование
@@ -245,6 +254,61 @@ public class FormMaterialDetail extends FormLayout {
         //Обработка нажатия кнопки История списания
         writeOffHistory.addClickListener(a -> {
             new WriteOffHistory(materialMoveService, materialID).open();
+        });
+
+        //Обработка события кнопки Изменить цену
+        changePrice.addClickListener(e -> {
+            costPrice.setReadOnly(false);
+            marketPrice.setReadOnly(false);
+            flagPrice = 1;
+            if (changePrice.getText().equals("Сохранить")) {
+                MaterialInfoEntity materialInfoEntity = new MaterialInfoEntity();
+                ChangePriceEntity changePriceEntity = new ChangePriceEntity();
+                costPrice.setReadOnly(true);
+                marketPrice.setReadOnly(true);
+
+                try {
+                    if (!costPrice.isEmpty() && !marketPrice.isEmpty() && materialID != 0) {
+
+                        materialInfoEntity.setId(materialID);
+                        materialInfoEntity.setCostPrice(Precision.round(costPrice.getValue(), 2));
+                        materialInfoEntity.setMarketPrice(Precision.round(marketPrice.getValue(), 2));
+                        materialInfoEntity.setDiffPrice(Precision.round(materialInfoEntity.getMarketPrice() - materialInfoEntity.getCostPrice(), 2));
+
+                        materialInfoService.updatePrice(materialInfoEntity);
+                        if (!costPrice.isEmpty() && !marketPrice.isEmpty()) {
+                            changePriceEntity.setIdMaterial(materialID);
+                            changePriceEntity.setCostPriceOld(costPriceOld);
+                            changePriceEntity.setMarketPriceOld(marketPriceOld);
+                            changePriceEntity.setDiffPriceOld(diffPriceOld);
+                            changePriceEntity.setCostPriceNew(costPrice.getValue());
+                            changePriceEntity.setMarketPriceNew(marketPrice.getValue());
+                            changePriceEntity.setDiffPriceNew(changePriceEntity.getMarketPriceNew() - changePriceEntity.getMarketPriceOld());
+                            changePriceEntity.setIdUserCreate(SecurityUtils.getAuthentication().getDetails().getId());
+                            changePriceEntity.setDateCreate(new Date());
+                            changePriceEntity.setDelete(0);
+                        }
+
+                        flagPrice = 0;
+                    }
+                    else {
+                        Notification.show("Некоторые поля не заполнены!", 3000, Notification.Position.MIDDLE);
+                        return;
+                    }
+                }
+                catch (Exception ex) {
+                    Notification.show("Не могу обновить данные!" + ex.getMessage(), 5000, Notification.Position.MIDDLE);
+                    return;
+                }
+            }
+            if (flagPrice == 1) {
+                changePrice.setText("Сохранить");
+                costPriceOld = costPrice.getValue();
+                marketPriceOld = marketPrice.getValue();
+                diffPriceOld = diffPrice.getValue();
+            }
+            if (flagPrice == 0)
+                changePrice.setText("Изменить цену");
         });
     }
     public void setMaterialInfo(MaterialInfoEntity materialInfoEntity) {

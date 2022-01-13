@@ -74,7 +74,7 @@ public class WriteOffHistory extends Dialog {
     }
     private void updateGrid() {
         dataProvider = new ListDataProvider<>(
-                materialMoveService.getAllByID(materialID, "списание"));
+                materialMoveService.getAllWriteOffByID(materialID, "списание"));
         grid.setItems(dataProvider);
     }
 }

@@ -92,4 +92,12 @@ public class MaterialInfoImpl implements MaterialInfoService {
     public void updateWriteOff(Long writeOff, Long id) {
         materialInfoRepository.updateWriteOff(writeOff, id);
     }
+
+    @Override
+    public void updatePrice(MaterialInfoEntity materialInfoEntity) {
+        if (materialInfoEntity != null)
+            materialInfoRepository.updatePrice(materialInfoEntity.getCostPrice(), materialInfoEntity.getMarketPrice(), materialInfoEntity.getId());
+        else
+            Notification.show("Нет данных для обновления!", 5000, Notification.Position.MIDDLE);
+    }
 }

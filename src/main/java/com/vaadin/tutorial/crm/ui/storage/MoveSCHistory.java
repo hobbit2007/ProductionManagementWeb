@@ -22,7 +22,7 @@ public class MoveSCHistory extends Dialog {
     Button close = new Button("Закрыть");
     VerticalLayout vMain = new VerticalLayout();
     private final MaterialMoveService materialMoveService;
-    Long materialID = 0L;
+    Long materialID;
 
     public MoveSCHistory(MaterialMoveService materialMoveService, Long materialID) {
         this.materialMoveService = materialMoveService;

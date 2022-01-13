@@ -114,24 +114,28 @@ public class FormMaterialDetail extends FormLayout {
         prihodHistory.getStyle().set("background-color", "#d3b342");
         prihodHistory.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        moveSCHistory.setIcon(icon5);
+        Icon icon6 = new Icon(VaadinIcon.FILE_TEXT_O);
+        moveSCHistory.setIcon(icon6);
         moveSCHistory.getStyle().set("background-color", "#d3b342");
         moveSCHistory.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        moveInsideHistory.setIcon(icon5);
+        Icon icon7 = new Icon(VaadinIcon.FILE_TEXT_O);
+        moveInsideHistory.setIcon(icon7);
         moveInsideHistory.getStyle().set("background-color", "#d3b342");
         moveInsideHistory.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        writeOffHistory.setIcon(icon5);
+        Icon icon8 = new Icon(VaadinIcon.FILE_TEXT_O);
+        writeOffHistory.setIcon(icon8);
         writeOffHistory.getStyle().set("background-color", "#d3b342");
         writeOffHistory.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        Icon icon7 = new Icon(VaadinIcon.MONEY_EXCHANGE);
-        changePrice.setIcon(icon7);
+        Icon icon9 = new Icon(VaadinIcon.MONEY_EXCHANGE);
+        changePrice.setIcon(icon9);
         changePrice.getStyle().set("background-color", "#d3b342");
         changePrice.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        changePrice.setIcon(icon5);
+        Icon icon10 = new Icon(VaadinIcon.FILE_TEXT_O);
+        changePrice.setIcon(icon10);
         changePriceHistory.getStyle().set("background-color", "#d3b342");
         changePriceHistory.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 

@@ -1,4 +1,4 @@
-package com.vaadin.tutorial.crm.service.impl.storage;
+package com.vaadin.tutorial.crm.service.storage;
 
 import com.vaadin.tutorial.crm.entity.storage.ChangePriceEntity;
 import org.springframework.stereotype.Service;

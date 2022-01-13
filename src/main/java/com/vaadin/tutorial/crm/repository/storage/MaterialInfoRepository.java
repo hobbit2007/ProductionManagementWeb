@@ -73,6 +73,7 @@ public interface MaterialInfoRepository extends JpaRepository<MaterialInfoEntity
     //Обновление цены объекта хранения
     @Modifying
     @Transactional
-    @Query("update materialinfo mi set mi.costPrice = :costPrice, mi.marketPrice = :marketPrice where mi.id = :id")
-    void updatePrice(@Param("costPrice") double costPrice, @Param("marketPrice") double marketPrice, @Param("id") long id);
+    @Query("update materialinfo mi set mi.costPrice = :costPrice, mi.marketPrice = :marketPrice, mi.diffPrice = :diffPrice where mi.id = :id")
+    void updatePrice(@Param("costPrice") double costPrice, @Param("marketPrice") double marketPrice, @Param("diffPrice") double diffPrice,
+                     @Param("id") long id);
 }

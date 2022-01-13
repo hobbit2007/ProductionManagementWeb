@@ -7,6 +7,8 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -82,7 +84,9 @@ public class StorageSearch extends Scroller {
         articleNumber.setLabel("Поиск по артикулу:");
         articleNumber.setEnabled(false);
 
+        Icon icon = new Icon(VaadinIcon.SEARCH);
         btnArticleSearch = new Button("Поиск");
+        btnArticleSearch.setIcon(icon);
         btnArticleSearch.getStyle().set("background-color", "#d3b342");
         btnArticleSearch.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         btnArticleSearch.setEnabled(false);
@@ -104,6 +108,7 @@ public class StorageSearch extends Scroller {
         cellSelect.setEnabled(false);
 
         btnMaterialSearch = new Button("Поиск");
+        btnMaterialSearch.setIcon(icon);
         btnMaterialSearch.getStyle().set("background-color", "#d3b342");
         btnMaterialSearch.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         btnMaterialSearch.setEnabled(false);

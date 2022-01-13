@@ -135,7 +135,7 @@ public class FormMaterialDetail extends FormLayout {
         changePrice.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
         Icon icon10 = new Icon(VaadinIcon.FILE_TEXT_O);
-        changePrice.setIcon(icon10);
+        changePriceHistory.setIcon(icon10);
         changePriceHistory.getStyle().set("background-color", "#d3b342");
         changePriceHistory.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 

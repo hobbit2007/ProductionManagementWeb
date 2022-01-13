@@ -52,6 +52,7 @@ public class FormMaterialDetail extends FormLayout {
     Button moveInsideHistory = new Button("История ВП");
     Button writeOffHistory = new Button("История списания");
     Button changePrice = new Button("Изменить цену");
+    Button changePriceHistory = new Button("История ИЦ");
     private final String ROLE = "ADMIN";
     long materialID = 0;
     long storageID = 0;
@@ -66,12 +67,14 @@ public class FormMaterialDetail extends FormLayout {
     int flagPrice = 0;//Флаг определяющий текст на кнопке 0 - Изменить цену, 1 - Сохранить
     private final StorageComingService storageComingService;
     private final MaterialMoveService materialMoveService;
+    private final ChangePriceService changePriceService;
     public FormMaterialDetail(MaterialInfoService materialInfoService, StorageComingService storageComingService, StorageService storageService,
                               CellService cellService, MaterialMoveService materialMoveService, ShopService shopService,
                               DepartmentService departmentService, UserService userService, ChangePriceService changePriceService) {
         addClassName("contact-form");
         this.storageComingService = storageComingService;
         this.materialMoveService = materialMoveService;
+        this.changePriceService = changePriceService;
 
         close.getStyle().set("background-color", "#d3b342");
         close.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -108,6 +111,9 @@ public class FormMaterialDetail extends FormLayout {
         changePrice.getStyle().set("background-color", "#d3b342");
         changePrice.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+        changePriceHistory.getStyle().set("background-color", "#d3b342");
+        changePriceHistory.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
         setResponsiveSteps(new FormLayout.ResponsiveStep("50px", 4));
 
         if (SecurityUtils.getAuthentication().getDetails().getRole().equals(ROLE))
@@ -116,7 +122,8 @@ public class FormMaterialDetail extends FormLayout {
             changePrice.setEnabled(false);
 
         add(storage, cell, material, article, qty, expense, balance, meas, costPrice, marketPrice, diffPrice, dateCreate, user, close,
-                edit, prihod, moveStore, moveInside, writeOff, changePrice, prihodHistory, moveSCHistory, moveInsideHistory, writeOffHistory);
+                edit, prihod, moveStore, moveInside, writeOff, changePrice, prihodHistory, moveSCHistory, moveInsideHistory, writeOffHistory,
+                changePriceHistory);
 
         close.addClickListener(event -> fireEvent(new ContactFormEvent.CloseEvent(this)));
         //Обработка события кнопки Редактирование
@@ -276,6 +283,7 @@ public class FormMaterialDetail extends FormLayout {
                         materialInfoEntity.setDiffPrice(Precision.round(materialInfoEntity.getMarketPrice() - materialInfoEntity.getCostPrice(), 2));
 
                         materialInfoService.updatePrice(materialInfoEntity);
+
                         if (!costPrice.isEmpty() && !marketPrice.isEmpty()) {
                             changePriceEntity.setIdMaterial(materialID);
                             changePriceEntity.setCostPriceOld(costPriceOld);
@@ -283,12 +291,14 @@ public class FormMaterialDetail extends FormLayout {
                             changePriceEntity.setDiffPriceOld(diffPriceOld);
                             changePriceEntity.setCostPriceNew(costPrice.getValue());
                             changePriceEntity.setMarketPriceNew(marketPrice.getValue());
-                            changePriceEntity.setDiffPriceNew(changePriceEntity.getMarketPriceNew() - changePriceEntity.getMarketPriceOld());
+                            changePriceEntity.setDiffPriceNew(changePriceEntity.getMarketPriceNew() - changePriceEntity.getCostPriceNew());
                             changePriceEntity.setIdUserCreate(SecurityUtils.getAuthentication().getDetails().getId());
                             changePriceEntity.setDateCreate(new Date());
                             changePriceEntity.setDelete(0);
                             try {
                                 changePriceService.saveAll(changePriceEntity);
+                                diffPrice.setValue(materialInfoEntity.getDiffPrice());
+                                changePriceHistory.setEnabled(true);
                             }
                             catch (Exception ex) {
                                 Notification.show("Не могу записать данные!" + ex.getMessage(), 5000, Notification.Position.MIDDLE);
@@ -320,6 +330,11 @@ public class FormMaterialDetail extends FormLayout {
             }
             if (flagPrice == 0)
                 changePrice.setText("Изменить цену");
+        });
+
+        //Обработка нажатия кнопки История изменения цены
+        changePriceHistory.addClickListener(a -> {
+            new ChangePriceHistory(changePriceService, materialID).open();
         });
     }
     public void setMaterialInfo(MaterialInfoEntity materialInfoEntity) {
@@ -398,6 +413,10 @@ public class FormMaterialDetail extends FormLayout {
                 writeOffHistory.setEnabled(true);
             else
                 writeOffHistory.setEnabled(false);
+            if (changePriceService.getAllByIdMaterial(materialID).size() != 0) //materialID, "перемещение склад/ячейка"
+                changePriceHistory.setEnabled(true);
+            else
+                changePriceHistory.setEnabled(false);
         }
     }
     private void additionalPrihod(MaterialInfoService materialInfoService, StorageComingService storageComingService, Double qtyOld,

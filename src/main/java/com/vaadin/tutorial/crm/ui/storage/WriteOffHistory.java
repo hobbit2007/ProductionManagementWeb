@@ -61,7 +61,7 @@ public class WriteOffHistory extends Dialog {
         colMeas = grid.addColumn(materialMoveEntity -> materialMoveEntity.getMaterial().getMeas().getMeasName()).setHeader("Ед. измерения");
         colDescription = grid.addColumn(materialMoveEntity -> materialMoveEntity.getDescription()).setHeader("Причина списания");
         colForWhom = grid.addColumn(materialMoveEntity -> materialMoveEntity.getForWhom()).setHeader("Куда списано");
-        colDateCreate = grid.addColumn(materialMoveEntity -> materialMoveEntity.getDateCreate()).setHeader("Дата перемещения");
+        colDateCreate = grid.addColumn(materialMoveEntity -> materialMoveEntity.getDateCreate()).setHeader("Дата списания");
 
         colMaterialName.setResizable(true);
         colStorageNew.setResizable(true);

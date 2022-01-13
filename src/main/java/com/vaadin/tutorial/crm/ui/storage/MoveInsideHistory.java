@@ -6,6 +6,8 @@ import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.HeaderRow;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.provider.ListDataProvider;
@@ -36,6 +38,8 @@ public class MoveInsideHistory extends Dialog {
         configureGrid();
         updateGrid();
 
+        Icon icon = new Icon(VaadinIcon.CLOSE);
+        close.setIcon(icon);
         close.getStyle().set("background-color", "#d3b342");
         close.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 

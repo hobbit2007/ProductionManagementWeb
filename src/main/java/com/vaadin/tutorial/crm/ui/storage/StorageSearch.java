@@ -107,8 +107,9 @@ public class StorageSearch extends Scroller {
         cellSelect.setWidth("135px");
         cellSelect.setEnabled(false);
 
+        Icon icon1 = new Icon(VaadinIcon.SEARCH);
         btnMaterialSearch = new Button("Поиск");
-        btnMaterialSearch.setIcon(icon);
+        btnMaterialSearch.setIcon(icon1);
         btnMaterialSearch.getStyle().set("background-color", "#d3b342");
         btnMaterialSearch.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         btnMaterialSearch.setEnabled(false);

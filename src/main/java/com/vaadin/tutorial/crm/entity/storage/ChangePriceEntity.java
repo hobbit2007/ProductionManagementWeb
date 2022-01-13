@@ -26,6 +26,8 @@ public class ChangePriceEntity implements Serializable {
     private long idUserCreate;
     private Date dateCreate;
     private long delete;
+    private double diffPriceOld;
+    private double diffPriceNew;
 
     @ManyToOne
     @JoinColumn(name = "idUserCreate", referencedColumnName = "id", insertable = false, updatable = false)

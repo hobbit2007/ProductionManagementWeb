@@ -96,7 +96,8 @@ public class MaterialInfoImpl implements MaterialInfoService {
     @Override
     public void updatePrice(MaterialInfoEntity materialInfoEntity) {
         if (materialInfoEntity != null)
-            materialInfoRepository.updatePrice(materialInfoEntity.getCostPrice(), materialInfoEntity.getMarketPrice(), materialInfoEntity.getId());
+            materialInfoRepository.updatePrice(materialInfoEntity.getCostPrice(), materialInfoEntity.getMarketPrice(),
+                    materialInfoEntity.getDiffPrice(), materialInfoEntity.getId());
         else
             Notification.show("Нет данных для обновления!", 5000, Notification.Position.MIDDLE);
     }

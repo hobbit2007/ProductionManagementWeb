@@ -6,6 +6,8 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
@@ -76,41 +78,60 @@ public class FormMaterialDetail extends FormLayout {
         this.materialMoveService = materialMoveService;
         this.changePriceService = changePriceService;
 
+        Icon icon = new Icon(VaadinIcon.CLOSE);
+        close.setIcon(icon);
         close.getStyle().set("background-color", "#d3b342");
         close.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         close.getElement().setAttribute("data-title", close.getText());
         close.setClassName("tooltip");
 
+        Icon icon1 = new Icon(VaadinIcon.EDIT);
+        edit.setIcon(icon1);
         edit.getStyle().set("background-color", "#d3b342");
         edit.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+        Icon icon2 = new Icon(VaadinIcon.PLUS_CIRCLE_O);
+        prihod.setIcon(icon2);
         prihod.getStyle().set("background-color", "#d3b342");
         prihod.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+        Icon icon3 = new Icon(VaadinIcon.INSERT);
+        moveStore.setIcon(icon3);
         moveStore.getStyle().set("background-color", "#d3b342");
         moveStore.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+        moveInside.setIcon(icon3);
         moveInside.getStyle().set("background-color", "#d3b342");
         moveInside.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+        Icon icon4 = new Icon(VaadinIcon.MINUS_CIRCLE_O);
+        writeOff.setIcon(icon4);
         writeOff.getStyle().set("background-color", "#d3b342");
         writeOff.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+        Icon icon5 = new Icon(VaadinIcon.FILE_TEXT_O);
+        prihodHistory.setIcon(icon5);
         prihodHistory.getStyle().set("background-color", "#d3b342");
         prihodHistory.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+        moveSCHistory.setIcon(icon5);
         moveSCHistory.getStyle().set("background-color", "#d3b342");
         moveSCHistory.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+        moveInsideHistory.setIcon(icon5);
         moveInsideHistory.getStyle().set("background-color", "#d3b342");
         moveInsideHistory.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+        writeOffHistory.setIcon(icon5);
         writeOffHistory.getStyle().set("background-color", "#d3b342");
         writeOffHistory.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+        Icon icon7 = new Icon(VaadinIcon.MONEY_EXCHANGE);
+        changePrice.setIcon(icon7);
         changePrice.getStyle().set("background-color", "#d3b342");
         changePrice.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+        changePrice.setIcon(icon5);
         changePriceHistory.getStyle().set("background-color", "#d3b342");
         changePriceHistory.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 

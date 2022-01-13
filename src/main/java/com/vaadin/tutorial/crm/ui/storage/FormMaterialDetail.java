@@ -49,6 +49,7 @@ public class FormMaterialDetail extends FormLayout {
     Button prihodHistory = new Button("История приход");
     Button moveSCHistory = new Button("История склад/ячейка");
     Button moveInsideHistory = new Button("История ВП");
+    Button writeOffHistory = new Button("История списания");
     private final String ROLE = "ADMIN";
     long materialID = 0;
     long storageID = 0;
@@ -95,6 +96,9 @@ public class FormMaterialDetail extends FormLayout {
         moveInsideHistory.getStyle().set("background-color", "#d3b342");
         moveInsideHistory.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+        writeOffHistory.getStyle().set("background-color", "#d3b342");
+        writeOffHistory.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
         setResponsiveSteps(new FormLayout.ResponsiveStep("50px", 4));
 
         //if (SecurityUtils.getAuthentication().getDetails().getRole().equals(ROLE))
@@ -103,7 +107,7 @@ public class FormMaterialDetail extends FormLayout {
         //    edit.setVisible(false);
 
         add(storage, cell, material, article, qty, expense, balance, meas, costPrice, marketPrice, diffPrice, dateCreate, user, close,
-                edit, prihod, moveStore, moveInside, writeOff, prihodHistory, moveSCHistory, moveInsideHistory);
+                edit, prihod, moveStore, moveInside, writeOff, prihodHistory, moveSCHistory, moveInsideHistory, writeOffHistory);
 
         close.addClickListener(event -> fireEvent(new ContactFormEvent.CloseEvent(this)));
         //Обработка события кнопки Редактирование
@@ -237,6 +241,11 @@ public class FormMaterialDetail extends FormLayout {
         moveInsideHistory.addClickListener(a -> {
             new MoveInsideHistory(materialMoveService, materialID).open();
         });
+
+        //Обработка нажатия кнопки История списания
+        writeOffHistory.addClickListener(a -> {
+            new WriteOffHistory(materialMoveService, materialID).open();
+        });
     }
     public void setMaterialInfo(MaterialInfoEntity materialInfoEntity) {
         if (materialInfoEntity != null) {
@@ -310,6 +319,10 @@ public class FormMaterialDetail extends FormLayout {
                 moveInsideHistory.setEnabled(true);
             else
                 moveInsideHistory.setEnabled(false);
+            if (materialMoveService.getAllByID(materialID, "списание").size() != 0) //materialID, "перемещение склад/ячейка"
+                writeOffHistory.setEnabled(true);
+            else
+                writeOffHistory.setEnabled(false);
         }
     }
     private void additionalPrihod(MaterialInfoService materialInfoService, StorageComingService storageComingService, Double qtyOld,

@@ -41,4 +41,12 @@ public class CellImpl implements CellService {
     public List<CellEntity> getFindCellByID(Long cellID, Long storageID) {
         return cellRepository.getFindCellByID(cellID, storageID);
     }
+
+    @Override
+    public void updateCellName(CellEntity cellEntity) {
+        if (cellEntity != null)
+            cellRepository.updateCellName(cellEntity.getCellName(), cellEntity.getId());
+        else
+            Notification.show("Нет данных для обновления!", 3000, Notification.Position.MIDDLE);
+    }
 }

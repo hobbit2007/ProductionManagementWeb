@@ -8,13 +8,11 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.tutorial.crm.security.SecurityConfiguration;
-import com.vaadin.tutorial.crm.service.storage.StorageService;
+import com.vaadin.tutorial.crm.security.SecurityUtils;
 import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
-import com.vaadin.tutorial.crm.ui.storage.CreateCellDialog;
-import com.vaadin.tutorial.crm.ui.storage.CreateMaterialDialog;
-import com.vaadin.tutorial.crm.ui.storage.CreateStorageDialog;
-import com.vaadin.tutorial.crm.ui.storage.StorageSearch;
+import com.vaadin.tutorial.crm.ui.storage.*;
+import com.vaadin.tutorial.crm.ui.users.RuleOut;
 
 /**
  * Класс реализующий шапку и боковое меню для меню Склад
@@ -26,10 +24,35 @@ public class StorageLayout extends AppLayout {
     HorizontalLayout hMenu3 = new HorizontalLayout();
     HorizontalLayout hMenu4 = new HorizontalLayout();
     HorizontalLayout hMenu5 = new HorizontalLayout();
+    HorizontalLayout hMenu6 = new HorizontalLayout();
+    HorizontalLayout hMenu7 = new HorizontalLayout();
+    private final String ROLE = "ADMIN";
+    private final String ROLE1 = "USER";
     private final SecurityConfiguration securityConfiguration;
+    RouterLink editStore = new RouterLink("Редактировать склад", RuleOut.class);
+    RouterLink addStore = new RouterLink("Добавить склад", RuleOut.class);
+    RouterLink addCell = new RouterLink("Добавить ячейку", RuleOut.class);
+    RouterLink editCell = new RouterLink("Редактировать ячейку", RuleOut.class);
 
     public StorageLayout(SecurityConfiguration securityConfiguration) {
         this.securityConfiguration = securityConfiguration;
+        if (SecurityUtils.getAuthentication().getDetails().getRole().equals(ROLE1)) {
+            editStore.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon6 = new Icon(VaadinIcon.EDIT);
+            hMenu6.add(icon6, editStore);
+
+            addStore.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon3 = new Icon(VaadinIcon.ADD_DOCK);
+            hMenu3.add(icon3, addStore);
+
+            addStore.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon4 = new Icon(VaadinIcon.ADD_DOCK);
+            hMenu4.add(icon4, addCell);
+
+            editCell.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon7 = new Icon(VaadinIcon.EDIT);
+            hMenu7.add(icon7, editCell);
+        }
         createHeader();
         createDrawer();
     }
@@ -48,21 +71,33 @@ public class StorageLayout extends AppLayout {
         Icon icon2 = new Icon(VaadinIcon.SEARCH);
         hMenu2.add(icon2, search);
 
-        RouterLink addStore = new RouterLink("Добавить склад", CreateStorageDialog.class);
-        addStore.setHighlightCondition(HighlightConditions.sameLocation());
-        Icon icon3 = new Icon(VaadinIcon.ADD_DOCK);
-        hMenu3.add(icon3, addStore);
+        if (SecurityUtils.getAuthentication().getDetails().getRole().equals(ROLE)) {
+            addStore = new RouterLink("Добавить склад", CreateStorageDialog.class);
+            addStore.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon3 = new Icon(VaadinIcon.ADD_DOCK);
+            hMenu3.add(icon3, addStore);
 
-        RouterLink addCell = new RouterLink("Добавить ячейку", CreateCellDialog.class);
-        addStore.setHighlightCondition(HighlightConditions.sameLocation());
-        Icon icon4 = new Icon(VaadinIcon.ADD_DOCK);
-        hMenu4.add(icon4, addCell);
+            editStore = new RouterLink("Редактировать склад", EditStorageName.class);
+            editStore.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon6 = new Icon(VaadinIcon.EDIT);
+            hMenu6.add(icon6, editStore);
+
+            addCell = new RouterLink("Добавить ячейку", CreateCellDialog.class);
+            addStore.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon4 = new Icon(VaadinIcon.ADD_DOCK);
+            hMenu4.add(icon4, addCell);
+
+            editCell = new RouterLink("Редактировать ячейку", EditCellName.class);
+            editCell.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon7 = new Icon(VaadinIcon.EDIT);
+            hMenu7.add(icon7, editCell);
+        }
 
         RouterLink addMaterial = new RouterLink("Добавить объект хранения", CreateMaterialDialog.class);
         addMaterial.setHighlightCondition(HighlightConditions.sameLocation());
         Icon icon5 = new Icon(VaadinIcon.INVOICE);
         hMenu5.add(icon5, addMaterial);
 
-        addToDrawer(new VerticalLayout(hMenu1, hMenu3, hMenu4, hMenu5, hMenu2));
+        addToDrawer(new VerticalLayout(hMenu1, hMenu3, hMenu6, hMenu4, hMenu7, hMenu5, hMenu2));
     }
 }

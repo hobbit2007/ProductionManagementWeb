@@ -32,4 +32,10 @@ public interface CellService {
      * @return - возвращает список свойств найденной ячейки
      */
     List<CellEntity> getFindCellByID(Long cellID, Long storageID);
+
+    /**
+     * Метод для обновления имени ячейки
+     * @param cellEntity - объект класса CellEntity
+     */
+    void updateCellName(CellEntity cellEntity);
 }

@@ -41,4 +41,12 @@ public class StorageImpl implements StorageService {
     public List<StorageEntity> getFindStorageByID(Long storageID) {
         return storageRepository.getFindStorageByID(storageID);
     }
+
+    @Override
+    public void updateStorageName(StorageEntity storageEntity) {
+        if (storageEntity != null)
+            storageRepository.updateStorageName(storageEntity.getStorageName(), storageEntity.getId());
+        else
+            Notification.show("Нет данных для обновления!", 3000, Notification.Position.MIDDLE);
+    }
 }

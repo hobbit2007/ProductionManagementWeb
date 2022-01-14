@@ -1,5 +1,6 @@
 package com.vaadin.tutorial.crm.ui.storage;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -50,7 +51,8 @@ public class EditStorageName extends Dialog {
         setCloseOnEsc(false);
         setCloseOnOutsideClick(false);
         setDraggable(true);
-        setWidth("355px");
+        setWidth("755px");
+        setHeight("555px");
 
         Icon icon = new Icon(VaadinIcon.CLOSE);
         cancel.setIcon(icon);
@@ -62,10 +64,14 @@ public class EditStorageName extends Dialog {
 
         vMain.add(new AnyComponent().labelTitle("Редактирование имени склада"), grid, cancel);
         vMain.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
+        vMain.setSizeFull();
 
         add(vMain);
 
-        cancel.addClickListener(e -> close());
+        cancel.addClickListener(e -> {
+            close();
+            UI.getCurrent().navigate(StorageSearch.class);
+        });
     }
     private void configureGrid() {
         grid.addThemeVariants(GridVariant.LUMO_COLUMN_BORDERS,
@@ -104,7 +110,7 @@ public class EditStorageName extends Dialog {
             edit.setEnabled(!editor.isOpen());
             editButtons.add(edit);
             return edit;
-        }).setFlexGrow(0).setWidth("230px");
+        }).setFlexGrow(0).setWidth("280px");
 
         editor.addOpenListener(e -> editButtons.stream()
                 .forEach(button -> button.setEnabled(!editor.isOpen())));
@@ -136,6 +142,7 @@ public class EditStorageName extends Dialog {
                 storageEntity.setStorageName(event.getItem().getStorageName());
                 storageEntity.setId(event.getItem().getId());
                 storageService.updateStorageName(storageEntity);
+                UI.getCurrent().navigate(StorageSearch.class);
                 close();
             }
             catch (Exception ex ) {

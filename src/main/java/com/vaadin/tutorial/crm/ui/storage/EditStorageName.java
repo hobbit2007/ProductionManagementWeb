@@ -100,7 +100,9 @@ public class EditStorageName extends Dialog {
                 .newSetFromMap(new WeakHashMap<>());
 
         Grid.Column<StorageEntity> editorColumn = grid.addComponentColumn(store -> {
+            Icon icon = new Icon(VaadinIcon.EDIT);
             Button edit = new Button("Редактировать");
+            edit.setIcon(icon);
             edit.getStyle().set("background-color", "#d3b342");
             edit.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
             edit.addClickListener(e -> {
@@ -110,18 +112,22 @@ public class EditStorageName extends Dialog {
             edit.setEnabled(!editor.isOpen());
             editButtons.add(edit);
             return edit;
-        }).setFlexGrow(0).setWidth("280px");
+        }).setFlexGrow(0).setWidth("330px");
 
         editor.addOpenListener(e -> editButtons.stream()
                 .forEach(button -> button.setEnabled(!editor.isOpen())));
         editor.addCloseListener(e -> editButtons.stream()
                 .forEach(button -> button.setEnabled(!editor.isOpen())));
 
+        Icon icon = new Icon(VaadinIcon.DISC);
         Button save = new Button("Сохранить", e -> editor.save());
+        save.setIcon(icon);
         save.getStyle().set("background-color", "#d3b342");
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+        Icon icon1 = new Icon(VaadinIcon.CLOSE);
         Button cancel = new Button("Отмена", e -> editor.cancel());
+        cancel.setIcon(icon1);
         cancel.getStyle().set("background-color", "#d3b342");
         cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 

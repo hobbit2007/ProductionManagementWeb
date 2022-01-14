@@ -31,4 +31,10 @@ public interface StorageService {
      * @return - возвратит список свойств найденного склада
      */
     List<StorageEntity> getFindStorageByID(Long storageID);
+
+    /**
+     * Метод для обновления имени склада
+     * @param storageEntity - объект класса StorageEntity
+     */
+    void updateStorageName(StorageEntity storageEntity);
 }

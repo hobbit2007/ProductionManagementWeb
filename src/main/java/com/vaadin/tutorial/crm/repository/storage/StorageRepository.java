@@ -2,9 +2,11 @@ package com.vaadin.tutorial.crm.repository.storage;
 
 import com.vaadin.tutorial.crm.entity.storage.StorageEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,6 +27,8 @@ public interface StorageRepository extends JpaRepository<StorageEntity, Long> {
     List<StorageEntity> getFindStorageByID(@Param("storeID") Long storeID);
 
     //Обновляем имя склада
+    @Modifying
+    @Transactional
     @Query("update storage s set s.storageName = :storageName where s.id = :id")
     void updateStorageName(@Param("storageName") String storageName, @Param("id") Long id);
 }

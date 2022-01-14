@@ -23,4 +23,8 @@ public interface StorageRepository extends JpaRepository<StorageEntity, Long> {
     //Поиск склада по ID
     @Query("select s from storage s where s.id = :storeID and s.delete = 0")
     List<StorageEntity> getFindStorageByID(@Param("storeID") Long storeID);
+
+    //Обновляем имя склада
+    @Query("update storage s set s.storageName = :storageName where s.id = :id")
+    void updateStorageName(@Param("storageName") String storageName, @Param("id") Long id);
 }

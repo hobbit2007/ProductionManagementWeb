@@ -23,4 +23,10 @@ public interface WriteToDBService {
      * @param value - значение времени повтора в минутах
      */
     void updateRTFor1C(Long value);
+
+    /**
+     * Метод для обновления режима включения/выключения записи в БД
+     * @param value - Запись включена, значение: Да, запись выключена, значение: Нет
+     */
+    void updateWriteFor1C(String value);
 }

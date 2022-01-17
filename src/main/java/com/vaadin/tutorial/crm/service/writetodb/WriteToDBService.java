@@ -17,4 +17,10 @@ public interface WriteToDBService {
 
     //Обновления коэффициентов трансформации ввод2
     void updateCoefficient2(Double value);
+
+    /**
+     * Метод для обновления, времени повтора, записи данных в БД для 1С
+     * @param value - значение времени повтора в минутах
+     */
+    void updateRTFor1C(Long value);
 }

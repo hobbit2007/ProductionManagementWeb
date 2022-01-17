@@ -21,7 +21,6 @@ import com.vaadin.tutorial.crm.ui.powerresources.CreatePowerDialog;
 import com.vaadin.tutorial.crm.ui.powerresources.EditPower;
 import com.vaadin.tutorial.crm.ui.powerresources.PowerStatistic;
 import com.vaadin.tutorial.crm.ui.powerresources.TableView;
-import com.vaadin.tutorial.crm.ui.users.RuleOut;
 import com.vaadin.tutorial.crm.ui.users.RuleOutEnergo;
 
 /**

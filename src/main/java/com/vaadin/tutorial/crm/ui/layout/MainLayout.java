@@ -9,15 +9,18 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.tutorial.crm.security.SecurityConfiguration;
+import com.vaadin.tutorial.crm.security.SecurityUtils;
 import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.admin.AdminPage;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
+import com.vaadin.tutorial.crm.ui.for1c.IntoToDB1C;
 import com.vaadin.tutorial.crm.ui.plccontrollersui.PlcValueController;
 import com.vaadin.tutorial.crm.ui.plccontrollersui.PlcValueWashing;
 import com.vaadin.tutorial.crm.ui.powerresources.PowerStatistic;
 import com.vaadin.tutorial.crm.ui.report.PowerReportEmpty;
 import com.vaadin.tutorial.crm.ui.report.PowerResourceReport;
 import com.vaadin.tutorial.crm.ui.storage.StorageSearch;
+import com.vaadin.tutorial.crm.ui.users.RuleOut;
 
 /**
  * Класс создающий титульный заголовок вверху страницы
@@ -33,9 +36,19 @@ public class MainLayout extends AppLayout {
     HorizontalLayout hMenu4 = new HorizontalLayout();
     HorizontalLayout hMenu5 = new HorizontalLayout();
     HorizontalLayout hMenu6 = new HorizontalLayout();
+    HorizontalLayout hMenu7 = new HorizontalLayout();
+    RouterLink for1cLink = new RouterLink("Интеграция 1С", RuleOut.class);
+    private final String ROLE = "ADMIN";
+    private final String ROLE1 = "USER";
 
     public MainLayout(SecurityConfiguration securityConfiguration) {
         this.securityConfiguration = securityConfiguration;
+        if (SecurityUtils.getAuthentication().getDetails().getRole().equals(ROLE1)) {
+            for1cLink.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon6 = new Icon(VaadinIcon.CLUSTER);
+            hMenu7.add(icon6, for1cLink);
+        }
+
         createHeader();
         createDrawer();
     }
@@ -74,7 +87,14 @@ public class MainLayout extends AppLayout {
         Icon icon4 = new Icon(VaadinIcon.MODAL_LIST);
         hMenu5.add(icon4, reportLink);
 
-        addToDrawer(new VerticalLayout(hMenu1, hMenu2, hMenu4, hMenu3, hMenu6, hMenu5));
+        if (SecurityUtils.getAuthentication().getDetails().getRole().equals(ROLE)) {
+            for1cLink = new RouterLink("Интеграция 1С", IntoToDB1C.class);
+            for1cLink.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon6 = new Icon(VaadinIcon.CLUSTER);
+            hMenu7.add(icon6, for1cLink);
+        }
+
+        addToDrawer(new VerticalLayout(hMenu1, hMenu2, hMenu4, hMenu3, hMenu6, hMenu5, hMenu7));
 
         //Закрываем меню на стороне клиента
         //т.к. при первом запуске меню показывается автоматически

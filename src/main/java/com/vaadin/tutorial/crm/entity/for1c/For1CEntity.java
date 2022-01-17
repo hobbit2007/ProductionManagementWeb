@@ -21,4 +21,5 @@ public class For1CEntity {
     private Float value;
     private String units;
     private Date datetime;
+    private long idSignal;
 }

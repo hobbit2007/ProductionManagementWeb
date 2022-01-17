@@ -20,5 +20,5 @@ public class For1CEntity {
     private long delete;
     private Float value;
     private String units;
-    private Date dateTime;
+    private Date datetime;
 }

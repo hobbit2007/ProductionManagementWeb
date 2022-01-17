@@ -35,6 +35,23 @@ public class AnyComponent extends VerticalLayout {
     }
 
     /**
+     * Метод реализует создание новой метки класса Label
+     * @param labelText - текст метки
+     * @param colorText - цвет текста
+     * @param sizeText - размер текста
+     * @return - возвращает объект класса Label
+     */
+    public Component labelTitle(String labelText, String colorText, String sizeText) {
+        labelTitle = new Label(labelText);
+        labelTitle.getStyle().set("color", colorText);
+        labelTitle.getStyle().set("font-weight", "bold");
+        labelTitle.getStyle().set("font-size", sizeText);
+        labelTitle.getStyle().set("margin-left", "30px");
+
+        return labelTitle;
+    }
+
+    /**
      * Метод реализующий перевод на русский, календарь DatePicker
      * @return - объект класса DatePicker.DatePickerI18n с переводом
      */

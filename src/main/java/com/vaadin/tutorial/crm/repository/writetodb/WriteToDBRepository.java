@@ -36,4 +36,10 @@ public interface WriteToDBRepository extends JpaRepository<WriteToDB, Long> {
     @Transactional
     @Query("update settings s set s.repeatTime = :value where s.id = 9")
     void updateRTFor1C(@Param("value") Long value);
+
+    //Обновление режима включения/выключения записи в БД
+    @Modifying
+    @Transactional
+    @Query("update settings s set s.writeOff = :value where s.id = 9")
+    void updateWriteFor1C(@Param("value") String value);
 }

@@ -37,4 +37,9 @@ public class WriteToDBImpl implements WriteToDBService {
     public void updateRTFor1C(Long value) {
         writeToDBRepository.updateRTFor1C(value);
     }
+
+    @Override
+    public void updateWriteFor1C(String value) {
+        writeToDBRepository.updateWriteFor1C(value);
+    }
 }

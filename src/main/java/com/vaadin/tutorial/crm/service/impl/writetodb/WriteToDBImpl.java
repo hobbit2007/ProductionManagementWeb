@@ -32,4 +32,9 @@ public class WriteToDBImpl implements WriteToDBService {
     public void updateCoefficient2(Double value) {
         writeToDBRepository.updateCoefficient2(value);
     }
+
+    @Override
+    public void updateRTFor1C(Long value) {
+        writeToDBRepository.updateRTFor1C(value);
+    }
 }

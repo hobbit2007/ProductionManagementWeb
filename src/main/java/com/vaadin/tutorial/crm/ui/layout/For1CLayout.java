@@ -10,6 +10,7 @@ import com.vaadin.flow.router.RouterLink;
 import com.vaadin.tutorial.crm.security.SecurityConfiguration;
 import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
+import com.vaadin.tutorial.crm.ui.for1c.AddVariable;
 import com.vaadin.tutorial.crm.ui.for1c.IntoToDB1C;
 import com.vaadin.tutorial.crm.ui.powerresources.TableView;
 
@@ -21,6 +22,7 @@ public class For1CLayout extends AppLayout {
     LabelComponent labelComponent;
     HorizontalLayout hMenu1 = new HorizontalLayout();
     HorizontalLayout hMenu2 = new HorizontalLayout();
+    HorizontalLayout hMenu3 = new HorizontalLayout();
 
     public For1CLayout(SecurityConfiguration securityConfiguration) {
         this.securityConfiguration = securityConfiguration;
@@ -43,7 +45,12 @@ public class For1CLayout extends AppLayout {
         Icon icon2 = new Icon(VaadinIcon.EXTERNAL_LINK);
         hMenu2.add(icon2, for1cView);
 
-        addToDrawer(new VerticalLayout(hMenu1, hMenu2));
+        RouterLink addNewView = new RouterLink("Добавить переменную", AddVariable.class);
+        addNewView.setHighlightCondition(HighlightConditions.sameLocation());
+        Icon icon3 = new Icon(VaadinIcon.ADD_DOCK);
+        hMenu3.add(icon3, addNewView);
+
+        addToDrawer(new VerticalLayout(hMenu1, hMenu3, hMenu2));
     }
 
 }

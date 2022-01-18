@@ -20,4 +20,11 @@ public interface For1CSignalListService {
      * @param id - id записи на удаление
      */
     void updateDeleteRecord(Long id);
+
+    /**
+     * Метод ищет переменную по заданному id
+     * @param id - переменной
+     * @return - возвращает массив из свойств найденной переменной, либо пустой массив, если переменная не найдена
+     */
+    List<For1CSignalListEntity> getAllByID(Long id);
 }

@@ -18,6 +18,10 @@ public interface For1CSignalListRepository extends JpaRepository<For1CSignalList
     @Query("select sl from for1csignallist sl where sl.delete = 0 order by sl.id asc ")
     List<For1CSignalListEntity> getAll();
 
+    //Поиск переменной по id
+    @Query("select sl from for1csignallist sl where sl.delete = 0 and sl.idSignalName = :id order by sl.id asc ")
+    List<For1CSignalListEntity> getAllByID(@Param("id") Long id);
+
     //Обновление поля delete - удаление записи
     @Modifying
     @Transactional

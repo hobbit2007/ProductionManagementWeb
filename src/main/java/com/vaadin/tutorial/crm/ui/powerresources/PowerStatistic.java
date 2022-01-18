@@ -201,9 +201,11 @@ public class PowerStatistic extends VerticalLayout {
                 waterWellSeries[i].setName(powerResourceDictList.get(i).getResourceName());
                 for (int j = 0; j < powerResourcesList.size(); j++) {
                     item[i] = new DataSeriesItem();
-                    item[i].setX(powerResourcesList.get(j).getDateCreate());
-                    item[i].setY(powerResourcesList.get(j).getValueWeekly());
-                    waterWellSeries[i].add(item[i]); //new DataSeriesItem(powerResourcesList.get(j).getDateCreate().toInstant(), powerResourcesList.get(j).getValueWeekly())
+                    if (powerResourcesList.get(j).getValueWeekly() != 0) {
+                        item[i].setX(powerResourcesList.get(j).getDateCreate());
+                        item[i].setY(powerResourcesList.get(j).getValueWeekly());
+                        waterWellSeries[i].add(item[i]); //new DataSeriesItem(powerResourcesList.get(j).getDateCreate().toInstant(), powerResourcesList.get(j).getValueWeekly())
+                    }
                 }
             }
             configuration1.setSeries(waterWellSeries[0], waterWellSeries[1]); //, waterWellSeries[1]
@@ -342,9 +344,11 @@ public class PowerStatistic extends VerticalLayout {
                 waterWellSeries[i].setName(powerResourceDictList.get(i).getResourceName());
                 for (int j = 0; j < powerResourcesList.size(); j++) {
                     item[i] = new DataSeriesItem();
-                    item[i].setX(powerResourcesList.get(j).getDateCreate());
-                    item[i].setY(powerResourcesList.get(j).getValueWeekly());
-                    waterWellSeries[i].add(item[i]);
+                    if (powerResourcesList.get(j).getValueWeekly() != 0) {
+                        item[i].setX(powerResourcesList.get(j).getDateCreate());
+                        item[i].setY(powerResourcesList.get(j).getValueWeekly());
+                        waterWellSeries[i].add(item[i]);
+                    }
                 }
             }
             configuration2.setSeries(waterWellSeries[5]); //waterWellSeries[6], waterWellSeries[7],waterWellSeries[8],

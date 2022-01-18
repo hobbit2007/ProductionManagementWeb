@@ -1,5 +1,6 @@
 package com.vaadin.tutorial.crm.ui.for1c;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -143,6 +144,7 @@ public class AddVariable extends Dialog {
                 try {
                     for1CSignalListService.saveAll(for1CSignalListEntity);
                     close();
+                    UI.getCurrent().navigate(IntoToDB1C.class);
                 }
                 catch (Exception ex) {
                     Notification.show("Не могу выполнить запись, переменная не существует!" + ex.getMessage(), 5000, Notification.Position.MIDDLE);
@@ -153,6 +155,10 @@ public class AddVariable extends Dialog {
                 Notification.show("Такая переменная уже была добавлена!", 3000, Notification.Position.MIDDLE);
                 return;
             }
+        }
+        else {
+            Notification.show("Не выбрана переменная!", 3000, Notification.Position.MIDDLE);
+            return;
         }
     }
 }

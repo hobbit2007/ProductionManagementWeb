@@ -41,7 +41,7 @@ public class UpdatePowerResource extends Thread{
                         double varWater;
                         if (indexWater < listWater.size()) {
                             varWater = listWater.get(indexWater).getValue() - listWater.get(j).getValue();
-                            //System.out.println("VALUE FOR UPDATE ID = " + listWater.get(indexWater).getId() + " VALUE = " + varWater);
+                            //System.out.println("VALUE WATER FOR UPDATE ID = " + listWater.get(indexWater).getId() + " VALUE = " + varWater);
                             powerResourcesService.updateValueWeekly(listWater.get(indexWater).getId(), varWater);
                         }
                     }
@@ -53,19 +53,19 @@ public class UpdatePowerResource extends Thread{
                 int indexGas = 0;
                 double varGas = 0;
                 if (listGas.size() != 0 && listGas.size() >= 2) {
-                    if (listGas.size() <= 56) {
+                    //if (listGas.size() <= 56) {
                         for (int j = 0; j < listGas.size(); j++) {
                             indexGas += 1;
                             if (indexGas < listGas.size()) {
                                 varGas += listGas.get(j).getValue();
                                 if (indexGas % 7 == 0) {
-                                    //System.out.println("VALUE FOR UPDATE GAS ID = " + listGas.get(j).getId() + " VALUE GAS = " + varGas);
+                                    //System.out.println("VALUE FOR UPDATE GAS ID = " + listGas.get(j).getId() + " VALUE GAS = " + varGas + " DATE = " + listGas.get(j).getDateCreate());
                                     powerResourcesService.updateValueWeekly(listGas.get(j).getId(), varGas);
                                     varGas = 0;
                                 }
                             }
                         }
-                    }
+                    /*}
                     if (listGas.size() > 56 && listGas.size() % 7 == 0) {
                         int indexGas1 = listGas.size() - 56;
                         double varGas1 = 0;
@@ -80,7 +80,7 @@ public class UpdatePowerResource extends Thread{
                                 }
                             }
                         }
-                    }
+                    }*/
                 }
 
                 //Получаем разницу показаний текущей недели и предыдущей для газа
@@ -89,19 +89,19 @@ public class UpdatePowerResource extends Thread{
                 int indexGasWeekly = 0;
                 double varGasWeekly;
                 if (listGasWeekly.size() != 0 && listGasWeekly.size() >= 2) {
-                    if (listGasWeekly.size() <= 56) {
+                    //if (listGasWeekly.size() <= 56) {
                         for (int j = 0; j < listGasWeekly.size(); j++) {
                             indexGasWeekly += 1;
                             if (indexGasWeekly < listGasWeekly.size()) {
                                 if (indexGasWeekly % 14 == 0) {
-                                    varGasWeekly = listGasWeekly.get(j).getValue() - listGasWeekly.get(j - 7).getValue();
-                                    //System.out.println("VALUE FOR UPDATE GAS WEEKLY ID = " + listGasWeekly.get(j).getId() + " VALUE GAS WEEKLY = " + varGasWeekly);
+                                    varGasWeekly = listGasWeekly.get(j).getValueWeekly() - listGasWeekly.get(j - 7).getValueWeekly();
+                                    //System.out.println("VALUE FOR UPDATE GAS WEEKLY ID = " + listGasWeekly.get(j).getId() + " VALUE GAS WEEKLY = " + varGasWeekly + " DATE = " + listGasWeekly.get(j).getDateCreate());
                                     powerResourcesService.updateTotalValueWeekly(listGasWeekly.get(j).getId(), varGasWeekly);
                                     varGasWeekly = 0;
                                 }
                             }
                         }
-                    }
+                    /*}
                     if (listGasWeekly.size() > 56 && listGasWeekly.size() % 14 == 0) {
                         int indexGasWeekly1 = listGasWeekly.size() - 56;
                         double varGasWeekly1 = 0;
@@ -116,7 +116,7 @@ public class UpdatePowerResource extends Thread{
                                 }
                             }
                         }
-                    }
+                    }*/
                 }
 
                 //Получаем разницу показаний между текущими и предыдущими для стоков

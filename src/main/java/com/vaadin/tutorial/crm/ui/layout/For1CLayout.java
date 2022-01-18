@@ -11,6 +11,7 @@ import com.vaadin.tutorial.crm.security.SecurityConfiguration;
 import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
 import com.vaadin.tutorial.crm.ui.for1c.AddVariable;
+import com.vaadin.tutorial.crm.ui.for1c.DeleteVariable;
 import com.vaadin.tutorial.crm.ui.for1c.IntoToDB1C;
 import com.vaadin.tutorial.crm.ui.powerresources.TableView;
 
@@ -23,6 +24,7 @@ public class For1CLayout extends AppLayout {
     HorizontalLayout hMenu1 = new HorizontalLayout();
     HorizontalLayout hMenu2 = new HorizontalLayout();
     HorizontalLayout hMenu3 = new HorizontalLayout();
+    HorizontalLayout hMenu4 = new HorizontalLayout();
 
     public For1CLayout(SecurityConfiguration securityConfiguration) {
         this.securityConfiguration = securityConfiguration;
@@ -50,7 +52,12 @@ public class For1CLayout extends AppLayout {
         Icon icon3 = new Icon(VaadinIcon.ADD_DOCK);
         hMenu3.add(icon3, addNewView);
 
-        addToDrawer(new VerticalLayout(hMenu1, hMenu3, hMenu2));
+        RouterLink delView = new RouterLink("Удалить переменную", DeleteVariable.class);
+        delView.setHighlightCondition(HighlightConditions.sameLocation());
+        Icon icon4 = new Icon(VaadinIcon.DEL);
+        hMenu4.add(icon4, delView);
+
+        addToDrawer(new VerticalLayout(hMenu1, hMenu3, hMenu4, hMenu2));
     }
 
 }

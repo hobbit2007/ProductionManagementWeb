@@ -61,7 +61,7 @@ public class AddVariable extends Dialog {
         setCloseOnEsc(false);
         setDraggable(true);
         setSizeFull();
-        setWidth("655px");
+        setWidth("755px");
         setHeight("599px");
         this.open();
 

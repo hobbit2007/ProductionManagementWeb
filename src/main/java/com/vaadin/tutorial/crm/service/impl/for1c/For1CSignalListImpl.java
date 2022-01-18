@@ -36,4 +36,9 @@ public class For1CSignalListImpl implements For1CSignalListService {
     public void updateDeleteRecord(Long id) {
         for1CSignalListRepository.updateDeleteRecord(id);
     }
+
+    @Override
+    public List<For1CSignalListEntity> getAllByID(Long id) {
+        return for1CSignalListRepository.getAllByID(id);
+    }
 }

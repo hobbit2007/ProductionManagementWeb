@@ -38,6 +38,7 @@ public class DeleteVariable extends Dialog {
     VerticalLayout vMain = new VerticalLayout();
     Grid<For1CSignalListEntity> grid;
     Grid.Column<For1CSignalListEntity> colVarName, colVarDescription;
+    Button cancel = new Button("Отмена");
     private ListDataProvider<For1CSignalListEntity> dataProvider;
     private final For1CSignalListService for1CSignalListService;
 
@@ -53,11 +54,18 @@ public class DeleteVariable extends Dialog {
         configureGrid();
         updateGrid();
 
+        Icon icon = new Icon(VaadinIcon.CLOSE);
+        cancel.setIcon(icon);
+        cancel.getStyle().set("background-color", "#d3b342");
+        cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
         vMain.add(new AnyComponent().labelTitle("Удаление переменной"), grid);
         vMain.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         vMain.setSizeFull();
 
         add(vMain);
+
+        cancel.addClickListener(e -> close());
     }
     private void configureGrid() {
         grid = new Grid<>();

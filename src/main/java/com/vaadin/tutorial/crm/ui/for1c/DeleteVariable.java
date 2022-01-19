@@ -65,7 +65,10 @@ public class DeleteVariable extends Dialog {
 
         add(vMain);
 
-        cancel.addClickListener(e -> close());
+        cancel.addClickListener(e -> {
+            close();
+            UI.getCurrent().navigate(IntoToDB1C.class);
+        });
     }
     private void configureGrid() {
         grid = new Grid<>();

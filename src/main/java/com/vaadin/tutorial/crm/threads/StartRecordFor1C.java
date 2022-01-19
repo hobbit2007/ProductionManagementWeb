@@ -83,7 +83,7 @@ public class StartRecordFor1C extends Thread{
                         for1CEntity.setValue((float) (Math.ceil(readData * scale) / scale)); //Precision.round(readData, 2) - округляем до двух знаков после запятой
                         for1CEntity.setUnits("кг.");
                         for1CEntity.setDatetime(new Date());
-                        for1CEntity.setIdSignal(array.get(i).getIdSignalName());
+                        for1CEntity.setIdSignal(array.get(i).getId());
 
                         try {
                             for1CService.saveAll(for1CEntity);

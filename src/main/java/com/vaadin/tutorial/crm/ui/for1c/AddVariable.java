@@ -110,7 +110,10 @@ public class AddVariable extends Dialog {
 
         add(vMain);
 
-        cancel.addClickListener(e -> close());
+        cancel.addClickListener(e -> {
+            close();
+            UI.getCurrent().navigate(IntoToDB1C.class);
+        });
         save.addClickListener(e -> saveClick());
     }
     private void configureGrid() {

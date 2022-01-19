@@ -22,4 +22,7 @@ public class For1CEntity {
     private String units;
     private Date datetime;
     private long idSignal;
+
+    @Transient
+    String description;
 }

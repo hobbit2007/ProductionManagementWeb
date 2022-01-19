@@ -87,7 +87,7 @@ public class StartRecordFor1C extends Thread{
 
                         try {
                             for1CService.saveAll(for1CEntity);
-                            System.out.println("RECORD ADD TO DB");
+                            //System.out.println("RECORD ADD TO DB");
                         }
                         catch (Exception ex) {
                             Notification.show("Не могу записать в БД данные для 1С" + ex.getMessage(), 5000, Notification.Position.MIDDLE);

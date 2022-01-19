@@ -12,6 +12,8 @@ import java.util.Date;
 @Getter
 @Setter
 public class DataFor1C {
-    private float variable;
+    private String variableName;
+    private String variableDescription;
+    private float value;
     private Date dateTime;
 }

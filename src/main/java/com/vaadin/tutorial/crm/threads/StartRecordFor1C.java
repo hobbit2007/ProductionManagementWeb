@@ -6,7 +6,6 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.tutorial.crm.entity.for1c.For1CEntity;
 import com.vaadin.tutorial.crm.entity.for1c.For1CSignalListEntity;
 import com.vaadin.tutorial.crm.service.for1c.For1CService;
-import org.apache.commons.math3.util.Precision;
 
 import java.util.Date;
 import java.util.List;
@@ -19,7 +18,7 @@ public class StartRecordFor1C extends Thread{
     S7Client s7ClientWashing;
     S7Client s7ClientDiffusion;
     S7Client s7ClientFermentation;
-    private S7Client s7Client;
+    S7Client s7Client;
     S7Client s7ClientBottling;
     S7Client s7ClientDrying;
 

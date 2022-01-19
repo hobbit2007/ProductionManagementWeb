@@ -13,7 +13,7 @@ import com.vaadin.tutorial.crm.ui.component.LabelComponent;
 import com.vaadin.tutorial.crm.ui.for1c.AddVariable;
 import com.vaadin.tutorial.crm.ui.for1c.DeleteVariable;
 import com.vaadin.tutorial.crm.ui.for1c.IntoToDB1C;
-import com.vaadin.tutorial.crm.ui.powerresources.TableView;
+import com.vaadin.tutorial.crm.ui.for1c.TableView1C;
 
 /**
  * Класс реализующий шапку и боковое меню для меню Интеграция 1С
@@ -25,6 +25,7 @@ public class For1CLayout extends AppLayout {
     HorizontalLayout hMenu2 = new HorizontalLayout();
     HorizontalLayout hMenu3 = new HorizontalLayout();
     HorizontalLayout hMenu4 = new HorizontalLayout();
+    HorizontalLayout hMenu5 = new HorizontalLayout();
 
     public For1CLayout(SecurityConfiguration securityConfiguration) {
         this.securityConfiguration = securityConfiguration;
@@ -57,7 +58,12 @@ public class For1CLayout extends AppLayout {
         Icon icon4 = new Icon(VaadinIcon.DEL);
         hMenu4.add(icon4, delView);
 
-        addToDrawer(new VerticalLayout(hMenu1, hMenu3, hMenu4, hMenu2));
+        RouterLink tableView = new RouterLink("Просмотр переменных", TableView1C.class);
+        tableView.setHighlightCondition(HighlightConditions.sameLocation());
+        Icon icon5 = new Icon(VaadinIcon.TABLE);
+        hMenu5.add(icon5, tableView);
+
+        addToDrawer(new VerticalLayout(hMenu1, hMenu3, hMenu4, hMenu5, hMenu2));
     }
 
 }

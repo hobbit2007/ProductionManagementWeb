@@ -59,7 +59,7 @@ public class DeleteVariable extends Dialog {
         cancel.getStyle().set("background-color", "#d3b342");
         cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        vMain.add(new AnyComponent().labelTitle("Удаление переменной"), grid);
+        vMain.add(new AnyComponent().labelTitle("Удаление переменной"), grid, cancel);
         vMain.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         vMain.setSizeFull();
 

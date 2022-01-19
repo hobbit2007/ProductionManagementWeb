@@ -77,10 +77,11 @@ public class StartRecordFor1C extends Thread{
                                     array.get(i).getSignalList().getPosition() + array.get(i).getSignalList().getOffset(), buffer);
                             readData = S7.GetFloatAt(buffer, array.get(i).getSignalList().getPosition());
                         }
+                        double scale = Math.pow(10, 2);
                         For1CEntity for1CEntity = new For1CEntity();
                         for1CEntity.setIdOrderNum(1);
                         for1CEntity.setDelete(0);
-                        for1CEntity.setValue(Precision.round(readData, 2));
+                        for1CEntity.setValue((float) (Math.ceil(readData * scale) / scale)); //Precision.round(readData, 2) - округляем до двух знаков после запятой
                         for1CEntity.setUnits("кг.");
                         for1CEntity.setDatetime(new Date());
                         for1CEntity.setIdSignal(array.get(i).getIdSignalName());

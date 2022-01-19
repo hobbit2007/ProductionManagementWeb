@@ -8,7 +8,11 @@ import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.tutorial.crm.service.for1c.For1CService;
+import com.vaadin.tutorial.crm.service.for1c.For1CSignalListService;
+import com.vaadin.tutorial.crm.service.plccontrollersservice.PLCConnect;
 import com.vaadin.tutorial.crm.service.writetodb.WriteToDBService;
+import com.vaadin.tutorial.crm.threads.StartRecordFor1C;
 import com.vaadin.tutorial.crm.ui.component.AnyComponent;
 import com.vaadin.tutorial.crm.ui.layout.For1CLayout;
 
@@ -27,10 +31,9 @@ public class IntoToDB1C extends VerticalLayout {
     Label timeLabel = new Label();
     NumberField time1С = new NumberField();
     RadioButtonGroup<String> radioButton1С = new RadioButtonGroup<>();
-    private final WriteToDBService writeToDBService;
+    Thread recordToDB = new Thread();
 
-    public IntoToDB1C(WriteToDBService writeToDBService) {
-        this.writeToDBService = writeToDBService;
+    public IntoToDB1C(WriteToDBService writeToDBService, For1CSignalListService for1CSignalListService, For1CService for1CService) {
         radioButton1С.setItems("Нет", "Да");
         radioButton1С.getStyle().set("color", "#d3b342");
         radioButton1С.setValue(writeToDBService.getAll().get(8).getWriteOff());
@@ -60,8 +63,15 @@ public class IntoToDB1C extends VerticalLayout {
             if (e.getValue().equals("Да")) {
                 alarmEnabled(alarm1С);
                 writeToDBService.updateWriteFor1C("Да");
+
+                recordToDB = new StartRecordFor1C(for1CSignalListService.getAll(), PLCConnect.clientForStatusWashing, PLCConnect.clientForStatusDiffusion,
+                         PLCConnect.clientForStatusFermentation, PLCConnect.clientForStatus, PLCConnect.clientForStatusBottling,
+                        PLCConnect.clientForStatusDrying, time1С.getValue().longValue() * 60 * 1000, for1CService);
+                recordToDB.start();
             }
             if (e.getValue().equals("Нет")) {
+                recordToDB.interrupt();
+                recordToDB = null;
                 alarmDisable(alarm1С);
                 writeToDBService.updateWriteFor1C("Нет");
             }

@@ -18,6 +18,15 @@ public class DataFor1C {
     private float value;
     private Date dateTime;
     private List<DataFor1C> result;
+    private String error;
+
+    public DataFor1C(String error){
+        this.error = error;
+    }
+
+    public DataFor1C(List<DataFor1C> result) {
+        this.result = result;
+    }
 
     public DataFor1C (String variableName, String variableDescription, float value, Date dateTime) {
         this.variableName = variableName;

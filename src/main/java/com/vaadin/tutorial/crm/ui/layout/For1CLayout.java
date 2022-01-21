@@ -10,10 +10,7 @@ import com.vaadin.flow.router.RouterLink;
 import com.vaadin.tutorial.crm.security.SecurityConfiguration;
 import com.vaadin.tutorial.crm.ui.MainView;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
-import com.vaadin.tutorial.crm.ui.for1c.AddVariable;
-import com.vaadin.tutorial.crm.ui.for1c.DeleteVariable;
-import com.vaadin.tutorial.crm.ui.for1c.IntoToDB1C;
-import com.vaadin.tutorial.crm.ui.for1c.TableView1C;
+import com.vaadin.tutorial.crm.ui.for1c.*;
 
 /**
  * Класс реализующий шапку и боковое меню для меню Интеграция 1С
@@ -43,7 +40,7 @@ public class For1CLayout extends AppLayout {
         Icon icon1 = new Icon(VaadinIcon.ARROW_BACKWARD);
         hMenu1.add(icon1, back);
 
-        RouterLink for1cView = new RouterLink("Проверка интеграции", IntoToDB1C.class);
+        RouterLink for1cView = new RouterLink("Проверка интеграции", For1CAPI.class);
         for1cView.setHighlightCondition(HighlightConditions.sameLocation());
         Icon icon2 = new Icon(VaadinIcon.EXTERNAL_LINK);
         hMenu2.add(icon2, for1cView);

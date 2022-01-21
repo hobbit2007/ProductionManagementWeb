@@ -9,12 +9,11 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.tutorial.crm.entity.for1c.For1CEntity;
 import com.vaadin.tutorial.crm.entity.for1c.For1CSignalListEntity;
-import com.vaadin.tutorial.crm.model.DataFor1C;
 import com.vaadin.tutorial.crm.service.for1c.For1CService;
 import com.vaadin.tutorial.crm.service.for1c.For1CSignalListService;
 import com.vaadin.tutorial.crm.ui.component.AnyComponent;
-import com.vaadin.tutorial.crm.ui.layout.For1CLayout;;import java.util.ArrayList;
-import java.util.Date;
+import com.vaadin.tutorial.crm.ui.layout.For1CLayout;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -85,26 +84,5 @@ public class TableView1C extends VerticalLayout {
         colDesc.setResizable(true);
         colValue.setResizable(true);
         colDate.setResizable(true);
-    }
-    private List<DataFor1C> middleValue() {
-        List<DataFor1C> totalList = new ArrayList<>();
-        for (int i = 0; i < for1CSignalListService.getAll().size(); i++) {
-            float variable = 0;
-            int count = 0;
-
-            Date dateCreate = new Date();
-            for (int j = 0; j < for1CService.getAll().size(); j++) {
-                if (for1CSignalListService.getAll().get(i).getId() == for1CService.getAll().get(j).getIdSignal()) {
-                    variable += for1CService.getAll().get(j).getValue();
-                    count = count + 1;
-                    dateCreate = for1CService.getAll().get(j).getDatetime();
-                }
-            }
-            DataFor1C dataFor1C = new DataFor1C(for1CSignalListService.getAll().get(i).getSignalList().getSignalName(),
-                    for1CSignalListService.getAll().get(i).getSignalList().getSignalDescription(),
-                    variable / count, dateCreate);
-            totalList.add(dataFor1C);
-        }
-        return totalList;
     }
 }

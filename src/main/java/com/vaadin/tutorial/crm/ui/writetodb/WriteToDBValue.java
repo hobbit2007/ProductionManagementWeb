@@ -8,7 +8,11 @@ import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.tutorial.crm.service.plccontrollersservice.PLCConnect;
+import com.vaadin.tutorial.crm.service.plccontrollersservice.PlcValueService;
+import com.vaadin.tutorial.crm.service.plccontrollersservice.SignalListService;
 import com.vaadin.tutorial.crm.service.writetodb.WriteToDBService;
+import com.vaadin.tutorial.crm.threads.StartRecordForPLC;
 import com.vaadin.tutorial.crm.ui.component.AnyComponent;
 import com.vaadin.tutorial.crm.ui.layout.AdminLayout;
 
@@ -27,10 +31,15 @@ public class WriteToDBValue extends VerticalLayout {
     Label timeLabel = new Label();
     NumberField timeWashing = new NumberField();
     RadioButtonGroup<String> radioButtonWashing = new RadioButtonGroup<>();
+    Thread recordToDBWashing = new Thread();
     private final WriteToDBService writeToDBService;
+    private final SignalListService signalListService;
+    private final PlcValueService plcValueService;
 
-    public WriteToDBValue(WriteToDBService writeToDBService) {
+    public WriteToDBValue(WriteToDBService writeToDBService, SignalListService signalListService, PlcValueService plcValueService) {
         this.writeToDBService = writeToDBService;
+        this.signalListService = signalListService;
+        this.plcValueService = plcValueService;
         radioButtonWashing.setItems("Нет", "Да");
         radioButtonWashing.getStyle().set("color", "#d3b342");
         //radioButton.getStyle().set("font-weight", "bold");
@@ -60,9 +69,23 @@ public class WriteToDBValue extends VerticalLayout {
         radioButtonWashing.addValueChangeListener(e -> {
            if (e.getValue().equals("Да")) {
                alarmEnabled(alarmWashing);
+               writeToDBService.updateWriteWashing("Да");
+               recordToDBWashing = new StartRecordForPLC(signalListService.findSignalList(1L), PLCConnect.clientForStatusWashing,
+                       timeWashing.getValue().longValue() * 60 * 1000, plcValueService, 1L);
+               recordToDBWashing.start();
            }
            if (e.getValue().equals("Нет")) {
+               recordToDBWashing.interrupt();
+               recordToDBWashing = null;
                alarmDisable(alarmWashing);
+               writeToDBService.updateWriteWashing("Нет");
+           }
+        });
+
+        timeWashing.addValueChangeListener(e -> {
+           if (e.getValue() != null) {
+               if (!timeWashing.isEmpty())
+                   writeToDBService.updateRTWashing(timeWashing.getValue().longValue());
            }
         });
 

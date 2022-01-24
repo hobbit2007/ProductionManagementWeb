@@ -51,7 +51,7 @@ public class StartRecordForPLC extends Thread{
 
                         try {
                             plcValueService.saveAll(plcValue);
-                            System.out.println("RECORD ADD TO DB WASHING");
+                            //System.out.println("RECORD ADD TO DB WASHING");
                         }
                         catch (Exception ex) {
                             Notification.show("Не могу записать в БД значения из ПЛК" + ex.getMessage(), 5000, Notification.Position.MIDDLE);

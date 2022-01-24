@@ -29,4 +29,16 @@ public interface WriteToDBService {
      * @param value - Запись включена, значение: Да, запись выключена, значение: Нет
      */
     void updateWriteFor1C(String value);
+
+    /**
+     * Метод для обновления, времени повтора, записи данных в БД для ПЛК Мойка
+     * @param value - значение времени повтора в минутах
+     */
+    void updateRTWashing(Long value);
+
+    /**
+     * Метод для обновления режима включения/выключения записи в БД для ПЛК Мойка
+     * @param value - Запись включена, значение: Да, запись выключена, значение: Нет
+     */
+    void updateWriteWashing(String value);
 }

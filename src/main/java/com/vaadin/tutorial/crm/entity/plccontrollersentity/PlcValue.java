@@ -27,7 +27,7 @@ public class PlcValue implements Externalizable {
     private Date dateCreate;
     private Long delete;
     private Long idController;
-    private int alarm;
+    private Long alarm;
 
     @ManyToOne
     @JoinColumn(name = "idSignalName", referencedColumnName = "id", insertable = false, updatable = false)

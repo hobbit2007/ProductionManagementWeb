@@ -2,6 +2,7 @@ package com.vaadin.tutorial.crm.service.for1c;
 
 import com.vaadin.tutorial.crm.entity.for1c.For1CEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public interface For1CService {
      * Метод для записи данных ПЛК контроллеров для их последующей вкпкдачи в 1С
      * @param for1CEntity - объект класс For1CEntity
      */
+    @Transactional
     void saveAll(For1CEntity for1CEntity);
 
     /**

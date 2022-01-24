@@ -42,4 +42,14 @@ public class WriteToDBImpl implements WriteToDBService {
     public void updateWriteFor1C(String value) {
         writeToDBRepository.updateWriteFor1C(value);
     }
+
+    @Override
+    public void updateRTWashing(Long value) {
+        writeToDBRepository.updateRTWashing(value);
+    }
+
+    @Override
+    public void updateWriteWashing(String value) {
+        writeToDBRepository.updateWriteWashing(value);
+    }
 }

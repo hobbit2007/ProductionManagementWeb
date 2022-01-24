@@ -37,7 +37,7 @@ public interface WriteToDBService {
     void updateRTWashing(Long value);
 
     /**
-     * Метод для обновления режима включения/выключения записи в БД для ПЛК Мойка
+     * Метод для обновления режима включения/выключения записи в БД для ПЛК Мойки
      * @param value - Запись включена, значение: Да, запись выключена, значение: Нет
      */
     void updateWriteWashing(String value);

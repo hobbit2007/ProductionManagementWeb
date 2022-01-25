@@ -44,12 +44,12 @@ public class WriteToDBImpl implements WriteToDBService {
     }
 
     @Override
-    public void updateRTWashing(Long value) {
-        writeToDBRepository.updateRTWashing(value);
+    public void updateRTPLC(Long value, Long id) {
+        writeToDBRepository.updateRTPLC(value, id);
     }
 
     @Override
-    public void updateWriteWashing(String value) {
-        writeToDBRepository.updateWriteWashing(value);
+    public void updateWritePLC(String value, Long id) {
+        writeToDBRepository.updateWritePLC(value, id);
     }
 }

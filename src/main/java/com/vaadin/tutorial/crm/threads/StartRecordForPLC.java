@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Класс поток запускает запись в БД значений ПЛК контроллеров
+ * Класс поток запускает запись в БД значений ПЛК мойка
  */
 public class StartRecordForPLC extends Thread{
     private List<SignalList> array;

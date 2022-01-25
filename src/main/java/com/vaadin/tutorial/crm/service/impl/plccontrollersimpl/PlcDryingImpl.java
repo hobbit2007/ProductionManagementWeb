@@ -4,12 +4,14 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.tutorial.crm.entity.plccontrollersentity.PlcDryingValue;
 import com.vaadin.tutorial.crm.repository.plccontrollersrepository.PlcDryingRepository;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.PlcDryingService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Класс содержащий реализацию методов интерфейса PlcDryingService
  */
+@Service
 public class PlcDryingImpl implements PlcDryingService {
     private final PlcDryingRepository plcDryingRepository;
 

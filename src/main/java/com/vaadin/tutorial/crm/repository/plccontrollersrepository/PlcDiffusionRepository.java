@@ -1,7 +1,6 @@
 package com.vaadin.tutorial.crm.repository.plccontrollersrepository;
 
 import com.vaadin.tutorial.crm.entity.plccontrollersentity.PlcDiffusionValue;
-import com.vaadin.tutorial.crm.entity.plccontrollersentity.PlcValue;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

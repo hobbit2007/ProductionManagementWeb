@@ -31,14 +31,14 @@ public interface WriteToDBService {
     void updateWriteFor1C(String value);
 
     /**
-     * Метод для обновления, времени повтора, записи данных в БД для ПЛК Мойка
+     * Метод для обновления, времени повтора, записи данных в БД для ПЛК
      * @param value - значение времени повтора в минутах
      */
-    void updateRTWashing(Long value);
+    void updateRTPLC(Long value, Long id);
 
     /**
-     * Метод для обновления режима включения/выключения записи в БД для ПЛК Мойки
+     * Метод для обновления режима включения/выключения записи в БД для ПЛК
      * @param value - Запись включена, значение: Да, запись выключена, значение: Нет
      */
-    void updateWriteWashing(String value);
+    void updateWritePLC(String value, Long id);
 }

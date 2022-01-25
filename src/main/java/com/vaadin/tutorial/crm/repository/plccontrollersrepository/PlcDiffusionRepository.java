@@ -16,5 +16,5 @@ public interface PlcDiffusionRepository extends JpaRepository<PlcDiffusionValue,
     @Query("select pcvd, sl from plccontrollervaluedifusion pcvd " +
             "join signallist sl on sl.id = pcvd.idSignal " +
             "where sl.delete = 0 and pcvd.delete = 0 order by pcvd.dateCreate asc")
-    List<PlcValue> getAllSignal();
+    List<PlcDiffusionValue> getAllSignal();
 }

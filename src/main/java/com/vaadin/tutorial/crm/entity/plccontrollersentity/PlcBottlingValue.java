@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * Класс модель описывающий таблицу plccontrollervaluebottling, которая содержит значения переменных ПЛК розлив
  */
-@Entity(name = "plccontrollervaluedifusion")
+@Entity(name = "plccontrollervaluebottling")
 @Getter
 @Setter
 public class PlcBottlingValue implements Serializable {

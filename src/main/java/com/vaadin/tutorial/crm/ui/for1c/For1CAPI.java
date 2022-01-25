@@ -18,6 +18,6 @@ public class For1CAPI extends VerticalLayout {
     public For1CAPI() {
         UI.getCurrent().navigate(IntoToDB1C.class);
         UI.getCurrent().getPage().executeJavaScript("window.open(\"http://178.234.44.2:8080/apigateway/swagger-ui.html\", \"_blank\");");
-
+        UI.getCurrent().getPage().reload();
     }
 }

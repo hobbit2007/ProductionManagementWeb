@@ -1,8 +1,8 @@
 package com.vaadin.tutorial.crm.ui.for1c;
 
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.textfield.NumberField;
@@ -25,7 +25,7 @@ import com.vaadin.tutorial.crm.ui.layout.For1CLayout;
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 public class IntoToDB1C extends VerticalLayout {
     VerticalLayout vMain = new VerticalLayout();
-    HorizontalLayout hMain1 = new HorizontalLayout();
+
     Label alarm1С = new Label();
     Label header1С = new Label();
     Label timeLabel = new Label();
@@ -84,20 +84,22 @@ public class IntoToDB1C extends VerticalLayout {
            }
         });
 
-        hMain1.add(header1С, radioButton1С, timeLabel, time1С, alarm1С);
-        hMain1.setVerticalComponentAlignment(Alignment.BASELINE);
-        vMain.add(new AnyComponent().labelTitle("Управление записью в БД для 1С", "#d3b342", "15pt"), hMain1);
+        FormLayout formLayout = new FormLayout();
+        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("0", 5));
+        formLayout.add(header1С, radioButton1С, timeLabel, time1С, alarm1С);
+
+        vMain.add(new AnyComponent().labelTitle("Управление записью в БД для 1С", "#d3b342", "15pt"), formLayout);
         vMain.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         add(vMain);
     }
     private void alarmDisable(Label label) {
-        label.setText("Запись в БД отключена");
+        label.setText(" - Запись в БД отключена");
         label.getStyle().set("color", "red");
         label.getStyle().set("font-weight", "bold");
         label.getStyle().set("font-size", "13pt");
     }
     private void alarmEnabled(Label label) {
-        label.setText("Запись в БД включена");
+        label.setText(" - Запись в БД включена");
         label.getStyle().set("color", "green");
         label.getStyle().set("font-weight", "bold");
         label.getStyle().set("font-size", "13pt");

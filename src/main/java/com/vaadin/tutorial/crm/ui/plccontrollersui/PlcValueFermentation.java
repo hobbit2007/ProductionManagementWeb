@@ -10,6 +10,8 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -37,13 +39,13 @@ import java.util.List;
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 public class PlcValueFermentation extends VerticalLayout{
     private VerticalLayout vContent = new VerticalLayout();
+    private VerticalLayout vContentTab = new VerticalLayout();
     private VerticalLayout vLabel = new VerticalLayout();
     private HorizontalLayout hTitleContent = new HorizontalLayout();
     private HorizontalLayout horizontalLayout = new HorizontalLayout();
-    private Scroller scroller = new Scroller();
-    private HorizontalLayout hSignalGroup[] = new HorizontalLayout[100];
-    private VerticalLayout vSignalGroup[] = new VerticalLayout[100];
-    private Label groupSignalName[] = new Label[100];
+
+    Tab groupSignalName[] = new Tab[100];
+    Tabs vSignalGroup = new Tabs();
     private FormLayout[] fContent = new FormLayout[100];
     private AnyComponent anyComponent = new AnyComponent();
     private List<SignalList> controllerSignalList = new ArrayList<>();
@@ -76,14 +78,9 @@ public class PlcValueFermentation extends VerticalLayout{
         controllerIP = plcControllersService.getAllByID(controllerID).get(0).getIp();
 
         for (int i = 0; i < controllerSignalGroup.size(); i++) {
-            hSignalGroup[i] = new HorizontalLayout();
-            vSignalGroup[i] = new VerticalLayout();
+            vSignalGroup = new Tabs();
             fContent[i] = new FormLayout();
-            groupSignalName[i] = new Label();
-            groupSignalName[i].getStyle().set("color", "#d3b342");
-            groupSignalName[i].getStyle().set("font-weight", "bold");
-            groupSignalName[i].getStyle().set("font-size", "16pt");
-            groupSignalName[i].getStyle().set("margin-left", "30px");
+            groupSignalName[i] = new Tab();
         }
 
         vLabel.add(anyComponent.labelTitle("Визуализация значений " + plcControllersService.getAllByID(controllerID).get(0).getControllerName()));
@@ -93,7 +90,6 @@ public class PlcValueFermentation extends VerticalLayout{
         hTitleContent.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.BASELINE);
 
         horizontalLayout.setSizeFull();
-        scroller.setSizeFull();
 
         vContent.add(vLabel, hTitleContent, initController());
         vContent.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
@@ -106,25 +102,34 @@ public class PlcValueFermentation extends VerticalLayout{
             controllerStatus.setVisible(false);
             controllerValue = new TextField[controllerSignalList.size()];
             sigFieldList.removeAll(sigFieldList);
+            int[] count = new int[100];
             for (int i = 0; i < controllerSignalList.size(); i++) {
                 for (int j = 0; j < controllerSignalGroup.size(); j++) {
                     if (controllerSignalList.get(i).getIdGroup() == controllerSignalGroup.get(j).getId()) {
-                        groupSignalName[j].setText(this.controllerSignalGroup.get(j).getShortSignalDescription());
+                        count[j] = count[j] + 1;
+                        groupSignalName[j].setLabel(this.controllerSignalGroup.get(j).getShortSignalDescription() + " (" +count[j] + ")");
                         controllerValue[i] = new TextField(controllerSignalList.get(i).getSignalName());
-                        controllerValue[i].setWidth("50px");
+
                         controllerValue[i].setValue("0.00");
                         fContent[j].add(controllerValue[i]);
-                        fContent[j].setResponsiveSteps(new FormLayout.ResponsiveStep("50px", 2));
-                        vSignalGroup[j].add(groupSignalName[j], fContent[j]);
-                        vSignalGroup[j].setPadding(false);
-                        vSignalGroup[j].setMargin(false);
-                        vSignalGroup[j].getStyle().set("border", "1px outset black");
-                        horizontalLayout.add(vSignalGroup[j]);
-                        scroller.setContent(horizontalLayout);
+                        fContent[j].setSizeFull();
+                        fContent[j].setResponsiveSteps(new FormLayout.ResponsiveStep("0px", count[j]/2));
+
+                        vSignalGroup.add(groupSignalName[j]);
+
+                        horizontalLayout.add(fContent[1]);
+                        horizontalLayout.setDefaultVerticalComponentAlignment(Alignment.CENTER);
+                        horizontalLayout.setSizeUndefined();
+
+                        vContentTab.add(vSignalGroup, horizontalLayout);
+                        vContentTab.setSizeFull();
+                        vContentTab.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+
+                        vSignalGroup.addSelectedChangeListener(event -> setContent(event.getSelectedTab()));
                     }
                 }
                 sigFieldList.add(controllerValue[i]);
-                controllerValue[i].getElement().setAttribute("data-title", controllerSignalList.get(i).getSignalDescription());
+                controllerValue[i].getElement().setAttribute("data-title", controllerSignalList.get(i).getSignalName() + " " +controllerSignalList.get(i).getSignalDescription());
                 controllerValue[i].setClassName("tooltip");
             }
         }
@@ -133,7 +138,16 @@ public class PlcValueFermentation extends VerticalLayout{
             controllerStatus.setText("Контроллер " + controllerIP + " - " + plcControllersService.getAllByID(controllerID).get(0).getControllerName() + " не доступен!");
         }
 
-        return scroller;
+        return vContentTab;
+    }
+    private void setContent(Tab tab) {
+        horizontalLayout.removeAll();
+        for (int j = 0; j < controllerSignalGroup.size(); j++) {
+            if (tab.equals(groupSignalName[j])) {
+                horizontalLayout.setSizeUndefined();
+                horizontalLayout.add(fContent[j]);
+            }
+        }
     }
 
     @Override

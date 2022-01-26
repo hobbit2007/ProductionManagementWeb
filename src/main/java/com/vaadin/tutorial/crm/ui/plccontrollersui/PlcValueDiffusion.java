@@ -118,6 +118,7 @@ public class PlcValueDiffusion extends VerticalLayout{
 
                         horizontalLayout.add(fContent[0]);
                         horizontalLayout.setDefaultVerticalComponentAlignment(Alignment.CENTER);
+                        horizontalLayout.setSizeUndefined();
 
                         vContentTab.add(vSignalGroup, horizontalLayout);
                         vContentTab.setSizeFull();

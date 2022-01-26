@@ -118,6 +118,7 @@ public class PlcValueBottling extends VerticalLayout{
 
                         horizontalLayout.add(fContent[3]);
                         horizontalLayout.setDefaultVerticalComponentAlignment(Alignment.CENTER);
+                        horizontalLayout.setSizeUndefined();
 
                         vContentTab.add(vSignalGroup, horizontalLayout);
                         vContentTab.setSizeFull();

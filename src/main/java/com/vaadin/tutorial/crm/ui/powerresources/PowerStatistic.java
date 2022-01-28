@@ -171,7 +171,7 @@ public class PowerStatistic extends VerticalLayout {
 
             Configuration configuration1 = chart1.getConfiguration();
             //configuration.getChart().setType(ChartType.LINE);
-            configuration1.getTitle().setText("Вода, газ (еженедельно)");
+            configuration1.getTitle().setText("Газ (еженедельно)");
 
             YAxis yAxis1 = new YAxis();
             Labels label1 = new Labels();
@@ -208,7 +208,7 @@ public class PowerStatistic extends VerticalLayout {
                     }
                 }
             }
-            configuration1.setSeries(waterWellSeries[0], waterWellSeries[1]); //, waterWellSeries[1]
+            configuration1.setSeries(waterWellSeries[1]); //, waterWellSeries[1]
             //PlotOptionsSeries plotOptionsSeries = new PlotOptionsSeries();
             //plotOptionsSeries.setCompare(Compare.PERCENT);
             //configuration.setPlotOptions(plotOptionsSeries);
@@ -304,7 +304,7 @@ public class PowerStatistic extends VerticalLayout {
 
             Configuration configuration2 = chartStock.getConfiguration();
             //configuration.getChart().setType(ChartType.LINE);
-            configuration2.getTitle().setText("Стоки (еженедельно)");
+            configuration2.getTitle().setText("Вода, стоки (еженедельно)");
 
             YAxis yAxisStock = new YAxis();
             Labels label2 = new Labels();
@@ -351,7 +351,7 @@ public class PowerStatistic extends VerticalLayout {
                     }
                 }
             }
-            configuration2.setSeries(waterWellSeries[5]); //waterWellSeries[6], waterWellSeries[7],waterWellSeries[8],
+            configuration2.setSeries(waterWellSeries[0], waterWellSeries[5]); //waterWellSeries[6], waterWellSeries[7],waterWellSeries[8],
 
             RangeSelector rangeSelector2 = new RangeSelector();
             rangeSelector2.setSelected(4);

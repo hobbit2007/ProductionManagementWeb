@@ -74,6 +74,7 @@ public class CreateMaterialDialog extends Dialog {
         setDraggable(true);
 
         storage.setEnabled(false);
+        cell.setEnabled(false);
         location.setRequired(true);
         location.setItems(locationService.getAll());
         location.setItemLabelGenerator(LocationEntity::getLocationName);
@@ -120,6 +121,7 @@ public class CreateMaterialDialog extends Dialog {
         storage.addValueChangeListener(e -> {
            if (e.getValue() != null) {
                storageID = e.getValue().getId();
+               cell.setEnabled(true);
                cell.setItems(cellService.getAll(storageID));
                cell.setItemLabelGenerator(CellEntity::getCellName);
            }
@@ -133,7 +135,7 @@ public class CreateMaterialDialog extends Dialog {
                measID = e.getValue().getId();
         });
 
-        hMain1.add(storage, cell);
+        hMain1.add(location, storage, cell);
         hMain1.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.BASELINE);
 
         hMain2.add(material, article);

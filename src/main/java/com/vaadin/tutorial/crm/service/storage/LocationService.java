@@ -13,4 +13,11 @@ public interface LocationService {
     List<LocationEntity> getAll();
 
     void saveAll(LocationEntity locationEntity);
+
+    /**
+     * Метод для поиска локации по id
+     * @param locationID - id локации
+     * @return - возвращает список локации и ее свойств
+     */
+    List<LocationEntity> getFindLocationByID(Long locationID);
 }

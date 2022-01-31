@@ -30,4 +30,9 @@ public class LocationImpl implements LocationService {
         else
             Notification.show("Нет данных для записи!", 3000, Notification.Position.MIDDLE);
     }
+
+    @Override
+    public List<LocationEntity> getFindLocationByID(Long locationID) {
+        return getFindLocationByID(locationID);
+    }
 }

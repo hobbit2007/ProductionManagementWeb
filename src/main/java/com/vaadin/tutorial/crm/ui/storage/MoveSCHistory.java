@@ -19,7 +19,7 @@ import com.vaadin.tutorial.crm.ui.component.AnyComponent;
  */
 public class MoveSCHistory extends Dialog {
     Grid<MaterialMoveEntity> grid;
-    Grid.Column<MaterialMoveEntity> colMaterialName, colStorageOld, colStorageNew, colCellOld, colCellNew, colMeas, colExpense, colDateCreate;
+    Grid.Column<MaterialMoveEntity> colMaterialName, colLocationOld, colStorageOld, colLocationNew, colStorageNew, colCellOld, colCellNew, colMeas, colExpense, colDateCreate;
     private ListDataProvider<MaterialMoveEntity> dataProvider;
     Button close = new Button("Закрыть");
     VerticalLayout vMain = new VerticalLayout();
@@ -59,7 +59,9 @@ public class MoveSCHistory extends Dialog {
         grid.setSizeFull();
 
         colMaterialName = grid.addColumn(materialMoveEntity -> materialMoveEntity.getMaterial().getMaterialName()).setHeader("Наименование");
+        colLocationOld = grid.addColumn(materialMoveEntity -> materialMoveEntity.getLocationOld().getLocationName()).setHeader("Из локации");
         colStorageOld = grid.addColumn(materialMoveEntity -> materialMoveEntity.getStorageOld().getStorageName()).setHeader("Из склада");
+        colLocationNew = grid.addColumn(materialMoveEntity -> materialMoveEntity.getLocationNew().getLocationName()).setHeader("Локация новая");
         colStorageNew = grid.addColumn(materialMoveEntity -> materialMoveEntity.getStorageNew().getStorageName()).setHeader("Склад новый");
         colCellOld = grid.addColumn(materialMoveEntity -> materialMoveEntity.getCellOld().getCellName()).setHeader("Из ячейки");
         colCellNew = grid.addColumn(materialMoveEntity -> materialMoveEntity.getCellNew().getCellName()).setHeader("Ячейка новая");
@@ -68,7 +70,9 @@ public class MoveSCHistory extends Dialog {
         colDateCreate = grid.addColumn(materialMoveEntity -> materialMoveEntity.getDateCreate()).setHeader("Дата перемещения");
 
         colMaterialName.setResizable(true);
+        colLocationOld.setResizable(true);
         colStorageOld.setResizable(true);
+        colLocationNew.setResizable(true);
         colStorageNew.setResizable(true);
         colCellOld.setResizable(true);
         colCellNew.setResizable(true);

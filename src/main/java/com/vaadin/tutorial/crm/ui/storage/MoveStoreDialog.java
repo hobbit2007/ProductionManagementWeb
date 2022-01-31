@@ -11,15 +11,9 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
-import com.vaadin.tutorial.crm.entity.storage.CellEntity;
-import com.vaadin.tutorial.crm.entity.storage.MaterialInfoEntity;
-import com.vaadin.tutorial.crm.entity.storage.MaterialMoveEntity;
-import com.vaadin.tutorial.crm.entity.storage.StorageEntity;
+import com.vaadin.tutorial.crm.entity.storage.*;
 import com.vaadin.tutorial.crm.security.SecurityUtils;
-import com.vaadin.tutorial.crm.service.storage.CellService;
-import com.vaadin.tutorial.crm.service.storage.MaterialInfoService;
-import com.vaadin.tutorial.crm.service.storage.MaterialMoveService;
-import com.vaadin.tutorial.crm.service.storage.StorageService;
+import com.vaadin.tutorial.crm.service.storage.*;
 import com.vaadin.tutorial.crm.ui.component.AnyComponent;
 
 import java.util.Date;
@@ -31,8 +25,10 @@ public class MoveStoreDialog extends Dialog {
     VerticalLayout vMain = new VerticalLayout();
     HorizontalLayout hMain = new HorizontalLayout();
     HorizontalLayout hButton = new HorizontalLayout();
+    ComboBox<LocationEntity> location = new ComboBox<>("Текущая локация:");
     ComboBox<StorageEntity> storage = new ComboBox<>("Текущий склад:");
     ComboBox<CellEntity> cell = new ComboBox<>("Текущая ячейка:");
+    ComboBox<LocationEntity> locationNew = new ComboBox<>("Выберите локацию:");
     ComboBox<StorageEntity> storageNew = new ComboBox<>("Выберите склад:");
     ComboBox<CellEntity> cellNew = new ComboBox<>("Выберите ячейку:");
     NumberField expense = new NumberField("Количество:");
@@ -40,9 +36,11 @@ public class MoveStoreDialog extends Dialog {
     Button cancel = new Button("Отмена");
     long storageNewID = 0;
     long cellNewID = 0;
+    long locationNewID = 0;
 
     public MoveStoreDialog(StorageService storageService, CellService cellService, Long storageID, Long cellID,
-                           MaterialMoveService materialMoveService, Long materialID, MaterialInfoService materialInfoService) {
+                           MaterialMoveService materialMoveService, Long materialID, MaterialInfoService materialInfoService, Long locationID,
+                           LocationService locationService) {
         setCloseOnEsc(false);
         setCloseOnOutsideClick(false);
         setDraggable(true);
@@ -58,6 +56,12 @@ public class MoveStoreDialog extends Dialog {
         cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         hButton.add(move, cancel);
 
+        LocationEntity locationEntity = new LocationEntity();
+        locationEntity.setLocationName(locationService.getFindLocationByID(locationID).get(0).getLocationName());
+        location.setItems(locationService.getAll());
+        location.setItemLabelGenerator(LocationEntity::getLocationName);
+        location.setValue(locationEntity);
+
         StorageEntity storageEntity = new StorageEntity();
         storageEntity.setStorageName(storageService.getFindStorageByID(storageID).get(0).getStorageName());
         storage.setItems(storageService.getFindStorageByID(storageID));
@@ -70,7 +74,10 @@ public class MoveStoreDialog extends Dialog {
         cell.setItemLabelGenerator(CellEntity::getCellName);
         cell.setValue(cellEntity);
 
-        storageNew.setItems(storageService.getAll());
+        locationNew.setItems(locationService.getAll());
+        locationNew.setItemLabelGenerator(LocationEntity::getLocationName);
+
+        storageNew.setItems(storageService.getStorageByLocationID(locationID));
         storageNew.setItemLabelGenerator(StorageEntity::getStorageName);
 
         cellNew.setItems(cellService.getAll(storageID));
@@ -78,12 +85,16 @@ public class MoveStoreDialog extends Dialog {
 
         expense.setValue(materialInfoService.getCheckID(materialID).get(0).getBalance());
 
-        hMain.add(storage, cell, storageNew, cellNew);
+        hMain.add(location, storage, cell, locationNew, storageNew, cellNew);
         hMain.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.BASELINE);
         vMain.add(new AnyComponent().labelTitle("Перемещение между складом/ячейкой"), hMain, expense, hButton);
         vMain.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         add(vMain);
 
+        locationNew.addValueChangeListener(e -> {
+           if (e.getValue() != null)
+               locationNewID = e.getValue().getId();
+        });
         storageNew.addValueChangeListener(e -> {
            if (e.getValue() != null)
                storageNewID = e.getValue().getId();
@@ -94,7 +105,7 @@ public class MoveStoreDialog extends Dialog {
         });
         cancel.addClickListener(e -> close());
         move.addClickListener(e -> {
-           if (!storageNew.isEmpty() && !cellNew.isEmpty() && !expense.isEmpty()) {
+           if (!locationNew.isEmpty() && !storageNew.isEmpty() && !cellNew.isEmpty() && !expense.isEmpty()) {
                if (expense.getValue() <= materialInfoService.getCheckID(materialID).get(0).getBalance()) {
                    try {
                        MaterialMoveEntity materialMoveEntity = new MaterialMoveEntity();
@@ -114,6 +125,8 @@ public class MoveStoreDialog extends Dialog {
                        materialMoveEntity.setIdUserCreate(SecurityUtils.getAuthentication().getDetails().getId());
                        materialMoveEntity.setDateCreate(new Date());
                        materialMoveEntity.setDelete(0);
+                       materialMoveEntity.setIdLocationOld(locationID);
+                       materialMoveEntity.setIdLocationNew(locationNewID);
 
                        materialMoveService.saveAll(materialMoveEntity);
 

@@ -40,9 +40,10 @@ public interface MaterialInfoService {
     /**
      * Метод совершающий поиск по заданному складу
      * @param idStorage - id склада
+     * @param locationID - id локации
      * @return - возвращает набор данных по выбранному складу
      */
-    List<MaterialInfoEntity> getAllByStorage(Long idStorage);
+    List<MaterialInfoEntity> getAllByStorage(Long idStorage, Long locationID);
 
     /**
      * Метод совершающий поиск по заданному складу и ячейке

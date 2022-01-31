@@ -137,7 +137,7 @@ public class StorageSearch extends Scroller {
         btnMaterialSearch.setEnabled(false);
 
         formMaterialDetail = new FormMaterialDetail(materialInfoService, storageComingService, storageService, cellService, materialMoveService,
-                shopService, departmentService, userService, changePriceService);
+                shopService, departmentService, userService, changePriceService, locationService);
         formMaterialDetail.addListener(FormMaterialDetail.ContactFormEvent.CloseEvent.class, e -> btnClose());
 
         content = new Div(grid, formMaterialDetail);

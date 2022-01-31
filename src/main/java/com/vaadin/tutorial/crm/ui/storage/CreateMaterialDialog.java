@@ -16,15 +16,9 @@ import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.tutorial.crm.entity.storage.CellEntity;
-import com.vaadin.tutorial.crm.entity.storage.MaterialInfoEntity;
-import com.vaadin.tutorial.crm.entity.storage.MeasEntity;
-import com.vaadin.tutorial.crm.entity.storage.StorageEntity;
+import com.vaadin.tutorial.crm.entity.storage.*;
 import com.vaadin.tutorial.crm.security.SecurityUtils;
-import com.vaadin.tutorial.crm.service.storage.CellService;
-import com.vaadin.tutorial.crm.service.storage.MaterialInfoService;
-import com.vaadin.tutorial.crm.service.storage.MeasService;
-import com.vaadin.tutorial.crm.service.storage.StorageService;
+import com.vaadin.tutorial.crm.service.storage.*;
 import com.vaadin.tutorial.crm.ui.component.AnyComponent;
 import com.vaadin.tutorial.crm.ui.layout.StorageLayout;
 
@@ -44,6 +38,7 @@ public class CreateMaterialDialog extends Dialog {
     HorizontalLayout hMain3 = new HorizontalLayout();
     HorizontalLayout hMain4 = new HorizontalLayout();
     HorizontalLayout hButton = new HorizontalLayout();
+    ComboBox<LocationEntity> location = new ComboBox<>("Выберите локацию:");
     ComboBox<StorageEntity> storage = new ComboBox<>("Выберите склад:");
     ComboBox<CellEntity> cell = new ComboBox<>("Выберите ячейку:");
     TextField material = new TextField("Название объекта хранения:");
@@ -57,16 +52,20 @@ public class CreateMaterialDialog extends Dialog {
     long storageID = 0;
     long cellID = 0;
     long measID = 0;
+    long locationID = 0;
     private final StorageService storageService;
     private final CellService cellService;
     private final MaterialInfoService materialInfoService;
     private final MeasService measService;
+    private final LocationService locationService;
 
-    public CreateMaterialDialog(StorageService storageService, CellService cellService, MaterialInfoService materialInfoService, MeasService measService) {
+    public CreateMaterialDialog(StorageService storageService, CellService cellService, MaterialInfoService materialInfoService, MeasService measService,
+                                LocationService locationService) {
         this.storageService = storageService;
         this.cellService = cellService;
         this.materialInfoService = materialInfoService;
         this.measService = measService;
+        this.locationService = locationService;
 
         this.open();
 
@@ -74,10 +73,21 @@ public class CreateMaterialDialog extends Dialog {
         setCloseOnOutsideClick(false);
         setDraggable(true);
 
-        storage.setRequired(true);
-        storage.setItems(storageService.getAll());
-        storage.setItemLabelGenerator(StorageEntity::getStorageName);
-
+        storage.setEnabled(false);
+        location.setRequired(true);
+        location.setItems(locationService.getAll());
+        location.setItemLabelGenerator(LocationEntity::getLocationName);
+        location.addValueChangeListener(e -> {
+            if (e.getValue() != null) {
+                storage.setEnabled(true);
+                locationID = e.getValue().getId();
+                storage.setRequired(true);
+                storage.setItems(storageService.getStorageByLocationID(locationID));
+                storage.setItemLabelGenerator(StorageEntity::getStorageName);
+            }
+            else
+                storage.setEnabled(false);
+        });
         cell.setRequired(true);
 
         material.setRequired(true);
@@ -169,6 +179,7 @@ public class CreateMaterialDialog extends Dialog {
                         materialInfoEntity.setDiffPrice(marketPrice.getValue() - costPrice.getValue());
                         materialInfoEntity.setFlagMove(0L);
                         materialInfoEntity.setDelete(0L);
+                        materialInfoEntity.setIdLocation(locationID);
 
                         try {
                             materialInfoService.saveAll(materialInfoEntity);

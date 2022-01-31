@@ -48,7 +48,7 @@ public class StorageSearch extends Scroller {
     private ComboBox<StorageEntity> storageSelect;
     private ComboBox<CellEntity> cellSelect;
     private Grid<MaterialInfoEntity> grid;
-    private Grid.Column<MaterialInfoEntity> colMaterialName, colStorage, colCell, colArticle, colQuantity,
+    private Grid.Column<MaterialInfoEntity> colMaterialName, colDescription, colSupplier, colStorage, colCell, colArticle, colQuantity,
             colExpense, colBalance, colMeas;
     private final MaterialInfoService materialInfoService;
     private final StorageService storageService;
@@ -211,6 +211,8 @@ public class StorageSearch extends Scroller {
         grid.setSizeFull();
 
         colMaterialName = grid.addColumn(materialInfoEntity -> materialInfoEntity.getMaterialName()).setHeader("Наименование");
+        colDescription = grid.addColumn(materialInfoEntity -> materialInfoEntity.getDescription()).setHeader("Описание");
+        colSupplier = grid.addColumn(materialInfoEntity -> materialInfoEntity.getSupplierEntity().getSupplierName()).setHeader("Поставщик");
         colStorage = grid.addColumn(materialInfoEntity -> materialInfoEntity.getStorage().getStorageName()).setHeader("Склад");
         colCell = grid.addColumn(materialInfoEntity -> materialInfoEntity.getCell().getCellName()).setHeader("Ячейка");
         colArticle = grid.addColumn(materialInfoEntity -> materialInfoEntity.getArticle()).setHeader("Артикул");
@@ -220,6 +222,8 @@ public class StorageSearch extends Scroller {
         colBalance = grid.addColumn(materialInfoEntity -> materialInfoEntity.getBalance()).setHeader("Остаток");
 
         colMaterialName.setResizable(true);
+        colDescription.setResizable(true);
+        colSupplier.setResizable(true);
         colStorage.setResizable(true);
         colCell.setResizable(true);
         colArticle.setResizable(true);

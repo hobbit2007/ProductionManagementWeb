@@ -16,9 +16,11 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.tutorial.crm.entity.storage.CellEntity;
+import com.vaadin.tutorial.crm.entity.storage.LocationEntity;
 import com.vaadin.tutorial.crm.entity.storage.StorageEntity;
 import com.vaadin.tutorial.crm.security.SecurityUtils;
 import com.vaadin.tutorial.crm.service.storage.CellService;
+import com.vaadin.tutorial.crm.service.storage.LocationService;
 import com.vaadin.tutorial.crm.service.storage.StorageService;
 import com.vaadin.tutorial.crm.ui.component.AnyComponent;
 import com.vaadin.tutorial.crm.ui.layout.StorageLayout;
@@ -35,17 +37,21 @@ import java.util.Date;
 public class CreateCellDialog extends Dialog {
     private final CellService cellService;
     private final StorageService storageService;
+    private final LocationService locationService;
+    ComboBox<LocationEntity> location = new ComboBox<>("Выберите локацию:");
     ComboBox<StorageEntity> storage = new ComboBox<>("Выберите склад:");
     VerticalLayout vMain = new VerticalLayout();
     HorizontalLayout hMain = new HorizontalLayout();
+    HorizontalLayout hMain1 = new HorizontalLayout();
     TextField cellName = new TextField("Введите имя ячейки:");
     Button save = new Button("Сохранить");
     Button cancel = new Button("Отмена");
     long storageID = 0;
-
-    public CreateCellDialog(CellService cellService, StorageService storageService) {
+    long locationID = 0;
+    public CreateCellDialog(CellService cellService, StorageService storageService, LocationService locationService) {
         this.cellService = cellService;
         this.storageService = storageService;
+        this.locationService = locationService;
         this.open();
         setCloseOnEsc(false);
         setCloseOnOutsideClick(false);
@@ -57,10 +63,24 @@ public class CreateCellDialog extends Dialog {
         cellName.setTitle("№ секция:ячейка:№ полка");
         cellName.setPlaceholder("№ секция:ячейка:№ полка");
 
+        storage.setEnabled(false);
         storage.setWidth("255px");
-        storage.setItems(storageService.getAll());
-        storage.setItemLabelGenerator(StorageEntity::getStorageName);
         storage.setRequired(true);
+
+        location.setWidth("255px");
+        location.setRequired(true);
+        location.setItems(locationService.getAll());
+        location.setItemLabelGenerator(LocationEntity::getLocationName);
+        location.addValueChangeListener(e -> {
+            if (e.getValue() != null) {
+                storage.setEnabled(true);
+                locationID = e.getValue().getId();
+                storage.setItems(storageService.getStorageByLocationID(locationID));
+                storage.setItemLabelGenerator(StorageEntity::getStorageName);
+            }
+            else
+                storage.setEnabled(false);
+        });
 
         Icon icon1 = new Icon(VaadinIcon.DISC);
         save.setIcon(icon1);
@@ -72,8 +92,9 @@ public class CreateCellDialog extends Dialog {
         cancel.getStyle().set("background-color", "#d3b342");
         cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+        hMain1.add(location, storage);
         hMain.add(save, cancel);
-        vMain.add(new AnyComponent().labelTitle("Добавить ячейку"), storage, cellName, hMain);
+        vMain.add(new AnyComponent().labelTitle("Добавить ячейку"), hMain1, cellName, hMain);
         vMain.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         add(vMain);
 

@@ -23,8 +23,10 @@ import com.vaadin.flow.data.validator.StringLengthValidator;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.tutorial.crm.entity.storage.CellEntity;
+import com.vaadin.tutorial.crm.entity.storage.LocationEntity;
 import com.vaadin.tutorial.crm.entity.storage.StorageEntity;
 import com.vaadin.tutorial.crm.service.storage.CellService;
+import com.vaadin.tutorial.crm.service.storage.LocationService;
 import com.vaadin.tutorial.crm.service.storage.StorageService;
 import com.vaadin.tutorial.crm.ui.component.AnyComponent;
 import com.vaadin.tutorial.crm.ui.layout.StorageLayout;
@@ -44,16 +46,21 @@ public class EditCellName extends Dialog {
     Grid<CellEntity> grid = new Grid<>();
     Grid.Column<CellEntity> colCellName;
     VerticalLayout vMain = new VerticalLayout();
+    HorizontalLayout hMain = new HorizontalLayout();
     ListDataProvider<CellEntity> dataProvider;
     Button cancel = new Button("Закрыть");
+    ComboBox<LocationEntity> location = new ComboBox<>("Выберите локацию:");
     ComboBox<StorageEntity> store = new ComboBox<>("Выберите склад:");
     long storeID;
+    long locationID = 0;
     private final CellService cellService;
     private final StorageService storageService;
+    private final LocationService locationService;
 
-    public EditCellName(CellService cellService, StorageService storageService) {
+    public EditCellName(CellService cellService, StorageService storageService, LocationService locationService) {
         this.cellService = cellService;
         this.storageService = storageService;
+        this.locationService = locationService;
 
         this.open();
         setCloseOnEsc(false);
@@ -69,9 +76,21 @@ public class EditCellName extends Dialog {
         cancel.getStyle().set("background-color", "#d3b342");
         cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        store.setItems(storageService.getAll());
-        store.setItemLabelGenerator(StorageEntity::getStorageName);
-        store.setRequired(true);
+        store.setEnabled(false);
+        location.setWidth("255px");
+        location.setRequired(true);
+        location.setItems(this.locationService.getAll());
+        location.setItemLabelGenerator(LocationEntity::getLocationName);
+        location.addValueChangeListener(e -> {
+            if (e.getValue() != null) {
+                store.setEnabled(true);
+                locationID = e.getValue().getId();
+                store.setItems(storageService.getStorageByLocationID(locationID));
+                store.setItemLabelGenerator(StorageEntity::getStorageName);
+            }
+            else
+                store.setEnabled(false);
+        });
         store.addValueChangeListener(e -> {
            if (e.getValue() != null) {
                storeID = e.getValue().getId();
@@ -80,7 +99,8 @@ public class EditCellName extends Dialog {
            }
         });
 
-        vMain.add(new AnyComponent().labelTitle("Редактирование имени ячейки"), store, grid, cancel);
+        hMain.add(location, store);
+        vMain.add(new AnyComponent().labelTitle("Редактирование имени ячейки"), hMain, grid, cancel);
         vMain.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         vMain.setSizeFull();
 

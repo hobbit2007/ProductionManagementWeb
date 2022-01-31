@@ -54,6 +54,8 @@ public class CreateCellDialog extends Dialog {
         cellName.setWidth("255px");
         cellName.setEnabled(false);
         cellName.setRequired(true);
+        cellName.setTitle("№ секция:ячейка:№ полка");
+        cellName.setPlaceholder("№ секция:ячейка:№ полка");
 
         storage.setWidth("255px");
         storage.setItems(storageService.getAll());

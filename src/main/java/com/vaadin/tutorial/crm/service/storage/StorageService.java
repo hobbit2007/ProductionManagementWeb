@@ -37,4 +37,11 @@ public interface StorageService {
      * @param storageEntity - объект класса StorageEntity
      */
     void updateStorageName(StorageEntity storageEntity);
+
+    /**
+     * Метод, который проверяет наличие склада в выбранной локации
+     * @param locationID - id локации
+     * @return - возвращает список складов в выбранной локации
+     */
+    List<StorageEntity> getStorageByLocationID(Long locationID);
 }

@@ -18,9 +18,9 @@ public interface MaterialInfoRepository extends JpaRepository<MaterialInfoEntity
     @Query("select mi from materialinfo mi where mi.delete = 0 and mi.writeoff = 0 order by mi.dateCreate asc")
     List<MaterialInfoEntity> getAll();
 
-    //Поиск по заданному складу
-    @Query("select mi from materialinfo mi where mi.delete = 0 and mi.writeoff = 0 and mi.idStorage = :idStorage order by mi.dateCreate asc")
-    List<MaterialInfoEntity> getAllByStorage(@Param("idStorage") Long idStorage);
+    //Поиск по заданному складу и локации
+    @Query("select mi from materialinfo mi where mi.delete = 0 and mi.writeoff = 0 and mi.idLocation = :locationID and mi.idStorage = :idStorage order by mi.dateCreate asc")
+    List<MaterialInfoEntity> getAllByStorage(@Param("idStorage") Long idStorage, @Param("locationID") Long locationID);
 
     //Поиск по заданному складу и ячейке
     @Query("select mi from materialinfo mi where mi.delete = 0 and mi.writeoff = 0 and mi.idStorage = :idStorage and mi.idCell = :idCell order by mi.dateCreate asc")

@@ -33,6 +33,6 @@ public class LocationImpl implements LocationService {
 
     @Override
     public List<LocationEntity> getFindLocationByID(Long locationID) {
-        return getFindLocationByID(locationID);
+        return locationRepository.getFindLocationByID(locationID);
     }
 }

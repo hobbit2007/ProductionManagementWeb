@@ -1,5 +1,6 @@
 package com.vaadin.tutorial.crm.ui.storage;
 
+import com.vaadin.flow.component.ItemLabelGenerator;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -108,7 +109,8 @@ public class StorageSearch extends Scroller {
         locationSelect.setLabel("Выберите локацию:");
         locationSelect.setWidth("270px");
         locationSelect.setItems(locationService.getAll());
-        locationSelect.setItemLabelGenerator(LocationEntity::getLocationName);
+        ItemLabelGenerator<LocationEntity> itemLabelGenerator = locationEntity -> locationEntity.getLocationName() + " - " + locationEntity.getLocationDescription();
+        locationSelect.setItemLabelGenerator(itemLabelGenerator);
         storageSelect = new ComboBox<>();
         storageSelect.setLabel("Выберите склад:");
         storageSelect.setWidth("270px");

@@ -124,6 +124,8 @@ public class CreateMaterialDialog extends Dialog {
         cancel.getStyle().set("background-color", "#d3b342");
         cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+        description.setValue("Без описания");
+
         supplier.setItems(supplierService.getAll());
         supplier.setItemLabelGenerator(SupplierEntity::getSupplierName);
         supplier.setRequired(true);

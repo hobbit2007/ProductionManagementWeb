@@ -35,6 +35,8 @@ public class FormMaterialDetail extends FormLayout {
     TextField cell = new TextField("Ячейка:");
     TextField material = new TextField("Объект хранения:");
     TextField article = new TextField("Артикул:");
+    TextField description = new TextField("Описание:");
+    TextField supplier = new TextField("Поставщик:");
     NumberField qty = new NumberField("Приход:");
     NumberField expense = new NumberField("Расход:");
     NumberField balance = new NumberField("Остаток:");
@@ -149,7 +151,7 @@ public class FormMaterialDetail extends FormLayout {
         else
             changePrice.setEnabled(false);
 
-        add(location, storage, cell, material, article, qty, expense, balance, meas, costPrice, marketPrice, diffPrice, dateCreate, user, close,
+        add(location, storage, cell, material, article, description, supplier, qty, expense, balance, meas, costPrice, marketPrice, diffPrice, dateCreate, user, close,
                 edit, prihod, moveStore, moveInside, writeOff, changePrice, prihodHistory, moveSCHistory, moveInsideHistory, writeOffHistory,
                 changePriceHistory);
 
@@ -393,6 +395,16 @@ public class FormMaterialDetail extends FormLayout {
 
             article.setValue(materialInfoEntity.getArticle());
             article.setReadOnly(true);
+
+            description.setValue(materialInfoEntity.getDescription());
+            description.setReadOnly(true);
+            description.getElement().setAttribute("data-title", description.getValue());
+            description.setClassName("tooltip");
+
+            supplier.setValue(materialInfoEntity.getSupplierEntity().getSupplierName());
+            supplier.setReadOnly(true);
+            supplier.getElement().setAttribute("data-title", supplier.getValue());
+            supplier.setClassName("tooltip");
 
             qty.setValue(materialInfoEntity.getQuantity());
             qty.setReadOnly(true);

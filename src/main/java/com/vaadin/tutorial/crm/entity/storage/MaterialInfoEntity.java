@@ -57,4 +57,8 @@ public class MaterialInfoEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "idLocation", referencedColumnName = "id", insertable = false, updatable = false)
     private LocationEntity locationEntity;
+
+    @ManyToOne
+    @JoinColumn(name = "idSupplier", referencedColumnName = "id", insertable = false, updatable = false)
+    private SupplierEntity supplierEntity;
 }

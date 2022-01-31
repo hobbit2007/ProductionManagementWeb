@@ -39,7 +39,7 @@ import java.util.WeakHashMap;
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 public class EditStorageName extends Dialog {
     Grid<StorageEntity> grid = new Grid<>();
-    Grid.Column<StorageEntity> colStorageName;
+    Grid.Column<StorageEntity> colStorageName, colStorageShortName;
     VerticalLayout vMain = new VerticalLayout();
     ListDataProvider<StorageEntity> dataProvider;
     Button cancel = new Button("Закрыть");
@@ -81,6 +81,7 @@ public class EditStorageName extends Dialog {
         grid.setSizeFull();
 
         colStorageName = grid.addColumn(storageEntity -> storageEntity.getStorageName()).setHeader("Название склада");
+        colStorageShortName = grid.addColumn(storageEntity -> storageEntity.getShortName()).setHeader("Аббревиатура склада");
 
         Binder<StorageEntity> binder = new Binder<>(StorageEntity.class);
         Editor<StorageEntity> editor = grid.getEditor();
@@ -95,6 +96,11 @@ public class EditStorageName extends Dialog {
                 .withValidator(new StringLengthValidator("Название склада должно содержать минимум 5 символа", 5, 250))
                 .withStatusLabel(validationStatus).bind("storageName");
         colStorageName.setEditorComponent(storeName);
+        TextField storeShortName = new TextField();
+        binder.forField(storeShortName)
+                .withValidator(new StringLengthValidator("Аббревиатура склада должна состоять минимум из 2 символов", 2, 250))
+                .withStatusLabel(validationStatus).bind("shortName");
+        colStorageShortName.setEditorComponent(storeShortName);
 
         Collection<Button> editButtons = Collections
                 .newSetFromMap(new WeakHashMap<>());
@@ -112,7 +118,7 @@ public class EditStorageName extends Dialog {
             edit.setEnabled(!editor.isOpen());
             editButtons.add(edit);
             return edit;
-        }).setFlexGrow(0).setWidth("330px");
+        }).setFlexGrow(0).setWidth("310px");
 
         editor.addOpenListener(e -> editButtons.stream()
                 .forEach(button -> button.setEnabled(!editor.isOpen())));
@@ -146,6 +152,7 @@ public class EditStorageName extends Dialog {
             try {
                 StorageEntity storageEntity = new StorageEntity();
                 storageEntity.setStorageName(event.getItem().getStorageName());
+                storageEntity.setShortName(event.getItem().getShortName());
                 storageEntity.setId(event.getItem().getId());
                 storageService.updateStorageName(storageEntity);
                 UI.getCurrent().navigate(StorageSearch.class);
@@ -158,6 +165,7 @@ public class EditStorageName extends Dialog {
         });
 
         colStorageName.setResizable(true);
+        colStorageShortName.setResizable(true);
     }
     private void updateGrid() {
         dataProvider = new ListDataProvider<>(

@@ -19,6 +19,7 @@ import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.tutorial.crm.entity.storage.CellEntity;
+import com.vaadin.tutorial.crm.entity.storage.LocationEntity;
 import com.vaadin.tutorial.crm.entity.storage.MaterialInfoEntity;
 import com.vaadin.tutorial.crm.entity.storage.StorageEntity;
 import com.vaadin.tutorial.crm.service.DepartmentService;
@@ -43,6 +44,7 @@ public class StorageSearch extends Scroller {
     private TextField articleNumber;
     private Button btnArticleSearch, btnMaterialSearch;
     private ComboBox<MaterialInfoEntity> materialName;
+    private ComboBox<LocationEntity> locationSelect;
     private ComboBox<StorageEntity> storageSelect;
     private ComboBox<CellEntity> cellSelect;
     private Grid<MaterialInfoEntity> grid;
@@ -57,13 +59,18 @@ public class StorageSearch extends Scroller {
     private final DepartmentService departmentService;
     private final UserService userService;
     private final ChangePriceService changePriceService;
+    private final LocationService locationService;
     private ListDataProvider<MaterialInfoEntity> dataProvider;
     Div content;
     FormMaterialDetail formMaterialDetail;
     long storageID = 0;
     long cellID = 0;
+    long locationID = 0;
 
-    public StorageSearch(MaterialInfoService materialInfoService, StorageService storageService, CellService cellService, StorageComingService storageComingService, MaterialMoveService materialMoveService, ShopService shopService, DepartmentService departmentService, UserService userService, ChangePriceService changePriceService) {
+    public StorageSearch(MaterialInfoService materialInfoService, StorageService storageService, CellService cellService,
+                         StorageComingService storageComingService, MaterialMoveService materialMoveService, ShopService shopService,
+                         DepartmentService departmentService, UserService userService, ChangePriceService changePriceService,
+                         LocationService locationService) {
         this.materialInfoService = materialInfoService;
         this.storageService = storageService;
         this.cellService = cellService;
@@ -73,6 +80,7 @@ public class StorageSearch extends Scroller {
         this.departmentService = departmentService;
         this.userService = userService;
         this.changePriceService = changePriceService;
+        this.locationService = locationService;
         addClassName("list-view");
         setSizeFull();
 
@@ -96,11 +104,25 @@ public class StorageSearch extends Scroller {
         materialName.setWidth("299px");
         materialName.setEnabled(false);
 
+        locationSelect = new ComboBox<>();
+        locationSelect.setLabel("Выберите локацию:");
+        locationSelect.setWidth("270px");
+        locationSelect.setItems(locationService.getAll());
+        locationSelect.setItemLabelGenerator(LocationEntity::getLocationName);
         storageSelect = new ComboBox<>();
         storageSelect.setLabel("Выберите склад:");
         storageSelect.setWidth("270px");
-        storageSelect.setItems(storageService.getAll());
-        storageSelect.setItemLabelGenerator(StorageEntity::getStorageName);
+        storageSelect.setEnabled(false);
+        locationSelect.addValueChangeListener(e -> {
+        if (e.getValue() != null) {
+            locationID = e.getValue().getId();
+            storageSelect.setEnabled(true);
+            storageSelect.setItems(storageService.getStorageByLocationID(locationID));
+            storageSelect.setItemLabelGenerator(StorageEntity::getStorageName);
+        }
+        else
+            storageSelect.setEnabled(false);
+        });
 
         cellSelect = new ComboBox<>();
         cellSelect.setLabel("Выберите ячейку:");
@@ -125,7 +147,7 @@ public class StorageSearch extends Scroller {
         hSearch.add(articleNumber, btnArticleSearch, materialName, btnMaterialSearch);
         hSearch.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.BASELINE);
 
-        hSelect.add(storageSelect, cellSelect);
+        hSelect.add(locationSelect, storageSelect, cellSelect);
 
         vSearch.add(hSelect, hSearch);
         vSearch.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
@@ -151,7 +173,7 @@ public class StorageSearch extends Scroller {
                 btnMaterialSearch.setEnabled(true);
 
                 updateGridStore();
-                materialName.setItems(materialInfoService.getAllByStorage(storageID));
+                materialName.setItems(materialInfoService.getAllByStorage(storageID, locationID));
                 materialName.setItemLabelGenerator(MaterialInfoEntity::getMaterialName);
             }
         });
@@ -216,7 +238,7 @@ public class StorageSearch extends Scroller {
     }
     private void updateGridStore() {
         dataProvider = new ListDataProvider<>(
-                materialInfoService.getAllByStorage(storageID));
+                materialInfoService.getAllByStorage(storageID, locationID));
         grid.setItems(dataProvider);
     }
     private void updateGridStoreCell() {

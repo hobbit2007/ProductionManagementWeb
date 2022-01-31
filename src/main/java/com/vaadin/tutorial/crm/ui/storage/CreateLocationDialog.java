@@ -1,5 +1,6 @@
 package com.vaadin.tutorial.crm.ui.storage;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -66,7 +67,10 @@ public class CreateLocationDialog extends Dialog {
         vMain.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         add(vMain);
 
-        cancel.addClickListener(e -> close());
+        cancel.addClickListener(e -> {
+            UI.getCurrent().navigate(StorageSearch.class);
+            close();
+        });
         save.addClickListener(e -> {
             if (!locationName.isEmpty() && !locationDescription.isEmpty()) {
                 LocationEntity locationEntity = new LocationEntity();
@@ -78,6 +82,7 @@ public class CreateLocationDialog extends Dialog {
 
                 try{
                     locationService.saveAll(locationEntity);
+                    UI.getCurrent().navigate(StorageSearch.class);
                 }
                 catch (Exception ex) {
                     Notification.show("Не могу создать локацию! " + ex.getMessage(), 5000, Notification.Position.MIDDLE);

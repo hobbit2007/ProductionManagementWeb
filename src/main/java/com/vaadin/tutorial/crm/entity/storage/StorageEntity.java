@@ -25,4 +25,5 @@ public class StorageEntity implements Serializable {
     private long idUser;
     private long delete;
     private long idLocation;
+    private String shortName;
 }

@@ -45,7 +45,7 @@ public class StorageImpl implements StorageService {
     @Override
     public void updateStorageName(StorageEntity storageEntity) {
         if (storageEntity != null)
-            storageRepository.updateStorageName(storageEntity.getStorageName(), storageEntity.getId());
+            storageRepository.updateStorageName(storageEntity.getStorageName(), storageEntity.getId(), storageEntity.getShortName());
         else
             Notification.show("Нет данных для обновления!", 3000, Notification.Position.MIDDLE);
     }

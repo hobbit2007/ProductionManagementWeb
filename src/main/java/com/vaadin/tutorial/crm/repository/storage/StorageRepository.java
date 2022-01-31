@@ -33,6 +33,6 @@ public interface StorageRepository extends JpaRepository<StorageEntity, Long> {
     //Обновляем имя склада
     @Modifying
     @Transactional
-    @Query("update storage s set s.storageName = :storageName where s.shortName = :shortName and s.id = :id")
+    @Query("update storage s set s.storageName = :storageName, s.shortName = :shortName where s.id = :id")
     void updateStorageName(@Param("storageName") String storageName, @Param("id") Long id, @Param("shortName") String shortName);
 }

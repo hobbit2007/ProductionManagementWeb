@@ -26,9 +26,11 @@ public class StorageLayout extends AppLayout {
     HorizontalLayout hMenu5 = new HorizontalLayout();
     HorizontalLayout hMenu6 = new HorizontalLayout();
     HorizontalLayout hMenu7 = new HorizontalLayout();
+    HorizontalLayout hMenu8 = new HorizontalLayout();
     private final String ROLE = "ADMIN";
     private final String ROLE1 = "USER";
     private final SecurityConfiguration securityConfiguration;
+    RouterLink addLocation = new RouterLink("Добавить локацию", RuleOut.class);
     RouterLink editStore = new RouterLink("Редактировать склад", RuleOut.class);
     RouterLink addStore = new RouterLink("Добавить склад", RuleOut.class);
     RouterLink addCell = new RouterLink("Добавить ячейку", RuleOut.class);
@@ -37,15 +39,19 @@ public class StorageLayout extends AppLayout {
     public StorageLayout(SecurityConfiguration securityConfiguration) {
         this.securityConfiguration = securityConfiguration;
         if (SecurityUtils.getAuthentication().getDetails().getRole().equals(ROLE1)) {
-            editStore.setHighlightCondition(HighlightConditions.sameLocation());
-            Icon icon6 = new Icon(VaadinIcon.EDIT);
-            hMenu6.add(icon6, editStore);
+            addLocation.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon8 = new Icon(VaadinIcon.LOCATION_ARROW);
+            hMenu8.add(icon8, addLocation);
 
             addStore.setHighlightCondition(HighlightConditions.sameLocation());
             Icon icon3 = new Icon(VaadinIcon.ADD_DOCK);
             hMenu3.add(icon3, addStore);
 
-            addStore.setHighlightCondition(HighlightConditions.sameLocation());
+            editStore.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon6 = new Icon(VaadinIcon.EDIT);
+            hMenu6.add(icon6, editStore);
+
+            addCell.setHighlightCondition(HighlightConditions.sameLocation());
             Icon icon4 = new Icon(VaadinIcon.ADD_DOCK);
             hMenu4.add(icon4, addCell);
 
@@ -72,6 +78,11 @@ public class StorageLayout extends AppLayout {
         hMenu2.add(icon2, search);
 
         if (SecurityUtils.getAuthentication().getDetails().getRole().equals(ROLE)) {
+            addLocation = new RouterLink("Добавить локацию", CreateLocationDialog.class);
+            addLocation.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon8 = new Icon(VaadinIcon.LOCATION_ARROW);
+            hMenu8.add(icon8, addLocation);
+
             addStore = new RouterLink("Добавить склад", CreateStorageDialog.class);
             addStore.setHighlightCondition(HighlightConditions.sameLocation());
             Icon icon3 = new Icon(VaadinIcon.ADD_DOCK);
@@ -98,6 +109,6 @@ public class StorageLayout extends AppLayout {
         Icon icon5 = new Icon(VaadinIcon.INVOICE);
         hMenu5.add(icon5, addMaterial);
 
-        addToDrawer(new VerticalLayout(hMenu1, hMenu3, hMenu6, hMenu4, hMenu7, hMenu5, hMenu2));
+        addToDrawer(new VerticalLayout(hMenu1, hMenu8, hMenu3, hMenu6, hMenu4, hMenu7, hMenu5, hMenu2));
     }
 }

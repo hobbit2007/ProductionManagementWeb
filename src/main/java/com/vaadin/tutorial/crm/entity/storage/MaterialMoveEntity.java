@@ -40,8 +40,14 @@ public class MaterialMoveEntity implements Serializable {
     private long idLocationNew;
 
     @ManyToOne
+    @JoinColumn(name = "idLocationOld", referencedColumnName = "id", insertable = false, updatable = false)
+    private LocationEntity locationOld;
+    @ManyToOne
     @JoinColumn(name = "idStorageOld", referencedColumnName = "id", insertable = false, updatable = false)
     private StorageEntity storageOld;
+    @ManyToOne
+    @JoinColumn(name = "idLocationNew", referencedColumnName = "id", insertable = false, updatable = false)
+    private LocationEntity locationNew;
     @ManyToOne
     @JoinColumn(name = "idStorageNew", referencedColumnName = "id", insertable = false, updatable = false)
     private StorageEntity storageNew;

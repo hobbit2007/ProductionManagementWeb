@@ -1,5 +1,6 @@
 package com.vaadin.tutorial.crm.ui.storage;
 
+import com.vaadin.flow.component.ItemLabelGenerator;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -70,7 +71,8 @@ public class CreateCellDialog extends Dialog {
         location.setWidth("255px");
         location.setRequired(true);
         location.setItems(locationService.getAll());
-        location.setItemLabelGenerator(LocationEntity::getLocationName);
+        ItemLabelGenerator<LocationEntity> itemLabelGenerator = locationEntity -> locationEntity.getLocationName() + " - " + locationEntity.getLocationDescription();
+        location.setItemLabelGenerator(itemLabelGenerator);
         location.addValueChangeListener(e -> {
             if (e.getValue() != null) {
                 storage.setEnabled(true);

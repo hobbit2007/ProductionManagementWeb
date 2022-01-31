@@ -13,6 +13,7 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
+import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -47,25 +48,30 @@ public class CreateMaterialDialog extends Dialog {
     ComboBox<MeasEntity> meas = new ComboBox<>("Ед. измерения:");
     NumberField costPrice = new NumberField("Цена, себестоимость:");
     NumberField marketPrice = new NumberField("Цена, продажа:");
+    ComboBox<SupplierEntity> supplier = new ComboBox<>("Выберите поставщика:");
+    TextArea description = new TextArea("Описание:");
     Button save = new Button("Сохранить");
     Button cancel = new Button("Отмена");
     long storageID = 0;
     long cellID = 0;
     long measID = 0;
     long locationID = 0;
+    long supplierID = 0;
     private final StorageService storageService;
     private final CellService cellService;
     private final MaterialInfoService materialInfoService;
     private final MeasService measService;
     private final LocationService locationService;
+    private final SupplierService supplierService;
 
     public CreateMaterialDialog(StorageService storageService, CellService cellService, MaterialInfoService materialInfoService, MeasService measService,
-                                LocationService locationService) {
+                                LocationService locationService, SupplierService supplierService) {
         this.storageService = storageService;
         this.cellService = cellService;
         this.materialInfoService = materialInfoService;
         this.measService = measService;
         this.locationService = locationService;
+        this.supplierService = supplierService;
 
         this.open();
 
@@ -118,6 +124,14 @@ public class CreateMaterialDialog extends Dialog {
         cancel.getStyle().set("background-color", "#d3b342");
         cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+        supplier.setItems(supplierService.getAll());
+        supplier.setItemLabelGenerator(SupplierEntity::getSupplierName);
+        supplier.setRequired(true);
+        supplier.addValueChangeListener(e -> {
+           if (e.getValue() != null)
+               supplierID = e.getValue().getId();
+        });
+
         storage.addValueChangeListener(e -> {
            if (e.getValue() != null) {
                storageID = e.getValue().getId();
@@ -138,10 +152,10 @@ public class CreateMaterialDialog extends Dialog {
         hMain1.add(location, storage, cell);
         hMain1.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.BASELINE);
 
-        hMain2.add(material, article);
+        hMain2.add(material, article, supplier);
         hMain2.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.BASELINE);
 
-        hMain3.add(qty, meas);
+        hMain3.add(description, qty, meas);
         hMain3.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.BASELINE);
 
         hMain4.add(costPrice, marketPrice);
@@ -162,7 +176,7 @@ public class CreateMaterialDialog extends Dialog {
         save.addClickListener(e -> {
             MaterialInfoEntity materialInfoEntity = new MaterialInfoEntity();
             if (!storage.isEmpty() && !cell.isEmpty() && (!material.isEmpty() || material.getValue().length() != 0) && !qty.isEmpty() &&
-            !meas.isEmpty() && !costPrice.isEmpty() && !marketPrice.isEmpty()) {
+            !meas.isEmpty() && !costPrice.isEmpty() && !marketPrice.isEmpty() && supplierID != 0) {
                 if (materialInfoService.getCheckArticle(article.getValue()).size() == 0) {
                     if (AnyComponent.checkEscSymbol(material)) {
                         materialInfoEntity.setIdStorage(storageID);
@@ -182,6 +196,8 @@ public class CreateMaterialDialog extends Dialog {
                         materialInfoEntity.setFlagMove(0L);
                         materialInfoEntity.setDelete(0L);
                         materialInfoEntity.setIdLocation(locationID);
+                        materialInfoEntity.setIdSupplier(supplierID);
+                        materialInfoEntity.setDescription(description.getValue());
 
                         try {
                             materialInfoService.saveAll(materialInfoEntity);

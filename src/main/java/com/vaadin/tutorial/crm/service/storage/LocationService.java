@@ -20,4 +20,10 @@ public interface LocationService {
      * @return - возвращает список локации и ее свойств
      */
     List<LocationEntity> getFindLocationByID(Long locationID);
+
+    /**
+     * Метод, который обновляет имя и описание локации
+     * @param locationEntity - объект класса LocationEntity
+     */
+    void updateLocation(LocationEntity locationEntity);
 }

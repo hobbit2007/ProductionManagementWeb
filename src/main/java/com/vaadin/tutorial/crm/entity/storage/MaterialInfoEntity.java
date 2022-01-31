@@ -34,6 +34,7 @@ public class MaterialInfoEntity implements Serializable {
     private double diffPrice;
     private long flagMove;
     private long delete;
+    private long idLocation;
 
     @ManyToOne
     @JoinColumn(name = "idStorage", referencedColumnName = "id", insertable = false, updatable = false)

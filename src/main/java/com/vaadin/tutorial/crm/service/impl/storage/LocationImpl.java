@@ -35,4 +35,12 @@ public class LocationImpl implements LocationService {
     public List<LocationEntity> getFindLocationByID(Long locationID) {
         return locationRepository.getFindLocationByID(locationID);
     }
+
+    @Override
+    public void updateLocation(LocationEntity locationEntity) {
+        if (locationEntity != null)
+            locationRepository.updateLocation(locationEntity.getLocationName(), locationEntity.getId(), locationEntity.getLocationDescription());
+        else
+            Notification.show("Нет данных для обновления локации!", 3000, Notification.Position.MIDDLE);
+    }
 }

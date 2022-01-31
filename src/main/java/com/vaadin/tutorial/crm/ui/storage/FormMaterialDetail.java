@@ -30,6 +30,7 @@ import java.util.Date;
  */
 public class FormMaterialDetail extends FormLayout {
     HorizontalLayout hButton = new HorizontalLayout();
+    TextField location = new TextField("Локация:");
     TextField storage = new TextField("Склад:");
     TextField cell = new TextField("Ячейка:");
     TextField material = new TextField("Объект хранения:");
@@ -57,6 +58,7 @@ public class FormMaterialDetail extends FormLayout {
     Button changePriceHistory = new Button("История ИЦ");
     private final String ROLE = "ADMIN";
     long materialID = 0;
+    long locationID = 0;
     long storageID = 0;
     long cellID = 0;
     double qtyOld;
@@ -72,7 +74,7 @@ public class FormMaterialDetail extends FormLayout {
     private final ChangePriceService changePriceService;
     public FormMaterialDetail(MaterialInfoService materialInfoService, StorageComingService storageComingService, StorageService storageService,
                               CellService cellService, MaterialMoveService materialMoveService, ShopService shopService,
-                              DepartmentService departmentService, UserService userService, ChangePriceService changePriceService) {
+                              DepartmentService departmentService, UserService userService, ChangePriceService changePriceService, LocationService locationService) {
         addClassName("contact-form");
         this.storageComingService = storageComingService;
         this.materialMoveService = materialMoveService;
@@ -100,7 +102,8 @@ public class FormMaterialDetail extends FormLayout {
         moveStore.getStyle().set("background-color", "#d3b342");
         moveStore.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        moveInside.setIcon(icon3);
+        Icon icon11 = new Icon(VaadinIcon.INSERT);
+        moveInside.setIcon(icon11);
         moveInside.getStyle().set("background-color", "#d3b342");
         moveInside.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
@@ -146,7 +149,7 @@ public class FormMaterialDetail extends FormLayout {
         else
             changePrice.setEnabled(false);
 
-        add(storage, cell, material, article, qty, expense, balance, meas, costPrice, marketPrice, diffPrice, dateCreate, user, close,
+        add(location, storage, cell, material, article, qty, expense, balance, meas, costPrice, marketPrice, diffPrice, dateCreate, user, close,
                 edit, prihod, moveStore, moveInside, writeOff, changePrice, prihodHistory, moveSCHistory, moveInsideHistory, writeOffHistory,
                 changePriceHistory);
 
@@ -235,7 +238,8 @@ public class FormMaterialDetail extends FormLayout {
         moveStore.addClickListener(e -> {
             if (materialInfoService.getCheckID(materialID).get(0).getBalance() > 0) {
                 if (storageID != 0 && cellID != 0)
-                    new MoveStoreDialog(storageService, cellService, storageID, cellID, materialMoveService, materialID, materialInfoService).open();
+                    new MoveStoreDialog(storageService, cellService, storageID, cellID, materialMoveService, materialID, materialInfoService, locationID,
+                            locationService).open();
                 else {
                     Notification.show("Не могу найти склад или ячейку!", 3000, Notification.Position.MIDDLE);
                     return;
@@ -371,6 +375,11 @@ public class FormMaterialDetail extends FormLayout {
             Div pricePrefixMarket = new Div();
             pricePrefixMarket.setText("₽");
 
+            location.setValue(materialInfoEntity.getLocationEntity().getLocationName());
+            location.getElement().setAttribute("data-title", location.getValue());
+            location.setClassName("tooltip");
+            location.setReadOnly(true);
+
             storage.setValue(materialInfoEntity.getStorage().getStorageName());
             storage.getElement().setAttribute("data-title", storage.getValue());
             storage.setClassName("tooltip");
@@ -418,6 +427,7 @@ public class FormMaterialDetail extends FormLayout {
             user.setReadOnly(true);
 
             materialID = materialInfoEntity.getId();
+            locationID = materialInfoEntity.getIdLocation();
             storageID = materialInfoEntity.getIdStorage();
             cellID = materialInfoEntity.getIdCell();
 

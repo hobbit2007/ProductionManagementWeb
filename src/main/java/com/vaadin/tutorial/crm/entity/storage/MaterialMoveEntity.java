@@ -36,6 +36,8 @@ public class MaterialMoveEntity implements Serializable {
     private long idUserCreate;
     private Date dateCreate;
     private long delete;
+    private long idLocationOld;
+    private long idLocationNew;
 
     @ManyToOne
     @JoinColumn(name = "idStorageOld", referencedColumnName = "id", insertable = false, updatable = false)

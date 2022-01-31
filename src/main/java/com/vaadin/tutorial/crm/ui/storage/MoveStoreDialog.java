@@ -1,5 +1,6 @@
 package com.vaadin.tutorial.crm.ui.storage;
 
+import com.vaadin.flow.component.ItemLabelGenerator;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -59,7 +60,8 @@ public class MoveStoreDialog extends Dialog {
         LocationEntity locationEntity = new LocationEntity();
         locationEntity.setLocationName(locationService.getFindLocationByID(locationID).get(0).getLocationName());
         location.setItems(locationService.getAll());
-        location.setItemLabelGenerator(LocationEntity::getLocationName);
+        ItemLabelGenerator<LocationEntity> itemLabelGenerator = locationEntity1 -> locationEntity.getLocationName() + " - " + locationEntity.getLocationDescription();
+        location.setItemLabelGenerator(itemLabelGenerator);
         location.setValue(locationEntity);
 
         StorageEntity storageEntity = new StorageEntity();

@@ -27,10 +27,12 @@ public class StorageLayout extends AppLayout {
     HorizontalLayout hMenu6 = new HorizontalLayout();
     HorizontalLayout hMenu7 = new HorizontalLayout();
     HorizontalLayout hMenu8 = new HorizontalLayout();
+    HorizontalLayout hMenu9 = new HorizontalLayout();
     private final String ROLE = "ADMIN";
     private final String ROLE1 = "USER";
     private final SecurityConfiguration securityConfiguration;
     RouterLink addLocation = new RouterLink("Добавить локацию", RuleOut.class);
+    RouterLink editLocation = new RouterLink("Редактировать локацию", RuleOut.class);
     RouterLink editStore = new RouterLink("Редактировать склад", RuleOut.class);
     RouterLink addStore = new RouterLink("Добавить склад", RuleOut.class);
     RouterLink addCell = new RouterLink("Добавить ячейку", RuleOut.class);
@@ -42,6 +44,10 @@ public class StorageLayout extends AppLayout {
             addLocation.setHighlightCondition(HighlightConditions.sameLocation());
             Icon icon8 = new Icon(VaadinIcon.LOCATION_ARROW);
             hMenu8.add(icon8, addLocation);
+
+            editLocation.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon9 = new Icon(VaadinIcon.EDIT);
+            hMenu9.add(icon9, editLocation);
 
             addStore.setHighlightCondition(HighlightConditions.sameLocation());
             Icon icon3 = new Icon(VaadinIcon.ADD_DOCK);
@@ -83,6 +89,11 @@ public class StorageLayout extends AppLayout {
             Icon icon8 = new Icon(VaadinIcon.LOCATION_ARROW);
             hMenu8.add(icon8, addLocation);
 
+            editLocation = new RouterLink("Редактировать локацию", EditorLocationName.class);
+            editLocation.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon9 = new Icon(VaadinIcon.EDIT);
+            hMenu9.add(icon9, editLocation);
+
             addStore = new RouterLink("Добавить склад", CreateStorageDialog.class);
             addStore.setHighlightCondition(HighlightConditions.sameLocation());
             Icon icon3 = new Icon(VaadinIcon.ADD_DOCK);
@@ -109,6 +120,6 @@ public class StorageLayout extends AppLayout {
         Icon icon5 = new Icon(VaadinIcon.INVOICE);
         hMenu5.add(icon5, addMaterial);
 
-        addToDrawer(new VerticalLayout(hMenu1, hMenu8, hMenu3, hMenu6, hMenu4, hMenu7, hMenu5, hMenu2));
+        addToDrawer(new VerticalLayout(hMenu1, hMenu8, hMenu9, hMenu3, hMenu6, hMenu4, hMenu7, hMenu5, hMenu2));
     }
 }

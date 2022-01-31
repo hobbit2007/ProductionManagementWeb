@@ -1,0 +1,33 @@
+package com.vaadin.tutorial.crm.service.impl.storage;
+
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.tutorial.crm.entity.storage.LocationEntity;
+import com.vaadin.tutorial.crm.repository.storage.LocationRepository;
+import com.vaadin.tutorial.crm.service.storage.LocationService;
+import org.springframework.stereotype.Service;
+import java.util.List;
+
+/**
+ * Класс реализующий методы интерфейса LocationService
+ */
+@Service
+public class LocationImpl implements LocationService {
+    private final LocationRepository locationRepository;
+
+    public LocationImpl(LocationRepository locationRepository) {
+        this.locationRepository = locationRepository;
+    }
+
+    @Override
+    public List<LocationEntity> getAll() {
+        return locationRepository.getAll();
+    }
+
+    @Override
+    public void saveAll(LocationEntity locationEntity) {
+        if (locationEntity != null)
+            locationRepository.saveAndFlush(locationEntity);
+        else
+            Notification.show("Нет данных для записи!", 3000, Notification.Position.MIDDLE);
+    }
+}

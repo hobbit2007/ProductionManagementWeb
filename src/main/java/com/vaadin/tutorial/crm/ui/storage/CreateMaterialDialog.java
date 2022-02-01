@@ -79,23 +79,20 @@ public class CreateMaterialDialog extends Dialog {
         setCloseOnEsc(false);
         setCloseOnOutsideClick(false);
         setDraggable(true);
-
-        storage.setEnabled(false);
+        storage.setRequired(true);
+        storage.setItems(storageService.getAll());
+        storage.setItemLabelGenerator(StorageEntity::getStorageName);
         cell.setEnabled(false);
         location.setRequired(true);
-        location.setItems(locationService.getAll());
-        ItemLabelGenerator<LocationEntity> itemLabelGenerator = locationEntity -> locationEntity.getLocationName() + " - " + locationEntity.getLocationDescription();
-        location.setItemLabelGenerator(itemLabelGenerator);
+        location.setEnabled(false);
+
         location.addValueChangeListener(e -> {
             if (e.getValue() != null) {
-                storage.setEnabled(true);
                 locationID = e.getValue().getId();
-                storage.setRequired(true);
-                storage.setItems(storageService.getAll());
-                storage.setItemLabelGenerator(StorageEntity::getStorageName);
+                cell.setEnabled(true);
+                cell.setItems(cellService.getAll(storageID, locationID));
+                cell.setItemLabelGenerator(CellEntity::getCellName);
             }
-            else
-                storage.setEnabled(false);
         });
         cell.setRequired(true);
 
@@ -139,9 +136,10 @@ public class CreateMaterialDialog extends Dialog {
         storage.addValueChangeListener(e -> {
            if (e.getValue() != null) {
                storageID = e.getValue().getId();
-               cell.setEnabled(true);
-               cell.setItems(cellService.getAll(storageID));
-               cell.setItemLabelGenerator(CellEntity::getCellName);
+               location.setEnabled(true);
+               location.setItems(locationService.getFindLocationByStorageID(storageID));
+               ItemLabelGenerator<LocationEntity> itemLabelGenerator = locationEntity -> locationEntity.getLocationName() + " - " + locationEntity.getLocationDescription();
+               location.setItemLabelGenerator(itemLabelGenerator);
            }
         });
         cell.addValueChangeListener(e -> {
@@ -153,7 +151,7 @@ public class CreateMaterialDialog extends Dialog {
                measID = e.getValue().getId();
         });
 
-        hMain1.add(location, storage, cell);
+        hMain1.add(storage, location, cell);
         hMain1.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.BASELINE);
 
         hMain2.add(material, article, supplier);

@@ -7,6 +7,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
@@ -74,6 +75,9 @@ public class CreateMaterialDialog extends Dialog {
         this.measService = measService;
         this.locationService = locationService;
         this.supplierService = supplierService;
+        FormLayout formLayout = new FormLayout();
+        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("10px", 3));
+        formLayout.setWidth("831px");
 
         this.open();
 
@@ -99,8 +103,10 @@ public class CreateMaterialDialog extends Dialog {
 
         material.setRequired(true);
         material.setWidth("235px");
-        article.setRequired(true);
+
+        article.setReadOnly(true);
         article.setWidth("150px");
+
         qty.setRequiredIndicatorVisible(true);
         qty.setValue(1d);
 
@@ -141,6 +147,7 @@ public class CreateMaterialDialog extends Dialog {
                location.setItems(locationService.getFindLocationByStorageID(storageID));
                ItemLabelGenerator<LocationEntity> itemLabelGenerator = locationEntity -> locationEntity.getLocationName() + " - " + locationEntity.getLocationDescription();
                location.setItemLabelGenerator(itemLabelGenerator);
+               article.setValue(createArticle(materialInfoService.findByLastArticle(), storageService.getFindStorageByID(storageID).get(0).getShortName()));
            }
         });
         cell.addValueChangeListener(e -> {
@@ -167,7 +174,8 @@ public class CreateMaterialDialog extends Dialog {
         hButton.add(save, cancel);
         hButton.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
 
-        vMain.add(new AnyComponent().labelTitle("Добавить объект хранения"), hMain1, hMain2, hMain3, hMain4, hButton);
+        formLayout.add(storage, location, cell, material, article, supplier, description, qty, meas, costPrice, marketPrice, hButton);
+        vMain.add(new AnyComponent().labelTitle("Добавить объект хранения"), formLayout);
         vMain.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
 
         add(vMain);
@@ -244,7 +252,7 @@ public class CreateMaterialDialog extends Dialog {
             givenNumber = 1;
         else {
             String[] lastIDList = article.split("-");
-            givenNumber = Integer.valueOf(lastIDList[0]);
+            givenNumber = Integer.valueOf(lastIDList[1]);
             givenNumber = givenNumber + 1;
         }
         formattedNumber = String.format("%05d", givenNumber);

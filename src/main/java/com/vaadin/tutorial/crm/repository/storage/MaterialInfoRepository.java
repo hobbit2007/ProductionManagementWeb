@@ -79,4 +79,9 @@ public interface MaterialInfoRepository extends JpaRepository<MaterialInfoEntity
     @Query("update materialinfo mi set mi.costPrice = :costPrice, mi.marketPrice = :marketPrice, mi.diffPrice = :diffPrice where mi.id = :id")
     void updatePrice(@Param("costPrice") double costPrice, @Param("marketPrice") double marketPrice, @Param("diffPrice") double diffPrice,
                      @Param("id") long id);
+
+    //Получаем последний артикул из таблицы materialinfo для генерации следующего
+    @Query("select mi.article from materialinfo mi where mi.id = (select max(id) from materialinfo )")
+    String findByLastArticle();
+
 }

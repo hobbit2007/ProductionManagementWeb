@@ -48,4 +48,9 @@ public class LocationImpl implements LocationService {
     public List<LocationEntity> getCheckLocation(String locationName) {
         return locationRepository.getCheckLocation(locationName);
     }
+
+    @Override
+    public List<LocationEntity> getFindLocationByStorageID(Long storageID) {
+        return locationRepository.getFindLocationByStorageID(storageID);
+    }
 }

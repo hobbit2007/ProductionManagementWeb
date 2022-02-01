@@ -28,6 +28,8 @@ public class StorageLayout extends AppLayout {
     HorizontalLayout hMenu7 = new HorizontalLayout();
     HorizontalLayout hMenu8 = new HorizontalLayout();
     HorizontalLayout hMenu9 = new HorizontalLayout();
+    HorizontalLayout hMenu10 = new HorizontalLayout();
+    HorizontalLayout hMenu11 = new HorizontalLayout();
     private final String ROLE = "ADMIN";
     private final String ROLE1 = "USER";
     private final SecurityConfiguration securityConfiguration;
@@ -37,6 +39,8 @@ public class StorageLayout extends AppLayout {
     RouterLink addStore = new RouterLink("Добавить склад", RuleOut.class);
     RouterLink addCell = new RouterLink("Добавить ячейку", RuleOut.class);
     RouterLink editCell = new RouterLink("Редактировать ячейку", RuleOut.class);
+    RouterLink addSupplier = new RouterLink("Добавить поставщика", RuleOut.class);
+    RouterLink editSupplier = new RouterLink("Редактировать поставщика", RuleOut.class);
 
     public StorageLayout(SecurityConfiguration securityConfiguration) {
         this.securityConfiguration = securityConfiguration;
@@ -64,6 +68,14 @@ public class StorageLayout extends AppLayout {
             editCell.setHighlightCondition(HighlightConditions.sameLocation());
             Icon icon7 = new Icon(VaadinIcon.EDIT);
             hMenu7.add(icon7, editCell);
+
+            addSupplier.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon10 = new Icon(VaadinIcon.BRIEFCASE);
+            hMenu10.add(icon10, addSupplier);
+
+            editSupplier.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon11 = new Icon(VaadinIcon.EDIT);
+            hMenu11.add(icon11, editSupplier);
         }
         createHeader();
         createDrawer();
@@ -113,6 +125,16 @@ public class StorageLayout extends AppLayout {
             editCell.setHighlightCondition(HighlightConditions.sameLocation());
             Icon icon7 = new Icon(VaadinIcon.EDIT);
             hMenu7.add(icon7, editCell);
+
+            addSupplier = new RouterLink("Добавить поставщика", CreateSupplierDialog.class);
+            addSupplier.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon10 = new Icon(VaadinIcon.BRIEFCASE);
+            hMenu10.add(icon10, addSupplier);
+
+            editSupplier = new RouterLink("Редактировать поставщика", EditSupplierDialog.class);
+            editSupplier.setHighlightCondition(HighlightConditions.sameLocation());
+            Icon icon11 = new Icon(VaadinIcon.EDIT);
+            hMenu11.add(icon11, editSupplier);
         }
 
         RouterLink addMaterial = new RouterLink("Добавить объект хранения", CreateMaterialDialog.class);
@@ -120,6 +142,6 @@ public class StorageLayout extends AppLayout {
         Icon icon5 = new Icon(VaadinIcon.INVOICE);
         hMenu5.add(icon5, addMaterial);
 
-        addToDrawer(new VerticalLayout(hMenu1, hMenu8, hMenu9, hMenu3, hMenu6, hMenu4, hMenu7, hMenu5, hMenu2));
+        addToDrawer(new VerticalLayout(hMenu1, hMenu8, hMenu9, hMenu3, hMenu6, hMenu4, hMenu7, hMenu10, hMenu11, hMenu5, hMenu2));
     }
 }

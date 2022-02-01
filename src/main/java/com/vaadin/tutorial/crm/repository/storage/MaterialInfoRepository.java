@@ -58,11 +58,11 @@ public interface MaterialInfoRepository extends JpaRepository<MaterialInfoEntity
     //Обновляем информацию об объекте хранения после перемещения склад/ячейка
     @Modifying
     @Transactional
-    @Query("update materialinfo mi set mi.flagMove = :flagMove, mi.idStorage = :storageID, mi.idCell = :cellID, " +
+    @Query("update materialinfo mi set mi.flagMove = :flagMove, mi.idStorage = :storageID, mi.idLocation = :locationID, mi.idCell = :cellID, " +
             "mi.balance = :balance, mi.expense = :expense where mi.id = :id")
     void updateMaterialInfoStorageCell(@Param("flagMove") long flagMove, @Param("storageID") long storageID,
                                        @Param("cellID") long cellID, @Param("balance") double balance, @Param("expense") double expense,
-                                       @Param("id") long id);
+                                       @Param("id") long id, @Param("locationID") long locationID);
 
     //Списание объекта хранения со склада
     @Modifying

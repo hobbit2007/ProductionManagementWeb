@@ -99,4 +99,10 @@ public interface MaterialInfoService {
      * @param materialInfoEntity - объект класс MaterialInfoEntity
      */
     void updatePrice(MaterialInfoEntity materialInfoEntity);
+
+    /**
+     * Метод получает последний артикул из таблицы materialinfo
+     * @return - возвращает сгенерированный новый артикул
+     */
+    String findByLastArticle();
 }

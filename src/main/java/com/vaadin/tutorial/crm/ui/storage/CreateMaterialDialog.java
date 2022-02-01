@@ -229,28 +229,28 @@ public class CreateMaterialDialog extends Dialog {
         });
     }
     /**
-     * Метод для формирования артикула в формате SSSnnnnn_YY
-     * @param sysNumber - Последний сгенерированный артикул
+     * Метод для формирования артикула в формате SSS-NNNNN_YY
+     * @param article - Последний сгенерированный артикул
      * @param shortStoreName - Короткое название склада в котором будет храниться объект
      * @return - Возвращает новый артикул в заданном формате
      */
-    private String createArticle(String sysNumber, String shortStoreName) {
+    private String createArticle(String article, String shortStoreName) {
 
         int givenNumber;
         String formattedNumber;
         int lastTwoDigits;
 
-        if (sysNumber.equals("0") || sysNumber.equals(""))
+        if (article.equals("0") || article.equals(""))
             givenNumber = 1;
         else {
-            String[] lastIDList = sysNumber.split("-");
+            String[] lastIDList = article.split("-");
             givenNumber = Integer.valueOf(lastIDList[0]);
             givenNumber = givenNumber + 1;
         }
         formattedNumber = String.format("%05d", givenNumber);
         lastTwoDigits = Calendar.getInstance().get(Calendar.YEAR) % 100; //Получаем последние 2 цифры текущего года
 
-        return shortStoreName + formattedNumber+"-"+lastTwoDigits;
+        return shortStoreName +"-"+ formattedNumber+"-"+lastTwoDigits;
     }
 
 }

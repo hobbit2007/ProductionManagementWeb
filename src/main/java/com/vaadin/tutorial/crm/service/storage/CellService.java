@@ -10,7 +10,7 @@ import java.util.List;
  */
 @Service
 public interface CellService {
-    List<CellEntity> getAll(Long storageID);
+    List<CellEntity> getAll(Long storageID, Long idLocation);
 
     /**
      * Метод, который проверяет наличие ячейки в БД

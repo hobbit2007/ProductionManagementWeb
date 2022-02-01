@@ -23,6 +23,10 @@ public interface LocationRepository extends JpaRepository<LocationEntity, Long> 
     @Query("select sl from store_location sl where sl.id = :locationID and sl.delete = 0")
     List<LocationEntity> getFindLocationByID(@Param("locationID") Long locationID);
 
+    //Поиск всех локаций принадлежащих складу
+    @Query("select sl from store_location sl where sl.idStorage = :storageID and sl.delete = 0")
+    List<LocationEntity> getFindLocationByStorageID(@Param("storageID") Long storageID);
+
     //Запрос проверяет наличие локации в БД
     @Query("select sl from store_location sl where sl.locationName = :locationName and sl.delete = 0")
     List<LocationEntity> getCheckLocation(@Param("locationName") String locationName);

@@ -38,39 +38,23 @@ public class CreateStorageDialog extends Dialog {
     VerticalLayout vMain = new VerticalLayout();
     HorizontalLayout hMain = new HorizontalLayout();
     HorizontalLayout hMain1 = new HorizontalLayout();
-    ComboBox<LocationEntity> location = new ComboBox<>("Выберите локацию:");
     TextField storageName = new TextField("Введите имя склада:");
     TextField storageShortName = new TextField("Введите аббревиатуру склада:");
     Button save = new Button("Сохранить");
     Button cancel = new Button("Отмена");
-    long locationID = 0;
 
     @Autowired
-    public CreateStorageDialog(StorageService storageService, LocationService locationService) {
+    public CreateStorageDialog(StorageService storageService) {
         this.open();
         setCloseOnOutsideClick(false);
         setCloseOnEsc(false);
         setDraggable(true);
 
-        storageName.setEnabled(false);
         storageName.setWidth("255px");
         storageName.setRequired(true);
-        storageShortName.setEnabled(false);
+
         storageShortName.setWidth("255px");
         storageShortName.setRequired(true);
-
-        location.setRequired(true);
-        location.setWidth("255px");
-        location.setItems(locationService.getAll());
-        ItemLabelGenerator<LocationEntity> itemLabelGenerator = locationEntity -> locationEntity.getLocationName() + " - " + locationEntity.getLocationDescription();
-        location.setItemLabelGenerator(itemLabelGenerator);
-        location.addValueChangeListener(e -> {
-           if (e.getValue() != null) {
-               storageName.setEnabled(true);
-               storageShortName.setEnabled(true);
-               locationID = e.getValue().getId();
-           }
-        });
 
         Icon icon1 = new Icon(VaadinIcon.DISC);
         save.setIcon(icon1);
@@ -84,7 +68,7 @@ public class CreateStorageDialog extends Dialog {
 
         hMain1.add(storageName, storageShortName);
         hMain.add(save, cancel);
-        vMain.add(new AnyComponent().labelTitle("Добавить склад"), location, hMain1, hMain);
+        vMain.add(new AnyComponent().labelTitle("Добавить склад"), hMain1, hMain);
         vMain.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         add(vMain);
 
@@ -93,7 +77,7 @@ public class CreateStorageDialog extends Dialog {
             close();
         });
         save.addClickListener(e -> {
-            if (!location.isEmpty() && !storageName.isEmpty() && !storageShortName.isEmpty()) {
+            if (!storageName.isEmpty() && !storageShortName.isEmpty()) {
                 if (storageService.getCheckStorage(storageName.getValue()).size() == 0) {
                     if (AnyComponent.checkEscSymbol(storageName)) {
                         StorageEntity storageEntity = new StorageEntity();
@@ -101,7 +85,6 @@ public class CreateStorageDialog extends Dialog {
                         storageEntity.setDateCreate(new Date());
                         storageEntity.setIdUser(SecurityUtils.getAuthentication().getDetails().getId());
                         storageEntity.setDelete(0L);
-                        storageEntity.setIdLocation(locationID);
                         storageEntity.setShortName(storageShortName.getValue());
                         try {
                             storageService.saveAll(storageEntity);

@@ -20,8 +20,8 @@ public class CellImpl implements CellService {
     }
 
     @Override
-    public List<CellEntity> getAll(Long storageID) {
-        return cellRepository.getAll(storageID);
+    public List<CellEntity> getAll(Long storageID, Long locationID) {
+        return cellRepository.getAll(storageID, locationID);
     }
 
     @Override

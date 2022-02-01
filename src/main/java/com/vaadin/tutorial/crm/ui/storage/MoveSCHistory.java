@@ -59,11 +59,11 @@ public class MoveSCHistory extends Dialog {
         grid.setSizeFull();
 
         colMaterialName = grid.addColumn(materialMoveEntity -> materialMoveEntity.getMaterial().getMaterialName()).setHeader("Наименование");
-        colLocationOld = grid.addColumn(materialMoveEntity -> materialMoveEntity.getLocationOld().getLocationName()).setHeader("Из локации");
         colStorageOld = grid.addColumn(materialMoveEntity -> materialMoveEntity.getStorageOld().getStorageName()).setHeader("Из склада");
-        colLocationNew = grid.addColumn(materialMoveEntity -> materialMoveEntity.getLocationNew().getLocationName()).setHeader("Локация новая");
-        colStorageNew = grid.addColumn(materialMoveEntity -> materialMoveEntity.getStorageNew().getStorageName()).setHeader("Склад новый");
+        colLocationOld = grid.addColumn(materialMoveEntity -> materialMoveEntity.getLocationOld().getLocationName()).setHeader("Из локации");
         colCellOld = grid.addColumn(materialMoveEntity -> materialMoveEntity.getCellOld().getCellName()).setHeader("Из ячейки");
+        colStorageNew = grid.addColumn(materialMoveEntity -> materialMoveEntity.getStorageNew().getStorageName()).setHeader("Склад новый");
+        colLocationNew = grid.addColumn(materialMoveEntity -> materialMoveEntity.getLocationNew().getLocationName()).setHeader("Локация новая");
         colCellNew = grid.addColumn(materialMoveEntity -> materialMoveEntity.getCellNew().getCellName()).setHeader("Ячейка новая");
         colExpense = grid.addColumn(materialMoveEntity -> materialMoveEntity.getExpense()).setHeader("Количество");
         colMeas = grid.addColumn(materialMoveEntity -> materialMoveEntity.getMaterial().getMeas().getMeasName()).setHeader("Ед. измерения");

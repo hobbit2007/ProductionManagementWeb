@@ -15,8 +15,8 @@ import java.util.List;
  */
 @Repository
 public interface CellRepository extends JpaRepository<CellEntity, Long> {
-    @Query("select c from cells c where c.delete = 0 and c.idStorage = :idStorage order by c.cellName asc")
-    List<CellEntity> getAll(@Param("idStorage") Long idStorage);
+    @Query("select c from cells c where c.delete = 0 and c.idStorage = :idStorage and c.idLocation = :idLocation order by c.cellName asc")
+    List<CellEntity> getAll(@Param("idStorage") Long idStorage, @Param("idLocation") Long idLocation);
 
     //Запрос проверяет наличие ячейки в БД
     @Query("select c from cells c where c.cellName = :cellName and c.delete = 0 and c.idStorage = :idStorage")

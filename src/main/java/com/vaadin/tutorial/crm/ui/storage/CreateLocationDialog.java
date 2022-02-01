@@ -3,6 +3,7 @@ package com.vaadin.tutorial.crm.ui.storage;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.icon.Icon;
@@ -16,8 +17,10 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.tutorial.crm.entity.storage.LocationEntity;
+import com.vaadin.tutorial.crm.entity.storage.StorageEntity;
 import com.vaadin.tutorial.crm.security.SecurityUtils;
 import com.vaadin.tutorial.crm.service.storage.LocationService;
+import com.vaadin.tutorial.crm.service.storage.StorageService;
 import com.vaadin.tutorial.crm.ui.component.AnyComponent;
 import com.vaadin.tutorial.crm.ui.layout.StorageLayout;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,23 +37,37 @@ import java.util.Date;
 public class CreateLocationDialog extends Dialog {
     VerticalLayout vMain = new VerticalLayout();
     HorizontalLayout hMain = new HorizontalLayout();
+    ComboBox<StorageEntity> storage = new ComboBox<>("Выберите склад:");
     TextField locationName = new TextField("Введите имя локации:");
     TextArea locationDescription = new TextArea("Введите описание:");
     Button save = new Button("Сохранить");
     Button cancel = new Button("Отмена");
+    long storageID = 0;
     @Autowired
-    public CreateLocationDialog(LocationService locationService) {
+    public CreateLocationDialog(LocationService locationService, StorageService storageService) {
         this.open();
         setCloseOnOutsideClick(false);
         setCloseOnEsc(false);
         setDraggable(true);
 
+        locationName.setEnabled(false);
+        locationDescription.setEnabled(false);
         locationName.setWidth("255px");
         locationName.setRequired(true);
         locationName.setTitle("Зона помещения:№ стеллажа");
         locationName.setPlaceholder("Зона помещения:№ стеллажа");
         locationDescription.setWidth("255px");
         locationDescription.setRequired(true);
+
+        storage.setItems(storageService.getAll());
+        storage.setItemLabelGenerator(StorageEntity::getStorageName);
+        storage.addValueChangeListener(e -> {
+            if (e.getValue() != null) {
+                storageID = e.getValue().getId();
+                locationName.setEnabled(true);
+                locationDescription.setEnabled(true);
+            }
+        });
 
         Icon icon1 = new Icon(VaadinIcon.DISC);
         save.setIcon(icon1);
@@ -80,7 +97,7 @@ public class CreateLocationDialog extends Dialog {
                     locationEntity.setIdUser(SecurityUtils.getAuthentication().getDetails().getId());
                     locationEntity.setDateCreate(new Date());
                     locationEntity.setDelete(0);
-
+                    locationEntity.setIdStorage(storageID);
                     try {
                         locationService.saveAll(locationEntity);
                         UI.getCurrent().navigate(StorageSearch.class);

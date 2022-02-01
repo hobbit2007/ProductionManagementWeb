@@ -31,4 +31,9 @@ public class SupplierImpl implements SupplierService {
         else
             Notification.show("Нет данных для записи!", 3000, Notification.Position.MIDDLE);
     }
+
+    @Override
+    public List<SupplierEntity> getCheckSupplier(String supplierName) {
+        return supplierRepository.getCheckSupplier(supplierName);
+    }
 }

@@ -79,7 +79,7 @@ public class MoveStoreDialog extends Dialog {
         locationNew.setItems(locationService.getAll());
         locationNew.setItemLabelGenerator(LocationEntity::getLocationName);
 
-        storageNew.setItems(storageService.getStorageByLocationID(locationID));
+        storageNew.setItems(storageService.getAll());
         storageNew.setItemLabelGenerator(StorageEntity::getStorageName);
 
         cellNew.setItems(cellService.getAll(storageID));

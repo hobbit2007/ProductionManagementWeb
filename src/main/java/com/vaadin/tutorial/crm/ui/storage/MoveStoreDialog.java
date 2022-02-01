@@ -58,48 +58,62 @@ public class MoveStoreDialog extends Dialog {
         hButton.add(move, cancel);
 
         LocationEntity locationEntity = new LocationEntity();
-        locationEntity.setLocationName(locationService.getFindLocationByID(locationID).get(0).getLocationName());
-        location.setItems(locationService.getAll());
+        locationEntity.setLocationName(locationService.getFindLocationByID(locationID).get(0).getLocationName()+"-"+locationService.getFindLocationByID(locationID).get(0).getLocationDescription());
+        location.setItems(locationService.getFindLocationByStorageID(storageID));
         ItemLabelGenerator<LocationEntity> itemLabelGenerator = locationEntity1 -> locationEntity.getLocationName() + " - " + locationEntity.getLocationDescription();
         location.setItemLabelGenerator(itemLabelGenerator);
         location.setValue(locationEntity);
+        location.setReadOnly(true);
 
         StorageEntity storageEntity = new StorageEntity();
         storageEntity.setStorageName(storageService.getFindStorageByID(storageID).get(0).getStorageName());
         storage.setItems(storageService.getFindStorageByID(storageID));
         storage.setItemLabelGenerator(StorageEntity::getStorageName);
         storage.setValue(storageEntity);
+        storage.setReadOnly(true);
 
         CellEntity cellEntity = new CellEntity();
         cellEntity.setCellName(cellService.getFindCellByID(cellID, storageID).get(0).getCellName());
         cell.setItems(cellService.getFindCellByID(cellID, storageID));
         cell.setItemLabelGenerator(CellEntity::getCellName);
         cell.setValue(cellEntity);
-
-        locationNew.setItems(locationService.getAll());
-        locationNew.setItemLabelGenerator(LocationEntity::getLocationName);
+        cell.setReadOnly(true);
 
         storageNew.setItems(storageService.getAll());
         storageNew.setItemLabelGenerator(StorageEntity::getStorageName);
 
-        cellNew.setItems(cellService.getAll(storageID));
-        cellNew.setItemLabelGenerator(CellEntity::getCellName);
+        locationNew.setEnabled(false);
+
+        cellNew.setEnabled(false);
 
         expense.setValue(materialInfoService.getCheckID(materialID).get(0).getBalance());
 
-        hMain.add(location, storage, cell, locationNew, storageNew, cellNew);
+        hMain.add(storage, location, cell, storageNew, locationNew, cellNew);
         hMain.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.BASELINE);
         vMain.add(new AnyComponent().labelTitle("Перемещение между складом/ячейкой"), hMain, expense, hButton);
         vMain.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         add(vMain);
 
         locationNew.addValueChangeListener(e -> {
-           if (e.getValue() != null)
+           if (e.getValue() != null) {
                locationNewID = e.getValue().getId();
+               cellNew.setEnabled(true);
+               cellNew.setItems(cellService.getAll(storageID, locationID));
+               cellNew.setItemLabelGenerator(CellEntity::getCellName);
+           }
+           else
+               cellNew.setEnabled(false);
         });
         storageNew.addValueChangeListener(e -> {
-           if (e.getValue() != null)
+           if (e.getValue() != null) {
                storageNewID = e.getValue().getId();
+               locationNew.setEnabled(true);
+               locationNew.setItems(locationService.getFindLocationByStorageID(storageNewID));
+               ItemLabelGenerator<LocationEntity> itemLabelGeneratorNew = locationEntity1 -> locationEntity.getLocationName();
+               locationNew.setItemLabelGenerator(itemLabelGeneratorNew);
+           }
+           else
+               locationNew.setEnabled(false);
         });
         cellNew.addValueChangeListener(e -> {
            if (e.getValue() != null)
@@ -135,6 +149,7 @@ public class MoveStoreDialog extends Dialog {
                        MaterialInfoEntity materialInfoEntity = new MaterialInfoEntity();
                        materialInfoEntity.setFlagMove(1);
                        materialInfoEntity.setIdStorage(materialMoveEntity.getIdStorageNew());
+                       materialInfoEntity.setIdLocation(materialMoveEntity.getIdLocationNew());
                        materialInfoEntity.setIdCell(materialMoveEntity.getIdCellNew());
                        materialInfoEntity.setBalance(materialInfoService.getCheckID(materialID).get(0).getBalance() - expense.getValue());
                        materialInfoEntity.setExpense(expense.getValue());

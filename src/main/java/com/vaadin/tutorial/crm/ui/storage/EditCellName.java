@@ -85,7 +85,7 @@ public class EditCellName extends Dialog {
             if (e.getValue() != null) {
                 store.setEnabled(true);
                 locationID = e.getValue().getId();
-                store.setItems(storageService.getStorageByLocationID(locationID));
+                store.setItems(storageService.getAll());
                 store.setItemLabelGenerator(StorageEntity::getStorageName);
             }
             else

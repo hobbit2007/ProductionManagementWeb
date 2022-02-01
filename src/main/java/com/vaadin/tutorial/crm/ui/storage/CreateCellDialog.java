@@ -37,10 +37,8 @@ import java.util.Date;
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 public class CreateCellDialog extends Dialog {
     private final CellService cellService;
-    private final StorageService storageService;
     private final LocationService locationService;
     ComboBox<LocationEntity> location = new ComboBox<>("Выберите локацию:");
-    ComboBox<StorageEntity> storage = new ComboBox<>("Выберите склад:");
     VerticalLayout vMain = new VerticalLayout();
     HorizontalLayout hMain = new HorizontalLayout();
     HorizontalLayout hMain1 = new HorizontalLayout();
@@ -51,7 +49,6 @@ public class CreateCellDialog extends Dialog {
     long locationID = 0;
     public CreateCellDialog(CellService cellService, StorageService storageService, LocationService locationService) {
         this.cellService = cellService;
-        this.storageService = storageService;
         this.locationService = locationService;
         this.open();
         setCloseOnEsc(false);
@@ -64,10 +61,6 @@ public class CreateCellDialog extends Dialog {
         cellName.setTitle("№ секция:ячейка:№ полка");
         cellName.setPlaceholder("№ секция:ячейка:№ полка");
 
-        storage.setEnabled(false);
-        storage.setWidth("255px");
-        storage.setRequired(true);
-
         location.setWidth("255px");
         location.setRequired(true);
         location.setItems(locationService.getAll());
@@ -75,13 +68,10 @@ public class CreateCellDialog extends Dialog {
         location.setItemLabelGenerator(itemLabelGenerator);
         location.addValueChangeListener(e -> {
             if (e.getValue() != null) {
-                storage.setEnabled(true);
                 locationID = e.getValue().getId();
-                storage.setItems(storageService.getAll());
-                storage.setItemLabelGenerator(StorageEntity::getStorageName);
+                storageID = e.getValue().getIdStorage();
+                cellName.setEnabled(true);
             }
-            else
-                storage.setEnabled(false);
         });
 
         Icon icon1 = new Icon(VaadinIcon.DISC);
@@ -94,25 +84,19 @@ public class CreateCellDialog extends Dialog {
         cancel.getStyle().set("background-color", "#d3b342");
         cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        hMain1.add(location, storage);
+        hMain1.add(location);
         hMain.add(save, cancel);
         vMain.add(new AnyComponent().labelTitle("Добавить ячейку"), hMain1, cellName, hMain);
         vMain.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         add(vMain);
 
-        storage.addValueChangeListener(e -> {
-           if (e.getValue() != null) {
-               cellName.setEnabled(true);
-               storageID = e.getValue().getId();
-           }
-        });
         cancel.addClickListener(e -> {
             UI.getCurrent().navigate(StorageSearch.class);
            close();
         });
         save.addClickListener(e -> {
             CellEntity cellEntity = new CellEntity();
-            if ((!cellName.isEmpty() || cellName.getValue().length() != 0) && (!storage.isEmpty())) {
+            if (!cellName.isEmpty() && !location.isEmpty()) {
                 if (cellService.getCheckCell(cellName.getValue(), storageID).size() == 0) {
                     if (AnyComponent.checkEscSymbol(cellName)) {
 
@@ -121,6 +105,7 @@ public class CreateCellDialog extends Dialog {
                         cellEntity.setDateCreate(new Date());
                         cellEntity.setIdUser(SecurityUtils.getAuthentication().getDetails().getId());
                         cellEntity.setDelete(0L);
+                        cellEntity.setIdLocation(locationID);
                         try {
                             cellService.saveAll(cellEntity);
                             UI.getCurrent().navigate(StorageSearch.class);

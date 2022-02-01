@@ -24,6 +24,7 @@ import com.vaadin.tutorial.crm.service.storage.*;
 import com.vaadin.tutorial.crm.ui.component.AnyComponent;
 import com.vaadin.tutorial.crm.ui.layout.StorageLayout;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -227,4 +228,29 @@ public class CreateMaterialDialog extends Dialog {
             }
         });
     }
+    /**
+     * Метод для формирования артикула в формате SSSnnnnn_YY
+     * @param sysNumber - Последний сгенерированный артикул
+     * @param shortStoreName - Короткое название склада в котором будет храниться объект
+     * @return - Возвращает новый артикул в заданном формате
+     */
+    private String createArticle(String sysNumber, String shortStoreName) {
+
+        int givenNumber;
+        String formattedNumber;
+        int lastTwoDigits;
+
+        if (sysNumber.equals("0") || sysNumber.equals(""))
+            givenNumber = 1;
+        else {
+            String[] lastIDList = sysNumber.split("-");
+            givenNumber = Integer.valueOf(lastIDList[0]);
+            givenNumber = givenNumber + 1;
+        }
+        formattedNumber = String.format("%05d", givenNumber);
+        lastTwoDigits = Calendar.getInstance().get(Calendar.YEAR) % 100; //Получаем последние 2 цифры текущего года
+
+        return shortStoreName + formattedNumber+"-"+lastTwoDigits;
+    }
+
 }

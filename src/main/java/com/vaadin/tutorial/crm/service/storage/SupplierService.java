@@ -13,4 +13,11 @@ public interface SupplierService {
     List<SupplierEntity> getAll();
 
     void saveAll(SupplierEntity supplierEntity);
+
+    /**
+     * Метод, который проверяет наличие поставщика в БД
+     * @param supplierName - имя поставщика
+     * @return - возвращает массив свойств поставщика, если он есть в БД
+     */
+    List<SupplierEntity> getCheckSupplier(String supplierName);
 }

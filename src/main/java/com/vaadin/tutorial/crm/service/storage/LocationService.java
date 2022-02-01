@@ -26,4 +26,11 @@ public interface LocationService {
      * @param locationEntity - объект класса LocationEntity
      */
     void updateLocation(LocationEntity locationEntity);
+
+    /**
+     * Метод, который проверяет наличие локации в БД
+     * @param locationName - имя локации
+     * @return - возвращает массив содержащий свойства локации, если она существует в БД
+     */
+    List<LocationEntity> getCheckLocation(String locationName);
 }

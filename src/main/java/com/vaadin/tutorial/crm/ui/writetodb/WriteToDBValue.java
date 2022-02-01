@@ -349,7 +349,7 @@ public class WriteToDBValue extends VerticalLayout {
         formLayout5.setResponsiveSteps(new FormLayout.ResponsiveStep("0", 5));
         formLayout5.add(header1Drying, radioButtonDrying, timeLabelDrying, timeDrying, alarmDrying);
 
-        vMain.add(new AnyComponent().labelTitle("Управление записью в БД"), formLayout, formLayout1, formLayout2, formLayout3, formLayout4); //, formLayout5
+        vMain.add(new AnyComponent().labelTitle("Управление записью в БД"), formLayout, formLayout1, formLayout2, formLayout3, formLayout4, formLayout5);
         vMain.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         add(vMain);
     }

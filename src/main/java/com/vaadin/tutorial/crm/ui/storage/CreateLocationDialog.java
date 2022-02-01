@@ -73,20 +73,29 @@ public class CreateLocationDialog extends Dialog {
         });
         save.addClickListener(e -> {
             if (!locationName.isEmpty() && !locationDescription.isEmpty()) {
-                LocationEntity locationEntity = new LocationEntity();
-                locationEntity.setLocationName(locationName.getValue());
-                locationEntity.setLocationDescription(locationDescription.getValue());
-                locationEntity.setIdUser(SecurityUtils.getAuthentication().getDetails().getId());
-                locationEntity.setDateCreate(new Date());
-                locationEntity.setDelete(0);
+                if (locationService.getCheckLocation(locationName.getValue()).size() == 0) {
+                    LocationEntity locationEntity = new LocationEntity();
+                    locationEntity.setLocationName(locationName.getValue());
+                    locationEntity.setLocationDescription(locationDescription.getValue());
+                    locationEntity.setIdUser(SecurityUtils.getAuthentication().getDetails().getId());
+                    locationEntity.setDateCreate(new Date());
+                    locationEntity.setDelete(0);
 
-                try{
-                    locationService.saveAll(locationEntity);
-                    UI.getCurrent().navigate(StorageSearch.class);
+                    try {
+                        locationService.saveAll(locationEntity);
+                        UI.getCurrent().navigate(StorageSearch.class);
+                    } catch (Exception ex) {
+                        Notification.show("Не могу создать локацию! " + ex.getMessage(), 5000, Notification.Position.MIDDLE);
+                    }
                 }
-                catch (Exception ex) {
-                    Notification.show("Не могу создать локацию! " + ex.getMessage(), 5000, Notification.Position.MIDDLE);
+                else {
+                    Notification.show("Внимание! Локация с таким названием уже существует!", 5000, Notification.Position.MIDDLE);
+                    return;
                 }
+            }
+            else {
+                Notification.show("Внимание! Не все поля заполнены!", 5000, Notification.Position.MIDDLE);
+                return;
             }
         });
     }

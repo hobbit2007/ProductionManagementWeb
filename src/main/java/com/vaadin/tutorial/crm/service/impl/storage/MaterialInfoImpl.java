@@ -83,7 +83,7 @@ public class MaterialInfoImpl implements MaterialInfoService {
         if (materialInfoEntity != null)
             materialInfoRepository.updateMaterialInfoStorageCell(materialInfoEntity.getFlagMove(), materialInfoEntity.getIdStorage(),
                     materialInfoEntity.getIdCell(), materialInfoEntity.getBalance(), materialInfoEntity.getExpense(),
-                    materialInfoEntity.getId());
+                    materialInfoEntity.getId(), materialInfoEntity.getIdLocation());
         else
             Notification.show("Нет данных для обновления!", 5000, Notification.Position.MIDDLE);
     }

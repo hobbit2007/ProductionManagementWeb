@@ -36,4 +36,12 @@ public class SupplierImpl implements SupplierService {
     public List<SupplierEntity> getCheckSupplier(String supplierName) {
         return supplierRepository.getCheckSupplier(supplierName);
     }
+
+    @Override
+    public void updateSupplier(SupplierEntity supplierEntity) {
+        if (supplierEntity != null)
+            supplierRepository.updateSupplier(supplierEntity.getSupplierName(), supplierEntity.getId(), supplierEntity.getContract());
+        else
+            Notification.show("Нет данных для обновления поставщика!", 3000, Notification.Position.MIDDLE);
+    }
 }

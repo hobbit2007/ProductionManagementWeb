@@ -54,13 +54,18 @@ public class MaterialInfoImpl implements MaterialInfoService {
     }
 
     @Override
-    public List<MaterialInfoEntity> getAllByStorage(Long idStorage, Long locationID) {
-        return materialInfoRepository.getAllByStorage(idStorage, locationID);
+    public List<MaterialInfoEntity> getAllByStorage(Long idStorage) {
+        return materialInfoRepository.getAllByStorage(idStorage);
     }
 
     @Override
-    public List<MaterialInfoEntity> getAllByStorageCell(Long idStorage, Long idCell) {
-        return materialInfoRepository.getAllByStorageCell(idStorage, idCell);
+    public List<MaterialInfoEntity> getAllByStorageLocation(Long idStorage, Long locationID) {
+        return materialInfoRepository.getAllByStorageLocation(idStorage, locationID);
+    }
+
+    @Override
+    public List<MaterialInfoEntity> getAllByStorageCell(Long idStorage, Long idCell, Long idLocation) {
+        return materialInfoRepository.getAllByStorageCell(idStorage, idCell, idLocation);
     }
 
     @Override

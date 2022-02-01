@@ -33,4 +33,11 @@ public interface LocationService {
      * @return - возвращает массив содержащий свойства локации, если она существует в БД
      */
     List<LocationEntity> getCheckLocation(String locationName);
+
+    /**
+     * Метод для поиска всех локаций принадлежащих складу
+     * @param storageID - id склада
+     * @return - возвращает массив всех локаций по заданному id склада
+     */
+    List<LocationEntity> getFindLocationByStorageID(Long storageID);
 }

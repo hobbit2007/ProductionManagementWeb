@@ -20,4 +20,10 @@ public interface SupplierService {
      * @return - возвращает массив свойств поставщика, если он есть в БД
      */
     List<SupplierEntity> getCheckSupplier(String supplierName);
+
+    /**
+     * Метод, который обновляет имя поставщика и номер контракта
+     * @param supplierEntity - объект класса SupplierEntity
+     */
+    void updateSupplier(SupplierEntity supplierEntity);
 }

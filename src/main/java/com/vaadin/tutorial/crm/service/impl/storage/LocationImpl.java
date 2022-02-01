@@ -43,4 +43,9 @@ public class LocationImpl implements LocationService {
         else
             Notification.show("Нет данных для обновления локации!", 3000, Notification.Position.MIDDLE);
     }
+
+    @Override
+    public List<LocationEntity> getCheckLocation(String locationName) {
+        return locationRepository.getCheckLocation(locationName);
+    }
 }

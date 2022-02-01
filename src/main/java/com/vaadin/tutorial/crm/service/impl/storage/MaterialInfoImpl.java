@@ -106,4 +106,9 @@ public class MaterialInfoImpl implements MaterialInfoService {
         else
             Notification.show("Нет данных для обновления!", 5000, Notification.Position.MIDDLE);
     }
+
+    @Override
+    public String findByLastArticle() {
+        return materialInfoRepository.findByLastArticle();
+    }
 }

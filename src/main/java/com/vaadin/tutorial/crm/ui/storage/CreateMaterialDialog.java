@@ -91,7 +91,7 @@ public class CreateMaterialDialog extends Dialog {
                 storage.setEnabled(true);
                 locationID = e.getValue().getId();
                 storage.setRequired(true);
-                storage.setItems(storageService.getStorageByLocationID(locationID));
+                storage.setItems(storageService.getAll());
                 storage.setItemLabelGenerator(StorageEntity::getStorageName);
             }
             else

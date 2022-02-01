@@ -108,23 +108,28 @@ public class StorageSearch extends Scroller {
         locationSelect = new ComboBox<>();
         locationSelect.setLabel("Выберите локацию:");
         locationSelect.setWidth("270px");
-        locationSelect.setItems(locationService.getAll());
-        ItemLabelGenerator<LocationEntity> itemLabelGenerator = locationEntity -> locationEntity.getLocationName() + " - " + locationEntity.getLocationDescription();
-        locationSelect.setItemLabelGenerator(itemLabelGenerator);
+        locationSelect.setEnabled(false);
+
         storageSelect = new ComboBox<>();
         storageSelect.setLabel("Выберите склад:");
         storageSelect.setWidth("270px");
-        storageSelect.setEnabled(false);
+        storageSelect.setEnabled(true);
+        storageSelect.setItems(storageService.getAll());
+        storageSelect.setItemLabelGenerator(StorageEntity::getStorageName);
         locationSelect.addValueChangeListener(e -> {
         if (e.getValue() != null) {
             locationID = e.getValue().getId();
-            storageSelect.setEnabled(true);
-            storageSelect.setItems(storageService.getAll());
-            storageSelect.setItemLabelGenerator(StorageEntity::getStorageName);
+            cellSelect.setEnabled(true);
+            cellSelect.setEnabled(true);
+            cellSelect.setItems(cellService.getAll(storageID, locationID));
+            cellSelect.setItemLabelGenerator(CellEntity::getCellName);
+            updateGridStoreLocation();
         }
         else
-            storageSelect.setEnabled(false);
+            cellSelect.setEnabled(false);
         });
+
+
 
         cellSelect = new ComboBox<>();
         cellSelect.setLabel("Выберите ячейку:");
@@ -149,7 +154,7 @@ public class StorageSearch extends Scroller {
         hSearch.add(articleNumber, btnArticleSearch, materialName, btnMaterialSearch);
         hSearch.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.BASELINE);
 
-        hSelect.add(locationSelect, storageSelect, cellSelect);
+        hSelect.add(storageSelect, locationSelect, cellSelect);
 
         vSearch.add(hSelect, hSearch);
         vSearch.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
@@ -167,15 +172,16 @@ public class StorageSearch extends Scroller {
                 articleNumber.setEnabled(true);
                 btnArticleSearch.setEnabled(true);
                 materialName.setEnabled(true);
+                locationSelect.setItems(locationService.getFindLocationByStorageID(storageID));
+                ItemLabelGenerator<LocationEntity> itemLabelGenerator = locationEntity -> locationEntity.getLocationName() + " - " + locationEntity.getLocationDescription();
+                locationSelect.setItemLabelGenerator(itemLabelGenerator);
+                locationSelect.setEnabled(true);
 
-                cellSelect.setEnabled(true);
-                cellSelect.setItems(cellService.getAll(storageID));
-                cellSelect.setItemLabelGenerator(CellEntity::getCellName);
 
                 btnMaterialSearch.setEnabled(true);
 
                 updateGridStore();
-                materialName.setItems(materialInfoService.getAllByStorage(storageID, locationID));
+                materialName.setItems(materialInfoService.getAllByStorage(storageID));
                 materialName.setItemLabelGenerator(MaterialInfoEntity::getMaterialName);
             }
         });
@@ -183,7 +189,7 @@ public class StorageSearch extends Scroller {
            if (e.getValue() != null) {
                cellID = e.getValue().getId();
                updateGridStoreCell();
-               materialName.setItems(materialInfoService.getAllByStorageCell(storageID, cellID));
+               materialName.setItems(materialInfoService.getAllByStorageCell(storageID, cellID, locationID));
                materialName.setItemLabelGenerator(MaterialInfoEntity::getMaterialName);
            }
         });
@@ -244,12 +250,17 @@ public class StorageSearch extends Scroller {
     }
     private void updateGridStore() {
         dataProvider = new ListDataProvider<>(
-                materialInfoService.getAllByStorage(storageID, locationID));
+                materialInfoService.getAllByStorage(storageID));
+        grid.setItems(dataProvider);
+    }
+    private void updateGridStoreLocation() {
+        dataProvider = new ListDataProvider<>(
+                materialInfoService.getAllByStorageLocation(storageID, locationID));
         grid.setItems(dataProvider);
     }
     private void updateGridStoreCell() {
         dataProvider = new ListDataProvider<>(
-                materialInfoService.getAllByStorageCell(storageID, cellID));
+                materialInfoService.getAllByStorageCell(storageID, cellID, locationID));
         grid.setItems(dataProvider);
     }
     private void updateGridArticle() {

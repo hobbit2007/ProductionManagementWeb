@@ -38,20 +38,27 @@ public interface MaterialInfoService {
     void updatePrihod(MaterialInfoEntity materialInfoEntity);
 
     /**
-     * Метод совершающий поиск по заданному складу
+     * Метод совершает поиск всех объектов хранения в заданном складе
      * @param idStorage - id склада
-     * @param locationID - id локации
      * @return - возвращает набор данных по выбранному складу
      */
-    List<MaterialInfoEntity> getAllByStorage(Long idStorage, Long locationID);
+    List<MaterialInfoEntity> getAllByStorage(Long idStorage);
 
     /**
-     * Метод совершающий поиск по заданному складу и ячейке
+     * Метод совершающий поиск всех объектов хранения по заданному складу и локации
+     * @param idStorage - id склада
+     * @param locationID - id локации
+     * @return - возвращает набор данных по выбранному складу и локации
+     */
+    List<MaterialInfoEntity> getAllByStorageLocation(Long idStorage, Long locationID);
+
+    /**
+     * Метод совершающий поиск всех объектов хранения по заданному складу, локации и ячейке
      * @param idStorage - id склада
      * @param idCell - id ячейки
-     * @return - возвращает набор данных по выбранному складу и ячейке
+     * @return - возвращает набор данных по выбранному складу, локации и ячейке
      */
-    List<MaterialInfoEntity> getAllByStorageCell(Long idStorage, Long idCell);
+    List<MaterialInfoEntity> getAllByStorageCell(Long idStorage, Long idCell, Long idLocation);
 
     /**
      * Метод совершающий поиск по заданному артикулу

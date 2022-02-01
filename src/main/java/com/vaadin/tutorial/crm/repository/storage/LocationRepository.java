@@ -25,7 +25,7 @@ public interface LocationRepository extends JpaRepository<LocationEntity, Long> 
 
     //Запрос проверяет наличие локации в БД
     @Query("select sl from store_location sl where sl.locationName = :locationName and sl.delete = 0")
-    List<StorageEntity> getCheckLocation(@Param("locationName") String locationName);
+    List<LocationEntity> getCheckLocation(@Param("locationName") String locationName);
 
     //Обновляем имя и описание локации
     @Modifying

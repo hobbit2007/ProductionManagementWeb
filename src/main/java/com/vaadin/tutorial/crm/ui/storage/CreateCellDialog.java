@@ -77,7 +77,7 @@ public class CreateCellDialog extends Dialog {
             if (e.getValue() != null) {
                 storage.setEnabled(true);
                 locationID = e.getValue().getId();
-                storage.setItems(storageService.getStorageByLocationID(locationID));
+                storage.setItems(storageService.getAll());
                 storage.setItemLabelGenerator(StorageEntity::getStorageName);
             }
             else

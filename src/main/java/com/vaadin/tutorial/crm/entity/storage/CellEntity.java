@@ -25,4 +25,5 @@ public class CellEntity implements Serializable {
     private long idUser;
     private Date dateCreate;
     private long delete;
+    private long idLocation;
 }

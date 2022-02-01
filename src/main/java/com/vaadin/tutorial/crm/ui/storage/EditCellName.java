@@ -1,5 +1,6 @@
 package com.vaadin.tutorial.crm.ui.storage;
 
+import com.vaadin.flow.component.ItemLabelGenerator;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -76,30 +77,31 @@ public class EditCellName extends Dialog {
         cancel.getStyle().set("background-color", "#d3b342");
         cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        store.setEnabled(false);
+        store.setItems(storageService.getAll());
+        store.setItemLabelGenerator(StorageEntity::getStorageName);
+
+        location.setEnabled(false);
         location.setWidth("255px");
         location.setRequired(true);
-        location.setItems(this.locationService.getAll());
-        location.setItemLabelGenerator(LocationEntity::getLocationName);
+
         location.addValueChangeListener(e -> {
             if (e.getValue() != null) {
-                store.setEnabled(true);
                 locationID = e.getValue().getId();
-                store.setItems(storageService.getAll());
-                store.setItemLabelGenerator(StorageEntity::getStorageName);
+                grid.setEnabled(true);
+                updateGrid(storeID, locationID);
             }
-            else
-                store.setEnabled(false);
         });
         store.addValueChangeListener(e -> {
            if (e.getValue() != null) {
                storeID = e.getValue().getId();
-               grid.setEnabled(true);
-               updateGrid(storeID);
+               location.setEnabled(true);
+               location.setItems(this.locationService.getFindLocationByStorageID(storeID));
+               ItemLabelGenerator<LocationEntity> itemLabelGenerator = locationEntity -> locationEntity.getLocationName() + " - " + locationEntity.getLocationDescription();
+               location.setItemLabelGenerator(itemLabelGenerator);
            }
         });
 
-        hMain.add(location, store);
+        hMain.add(store, location);
         vMain.add(new AnyComponent().labelTitle("Редактирование имени ячейки"), hMain, grid, cancel);
         vMain.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         vMain.setSizeFull();
@@ -197,9 +199,9 @@ public class EditCellName extends Dialog {
 
         colCellName.setResizable(true);
     }
-    private void updateGrid(Long storeID) {
+    private void updateGrid(Long storeID, Long locationID) {
         dataProvider = new ListDataProvider<>(
-                cellService.getAll(storeID));
+                cellService.getAll(storeID, locationID));
         grid.setItems(dataProvider);
     }
 }

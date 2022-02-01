@@ -119,7 +119,7 @@ public class StorageSearch extends Scroller {
         if (e.getValue() != null) {
             locationID = e.getValue().getId();
             storageSelect.setEnabled(true);
-            storageSelect.setItems(storageService.getStorageByLocationID(locationID));
+            storageSelect.setItems(storageService.getAll());
             storageSelect.setItemLabelGenerator(StorageEntity::getStorageName);
         }
         else

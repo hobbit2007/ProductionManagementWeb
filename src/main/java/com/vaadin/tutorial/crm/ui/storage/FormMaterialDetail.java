@@ -377,15 +377,15 @@ public class FormMaterialDetail extends FormLayout {
             Div pricePrefixMarket = new Div();
             pricePrefixMarket.setText("₽");
 
-            location.setValue(materialInfoEntity.getLocationEntity().getLocationName());
-            location.getElement().setAttribute("data-title", location.getValue());
-            location.setClassName("tooltip");
-            location.setReadOnly(true);
-
             storage.setValue(materialInfoEntity.getStorage().getStorageName());
             storage.getElement().setAttribute("data-title", storage.getValue());
             storage.setClassName("tooltip");
             storage.setReadOnly(true);
+
+            location.setValue(materialInfoEntity.getLocationEntity().getLocationName() + "-" + materialInfoEntity.getLocationEntity().getLocationDescription());
+            location.getElement().setAttribute("data-title", location.getValue());
+            location.setClassName("tooltip");
+            location.setReadOnly(true);
 
             cell.setValue(materialInfoEntity.getCell().getCellName());
             cell.setReadOnly(true);

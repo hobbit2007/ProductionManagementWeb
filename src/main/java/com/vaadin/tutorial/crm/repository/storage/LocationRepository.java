@@ -1,6 +1,7 @@
 package com.vaadin.tutorial.crm.repository.storage;
 
 import com.vaadin.tutorial.crm.entity.storage.LocationEntity;
+import com.vaadin.tutorial.crm.entity.storage.StorageEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,6 +22,10 @@ public interface LocationRepository extends JpaRepository<LocationEntity, Long> 
     //Поиск локации по ID
     @Query("select sl from store_location sl where sl.id = :locationID and sl.delete = 0")
     List<LocationEntity> getFindLocationByID(@Param("locationID") Long locationID);
+
+    //Запрос проверяет наличие локации в БД
+    @Query("select sl from store_location sl where sl.locationName = :locationName and sl.delete = 0")
+    List<StorageEntity> getCheckLocation(@Param("locationName") String locationName);
 
     //Обновляем имя и описание локации
     @Modifying

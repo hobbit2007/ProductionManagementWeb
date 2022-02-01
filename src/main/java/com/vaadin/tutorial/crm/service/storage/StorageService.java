@@ -43,5 +43,5 @@ public interface StorageService {
      * @param locationID - id локации
      * @return - возвращает список складов в выбранной локации
      */
-    List<StorageEntity> getStorageByLocationID(Long locationID);
+    //List<StorageEntity> getStorageByLocationID(Long locationID);
 }

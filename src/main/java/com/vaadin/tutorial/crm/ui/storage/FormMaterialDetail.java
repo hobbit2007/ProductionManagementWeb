@@ -303,25 +303,25 @@ public class FormMaterialDetail extends FormLayout {
                 MaterialInfoEntity materialInfoEntity = new MaterialInfoEntity();
                 ChangePriceEntity changePriceEntity = new ChangePriceEntity();
                 costPrice.setReadOnly(true);
-                marketPrice.setReadOnly(true);
+                marketPrice.setReadOnly(false);
 
                 try {
-                    if (!costPrice.isEmpty() && !marketPrice.isEmpty() && materialID != 0) {
+                    if (!costPrice.isEmpty() && materialID != 0) {
 
                         materialInfoEntity.setId(materialID);
                         materialInfoEntity.setCostPrice(Precision.round(costPrice.getValue(), 2));
-                        materialInfoEntity.setMarketPrice(Precision.round(marketPrice.getValue(), 2));
+                        materialInfoEntity.setMarketPrice(Precision.round(costPrice.getValue(), 2));
                         materialInfoEntity.setDiffPrice(Precision.round(materialInfoEntity.getMarketPrice() - materialInfoEntity.getCostPrice(), 2));
 
                         materialInfoService.updatePrice(materialInfoEntity);
 
-                        if (!costPrice.isEmpty() && !marketPrice.isEmpty()) {
+                        if (!costPrice.isEmpty()) {
                             changePriceEntity.setIdMaterial(materialID);
                             changePriceEntity.setCostPriceOld(costPriceOld);
-                            changePriceEntity.setMarketPriceOld(marketPriceOld);
+                            changePriceEntity.setMarketPriceOld(costPriceOld);
                             changePriceEntity.setDiffPriceOld(diffPriceOld);
                             changePriceEntity.setCostPriceNew(costPrice.getValue());
-                            changePriceEntity.setMarketPriceNew(marketPrice.getValue());
+                            changePriceEntity.setMarketPriceNew(costPrice.getValue());
                             changePriceEntity.setDiffPriceNew(changePriceEntity.getMarketPriceNew() - changePriceEntity.getCostPriceNew());
                             changePriceEntity.setIdUserCreate(SecurityUtils.getAuthentication().getDetails().getId());
                             changePriceEntity.setDateCreate(new Date());

@@ -119,6 +119,7 @@ public class CreateMaterialDialog extends Dialog {
         costPrice.setValue(0.00);
         marketPrice.setRequiredIndicatorVisible(true);
         marketPrice.setValue(0.00);
+        marketPrice.setReadOnly(true);
 
         Icon icon1 = new Icon(VaadinIcon.DISC);
         save.setIcon(icon1);
@@ -147,7 +148,7 @@ public class CreateMaterialDialog extends Dialog {
                location.setItems(locationService.getFindLocationByStorageID(storageID));
                ItemLabelGenerator<LocationEntity> itemLabelGenerator = locationEntity -> locationEntity.getLocationName() + " - " + locationEntity.getLocationDescription();
                location.setItemLabelGenerator(itemLabelGenerator);
-               article.setValue(createArticle(materialInfoService.findByLastArticle(), storageService.getFindStorageByID(storageID).get(0).getShortName()));
+               //article.setValue(createArticle(materialInfoService.findByLastArticle(), storageService.getFindStorageByID(storageID).get(0).getShortName()));
            }
         });
         cell.addValueChangeListener(e -> {
@@ -157,6 +158,7 @@ public class CreateMaterialDialog extends Dialog {
         meas.addValueChangeListener(e -> {
            if (e.getValue() != null)
                measID = e.getValue().getId();
+               article.setValue(createArticle(materialInfoService.findByLastArticle(), storageService.getFindStorageByID(storageID).get(0).getShortName(), e.getValue().getMeasName()));
         });
 
         hMain1.add(storage, location, cell);
@@ -202,7 +204,7 @@ public class CreateMaterialDialog extends Dialog {
                         materialInfoEntity.setIdUser(SecurityUtils.getAuthentication().getDetails().getId());
                         materialInfoEntity.setWriteoff(0L);
                         materialInfoEntity.setCostPrice(costPrice.getValue());
-                        materialInfoEntity.setMarketPrice(marketPrice.getValue());
+                        materialInfoEntity.setMarketPrice(costPrice.getValue());
                         materialInfoEntity.setDiffPrice(marketPrice.getValue() - costPrice.getValue());
                         materialInfoEntity.setFlagMove(0L);
                         materialInfoEntity.setDelete(0L);
@@ -240,9 +242,10 @@ public class CreateMaterialDialog extends Dialog {
      * Метод для формирования артикула в формате SSS-NNNNN_YY
      * @param article - Последний сгенерированный артикул
      * @param shortStoreName - Короткое название склада в котором будет храниться объект
+     * @param meas - Единица измерения объекта хранения
      * @return - Возвращает новый артикул в заданном формате
      */
-    private String createArticle(String article, String shortStoreName) {
+    private String createArticle(String article, String shortStoreName, String meas) {
 
         int givenNumber;
         String formattedNumber;
@@ -258,7 +261,7 @@ public class CreateMaterialDialog extends Dialog {
         formattedNumber = String.format("%05d", givenNumber);
         lastTwoDigits = Calendar.getInstance().get(Calendar.YEAR) % 100; //Получаем последние 2 цифры текущего года
 
-        return shortStoreName +"-"+ formattedNumber+"-"+lastTwoDigits;
+        return shortStoreName +"-"+ formattedNumber+"-"+lastTwoDigits+"-"+meas;
     }
 
 }

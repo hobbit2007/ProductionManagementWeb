@@ -50,7 +50,7 @@ import java.util.List;
 public class PrihodLabelPrint extends Dialog {
     PrintPreviewReport<DataLabel> report;
     Anchor pdf;
-    private final String path = "D:\\Book\\QRCode_"+System.currentTimeMillis() / 1000L+".png";
+    private final String path = "/opt/uploads/prihod/QRCode_"+System.currentTimeMillis() / 1000L+".png";//D:\Book\QRCode_
     Button close = new Button("Закрыть");
     HorizontalLayout hMain = new HorizontalLayout();
     VerticalLayout vMain = new VerticalLayout();

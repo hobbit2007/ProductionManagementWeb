@@ -111,4 +111,9 @@ public class MaterialInfoImpl implements MaterialInfoService {
     public String findByLastArticle() {
         return materialInfoRepository.findByLastArticle();
     }
+
+    @Override
+    public void updateQrField(String path, Long id) {
+        materialInfoRepository.updateQrField(path, id);
+    }
 }

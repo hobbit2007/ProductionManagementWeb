@@ -3,9 +3,12 @@ package com.vaadin.tutorial.crm.ui.storage;
 import ar.com.fdvs.dj.domain.AutoText;
 import ar.com.fdvs.dj.domain.ImageBanner;
 import ar.com.fdvs.dj.domain.Style;
+import ar.com.fdvs.dj.domain.builders.ColumnBuilder;
 import ar.com.fdvs.dj.domain.builders.StyleBuilder;
 import ar.com.fdvs.dj.domain.constants.Font;
 import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
+import ar.com.fdvs.dj.domain.constants.Page;
+import ar.com.fdvs.dj.domain.constants.VerticalAlign;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -61,32 +64,29 @@ public class PrihodLabelPrint extends Dialog {
             Font fontColumn = new Font(12, "Times New Roman", "/fonts/times.ttf", Font.PDF_ENCODING_CP1251_Cyrillic, true);
             Style columnStyle = new StyleBuilder(true)
                     .setFont(fontColumn)
-                    .setHorizontalAlign(HorizontalAlign.CENTER)
+                    .setVerticalAlign(VerticalAlign.MIDDLE)
                     .build();
             Style materialStyle = new StyleBuilder(true)
                     .setFont(fontHeader)
                     //.setPaddingLeft(10)
                     .setPaddingTop(-5)
                     .build();
+            Page page = new Page();
+            page.setWidth(303);
+            page.setHeight(379);
 
             report = new PrintPreviewReport<>();
 
             report.getReportBuilder()
                     .setMargins(2, 2, 4, 4)
-                    .setTitleHeight(0)
-                    .setDetailHeight(0)
-                    .setSubtitleHeight(0)
-                    .setFooterVariablesHeight(0)
-                    .setGlobalFooterVariableHeight(0)
-                    .setGlobalHeaderVariableHeight(0)
-                    .setHeaderHeight(0)
+                    .setPageSizeAndOrientation(page)
                     .setPrintBackgroundOnOddRows(true)
-                    .addAutoText(dataLabels.get(0).getMaterialInfo(), AutoText.POSITION_HEADER, AutoText.ALIGMENT_LEFT, 200, materialStyle)
-                    .addAutoText("Склад: " + dataLabels.get(0).getStorage(), AutoText.POSITION_HEADER, AutoText.ALIGMENT_LEFT, 200, columnStyle)
-                    .addAutoText("Ячейка: " + dataLabels.get(0).getCell(), AutoText.POSITION_HEADER, AutoText.ALIGMENT_LEFT, 200, columnStyle)
-                    .addAutoText("Производитель: " + dataLabels.get(0).getSupplier(), AutoText.POSITION_HEADER, AutoText.ALIGMENT_LEFT, 200, columnStyle)
-                    .addAutoText("Артикул: " + dataLabels.get(0).getArticle(), AutoText.POSITION_HEADER, AutoText.ALIGMENT_LEFT, 200, columnStyle)
-                    .addImageBanner(path, 75, 75, ImageBanner.Alignment.Left);
+                    .addAutoText(dataLabels.get(0).getMaterialInfo(), AutoText.POSITION_HEADER, AutoText.ALIGMENT_CENTER, 300, materialStyle)
+                    .addAutoText("Склад: " + dataLabels.get(0).getStorage(), AutoText.POSITION_HEADER, AutoText.ALIGMENT_CENTER, 300, columnStyle)
+                    .addAutoText("Ячейка: " + dataLabels.get(0).getCell(), AutoText.POSITION_HEADER, AutoText.ALIGMENT_CENTER, 300, columnStyle)
+                    .addAutoText("Производитель: " + dataLabels.get(0).getSupplier(), AutoText.POSITION_HEADER, AutoText.ALIGMENT_CENTER, 300, columnStyle)
+                    .addAutoText("Артикул: " + dataLabels.get(0).getArticle(), AutoText.POSITION_HEADER, AutoText.ALIGMENT_CENTER, 300, columnStyle)
+                    .addImageBanner(path, 75, 75, ImageBanner.Alignment.Center);
 
             report.setItems(dataLabels);
 
@@ -112,7 +112,7 @@ public class PrihodLabelPrint extends Dialog {
             add(vMain);
 
             try {
-                //materialInfoService.updateQrField(path, id);
+                materialInfoService.updateQrField(path, id);
             }
             catch (Exception ex) {
                 Notification.show("Не могу записать путь к qr коду" + ex.getMessage(), 5000, Notification.Position.MIDDLE);

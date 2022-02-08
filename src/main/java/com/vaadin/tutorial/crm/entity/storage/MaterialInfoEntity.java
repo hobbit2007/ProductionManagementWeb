@@ -37,6 +37,7 @@ public class MaterialInfoEntity implements Serializable {
     private long idLocation;
     private long idSupplier;
     private String description;
+    private String qrNewMaterial;
 
     @ManyToOne
     @JoinColumn(name = "idStorage", referencedColumnName = "id", insertable = false, updatable = false)

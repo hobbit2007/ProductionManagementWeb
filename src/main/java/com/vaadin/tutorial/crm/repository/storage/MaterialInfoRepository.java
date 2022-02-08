@@ -84,4 +84,10 @@ public interface MaterialInfoRepository extends JpaRepository<MaterialInfoEntity
     @Query("select mi.article from materialinfo mi where mi.id = (select max(id) from materialinfo )")
     String findByLastArticle();
 
+    //Обновляем путь к qr коду
+    @Modifying
+    @Transactional
+    @Query("update materialinfo mi set mi.qrNewMaterial = :qrNewMaterial where mi.id = :id")
+    void updateQrField(@Param("qrNewMaterial") String qrNewMaterial, @Param("id") long id);
+
 }

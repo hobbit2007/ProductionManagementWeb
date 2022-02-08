@@ -225,7 +225,7 @@ public class CreateMaterialDialog extends Dialog {
                         materialInfoEntity.setDescription(description.getValue());
                         materialInfoEntity.setQrNewMaterial("empty");
                         try {
-                            //materialInfoService.saveAll(materialInfoEntity);
+                            materialInfoService.saveAll(materialInfoEntity);
                             //UI.getCurrent().navigate(StorageSearch.class);
                             //close();
                             printLabel.setEnabled(true);
@@ -253,6 +253,7 @@ public class CreateMaterialDialog extends Dialog {
             }
         });
         printLabel.addClickListener(e -> {
+            Dialog prihodLabelPrint;
             List<DataLabel> dataLabelList = new ArrayList<>();
             DataLabel dataLabel = new DataLabel();
             dataLabel.setStorage(storage.getValue().getStorageName());
@@ -263,9 +264,16 @@ public class CreateMaterialDialog extends Dialog {
 
             dataLabelList.add(dataLabel);
 
-            new PrihodLabelPrint(dataLabelList, materialInfoEntity.getId(), materialInfoService).open();
-            UI.getCurrent().navigate(StorageSearch.class);
-            close();
+            prihodLabelPrint = new PrihodLabelPrint(dataLabelList, materialInfoEntity.getId(), materialInfoService);
+            try {
+                prihodLabelPrint.open();
+                UI.getCurrent().navigate(StorageSearch.class);
+                close();
+            }
+            catch (Exception ex) {
+                Notification.show("Не могу открыть этикетку!"+ex.getMessage(), 5000, Notification.Position.MIDDLE);
+                prihodLabelPrint.close();
+            }
         });
     }
     /**

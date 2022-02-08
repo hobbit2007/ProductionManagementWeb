@@ -105,4 +105,11 @@ public interface MaterialInfoService {
      * @return - возвращает сгенерированный новый артикул
      */
     String findByLastArticle();
+
+    /**
+     * Метод записывает путь к изображению QR кода
+     * @param path - путь к файлу с изображением qr кода
+     * @param id - id объекта хранения
+     */
+    void updateQrField(String path, Long id);
 }

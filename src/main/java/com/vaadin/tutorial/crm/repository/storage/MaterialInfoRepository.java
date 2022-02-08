@@ -37,9 +37,9 @@ public interface MaterialInfoRepository extends JpaRepository<MaterialInfoEntity
     @Query("select mi from materialinfo mi where mi.delete = 0 and mi.writeoff = 0 and mi.materialName = :materialName and mi.idStorage = :idStorage order by mi.dateCreate asc")
     List<MaterialInfoEntity> getAllByMaterialName(@Param("materialName") String materialName, @Param("idStorage") Long idStorage);
 
-    //Проверяем наличие объекта хранения по артикулу в БД
-    @Query("select mi from materialinfo mi where mi.article = :article and mi.writeoff = 0 and mi.delete = 0")
-    List<MaterialInfoEntity> getCheckArticle(@Param("article") String article);
+    //Проверяем наличие объекта хранения по названию объекта хранения в БД
+    @Query("select mi from materialinfo mi where mi.materialName = :materialName and mi.writeoff = 0 and mi.delete = 0")
+    List<MaterialInfoEntity> getCheckArticle(@Param("materialName") String materialName);
 
     //Проверяем наличие объекта хранения по ID в БД
     @Query("select mi from materialinfo mi where mi.id = :id and mi.delete = 0")
@@ -81,7 +81,7 @@ public interface MaterialInfoRepository extends JpaRepository<MaterialInfoEntity
                      @Param("id") long id);
 
     //Получаем последний артикул из таблицы materialinfo для генерации следующего
-    @Query("select mi.article from materialinfo mi where mi.id = (select max(id) from materialinfo )")
+    @Query("select mi.article from materialinfo mi where mi.id = (select max(m.id) from materialinfo m where m.delete = 0)")
     String findByLastArticle();
 
     //Обновляем путь к qr коду

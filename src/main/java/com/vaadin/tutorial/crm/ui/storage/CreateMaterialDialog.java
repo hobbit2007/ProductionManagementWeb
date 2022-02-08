@@ -20,13 +20,17 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.tutorial.crm.entity.storage.*;
+import com.vaadin.tutorial.crm.model.DataLabel;
 import com.vaadin.tutorial.crm.security.SecurityUtils;
 import com.vaadin.tutorial.crm.service.storage.*;
 import com.vaadin.tutorial.crm.ui.component.AnyComponent;
 import com.vaadin.tutorial.crm.ui.layout.StorageLayout;
+import com.vaadin.tutorial.crm.ui.report.PowerResourceReport;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Класс реализующий добавление нового объекта хранения
@@ -55,6 +59,7 @@ public class CreateMaterialDialog extends Dialog {
     TextArea description = new TextArea("Описание:");
     Button save = new Button("Сохранить");
     Button cancel = new Button("Отмена");
+    Button printLabel = new Button("Печать этикетки");
     long storageID = 0;
     long cellID = 0;
     long measID = 0;
@@ -66,6 +71,7 @@ public class CreateMaterialDialog extends Dialog {
     private final MeasService measService;
     private final LocationService locationService;
     private final SupplierService supplierService;
+    MaterialInfoEntity materialInfoEntity = new MaterialInfoEntity();
 
     public CreateMaterialDialog(StorageService storageService, CellService cellService, MaterialInfoService materialInfoService, MeasService measService,
                                 LocationService locationService, SupplierService supplierService) {
@@ -131,6 +137,12 @@ public class CreateMaterialDialog extends Dialog {
         cancel.getStyle().set("background-color", "#d3b342");
         cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+        Icon icon3 = new Icon(VaadinIcon.PRINT);
+        printLabel.setIcon(icon3);
+        printLabel.getStyle().set("background-color", "#d3b342");
+        printLabel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        printLabel.setEnabled(false);
+
         description.setValue("Без описания");
 
         supplier.setItems(supplierService.getAll());
@@ -173,11 +185,11 @@ public class CreateMaterialDialog extends Dialog {
         hMain4.add(costPrice, marketPrice);
         hMain4.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.BASELINE);
 
-        hButton.add(save, cancel);
+        hButton.add(save, cancel, printLabel);
         hButton.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
 
-        formLayout.add(storage, location, cell, material, article, supplier, description, qty, meas, costPrice, marketPrice, hButton);
-        vMain.add(new AnyComponent().labelTitle("Добавить объект хранения"), formLayout);
+        formLayout.add(storage, location, cell, material, article, supplier, description, qty, meas, costPrice, marketPrice);
+        vMain.add(new AnyComponent().labelTitle("Добавить объект хранения"), formLayout, hButton);
         vMain.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
 
         add(vMain);
@@ -187,7 +199,7 @@ public class CreateMaterialDialog extends Dialog {
             close();
         });
         save.addClickListener(e -> {
-            MaterialInfoEntity materialInfoEntity = new MaterialInfoEntity();
+
             if (!storage.isEmpty() && !cell.isEmpty() && (!material.isEmpty() || material.getValue().length() != 0) && !qty.isEmpty() &&
             !meas.isEmpty() && !costPrice.isEmpty() && !marketPrice.isEmpty() && supplierID != 0) {
                 if (materialInfoService.getCheckArticle(article.getValue()).size() == 0) {
@@ -211,11 +223,14 @@ public class CreateMaterialDialog extends Dialog {
                         materialInfoEntity.setIdLocation(locationID);
                         materialInfoEntity.setIdSupplier(supplierID);
                         materialInfoEntity.setDescription(description.getValue());
-
+                        materialInfoEntity.setQrNewMaterial("empty");
                         try {
-                            materialInfoService.saveAll(materialInfoEntity);
-                            UI.getCurrent().navigate(StorageSearch.class);
-                            close();
+                            //materialInfoService.saveAll(materialInfoEntity);
+                            //UI.getCurrent().navigate(StorageSearch.class);
+                            //close();
+                            printLabel.setEnabled(true);
+                            cancel.setEnabled(false);
+                            save.setEnabled(false);
                         }
                         catch (Exception ex) {
                             Notification.show("Не могу сохранить запись!" + ex.getMessage(), 5000, Notification.Position.MIDDLE);
@@ -236,6 +251,21 @@ public class CreateMaterialDialog extends Dialog {
                 Notification.show("Внимание! Не все поля заполнены!", 5000, Notification.Position.MIDDLE);
                 return;
             }
+        });
+        printLabel.addClickListener(e -> {
+            List<DataLabel> dataLabelList = new ArrayList<>();
+            DataLabel dataLabel = new DataLabel();
+            dataLabel.setStorage(storage.getValue().getStorageName());
+            dataLabel.setCell(cell.getValue().getCellName());
+            dataLabel.setSupplier(supplier.getValue().getSupplierName());
+            dataLabel.setMaterialInfo(material.getValue());
+            dataLabel.setArticle(article.getValue());
+
+            dataLabelList.add(dataLabel);
+
+            new PrihodLabelPrint(dataLabelList, materialInfoEntity.getId(), materialInfoService).open();
+            UI.getCurrent().navigate(StorageSearch.class);
+            close();
         });
     }
     /**

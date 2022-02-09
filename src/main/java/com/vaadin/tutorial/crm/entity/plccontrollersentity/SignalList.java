@@ -25,7 +25,7 @@ public class SignalList implements Externalizable {
     private Long delete;
     private int dbValue;
     private int position;
-    private int offset;
+    private int fOffset;
     private Long idUserCreate;
     private Date dateCreate;
     private Long idController;

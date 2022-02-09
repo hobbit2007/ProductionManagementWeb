@@ -20,4 +20,5 @@ public class HistoryEntity implements Serializable {
     private String action;
     private String createRecordDate;
     private Long delete;
+    private String place;
 }

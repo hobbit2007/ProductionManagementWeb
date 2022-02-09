@@ -35,7 +35,7 @@ public class UpdateValueController extends Thread {
                     synchronized (this) {
                         for (int i = 0; i < element.size(); i++) {
                             element.get(i).getStyle().set("color", "black");
-                            s7Client.ReadArea(S7.S7AreaDB, array.get(i).getDbValue(), 0, array.get(i).getPosition() + array.get(i).getOffset(), buffer);
+                            s7Client.ReadArea(S7.S7AreaDB, array.get(i).getDbValue(), 0, array.get(i).getPosition() + array.get(i).getFOffset(), buffer);
                             float readData = S7.GetFloatAt(buffer, array.get(i).getPosition());
                             double scale = Math.pow(10, 2);
                             element.get(i).setValue(String.valueOf((float) (Math.ceil(readData * scale) / scale)));

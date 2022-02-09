@@ -41,7 +41,7 @@ public class UpdateValueChartWashing extends Thread{
                    synchronized (this) {
                        if (array.size() != 0) {
                            for (int i = 0; i < array.size(); i++) {
-                               s7Client.ReadArea(S7.S7AreaDB, array.get(i).getDbValue(), 0, array.get(i).getPosition() + array.get(i).getOffset(), buffer);
+                               s7Client.ReadArea(S7.S7AreaDB, array.get(i).getDbValue(), 0, array.get(i).getPosition() + array.get(i).getFOffset(), buffer);
                                float readData = S7.GetFloatAt(buffer, array.get(i).getPosition());
                                double scale = Math.pow(10, 2);
                                series.setName(array.get(i).getSignalName());

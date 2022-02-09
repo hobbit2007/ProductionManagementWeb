@@ -17,6 +17,7 @@ import com.vaadin.tutorial.crm.service.plccontrollersservice.SignalListService;
 import com.vaadin.tutorial.crm.ui.admin.AdminPage;
 import com.vaadin.tutorial.crm.ui.component.LabelComponent;
 import com.vaadin.tutorial.crm.ui.plccontrollersui.CreateSignal;
+import com.vaadin.tutorial.crm.ui.plccontrollersui.EditSignal;
 
 /**
 * Класс реализующий шапку и боковое меню для меню Список сигналов
@@ -61,7 +62,7 @@ public class PlcSignalLayout extends AppLayout {
            new CreateSignal(plcControllersService, signalGroupsService, signalListService).open();
         });
 
-        RouterLink editSignal = new RouterLink("Редактировать переменную", AdminPage.class);
+        RouterLink editSignal = new RouterLink("Редактировать переменную", EditSignal.class);
         editSignal.setHighlightCondition(HighlightConditions.sameLocation());
         Icon icon2 = new Icon(VaadinIcon.FILE_PROCESS);
         hMenu2.add(icon2, editSignal);

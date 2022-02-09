@@ -36,4 +36,10 @@ public class SignalListImpl implements SignalListService {
         else
             Notification.show("Нет данных для записи!", 5000, Notification.Position.MIDDLE);
     }
+
+    @Override
+    public void updateValue(SignalList signalList) {
+        signalListRepository.updateValue(signalList.getSignalName(), signalList.getSignalDescription(), signalList.getDbValue(),
+                signalList.getPosition(), signalList.getOffset(), signalList.getIdGroup(), signalList.getId());
+    }
 }

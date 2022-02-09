@@ -17,4 +17,10 @@ public interface SignalListService {
     Long countGroups(Long controllerId);
 
     void saveAll(SignalList signalList);
+
+    /**
+     * Метод, который обновляет некоторые значения в таблице signallist
+     * @param signalList - объект класса SignalList
+     */
+    void updateValue(SignalList signalList);
 }

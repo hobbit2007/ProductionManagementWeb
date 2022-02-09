@@ -136,7 +136,7 @@ public class CreateSignal extends Dialog {
                         signalList.setDelete(0L);
                         signalList.setDbValue(dbNumber.getValue().intValue());
                         signalList.setPosition(positionNumber.getValue().intValue());
-                        signalList.setOffset(offsetNumber.getValue().intValue());
+                        signalList.setFOffset(offsetNumber.getValue().intValue());
                         signalList.setIdUserCreate(SecurityUtils.getAuthentication().getDetails().getId());
                         signalList.setDateCreate(new Date());
                         signalList.setIdController(controllerId);

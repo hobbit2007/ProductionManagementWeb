@@ -68,7 +68,6 @@ public class PlcSignalLayout extends AppLayout {
         hMenu2.add(icon2, editSignal);
 
         addToDrawer(new VerticalLayout(hMenu1, createSignal, hMenu2));
-
         //Закрываем меню на стороне клиента
         //т.к. при первом запуске меню показывается автоматически
         //drawerToggle.clickInClient();

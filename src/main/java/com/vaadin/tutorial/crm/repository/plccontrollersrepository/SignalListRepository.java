@@ -26,9 +26,9 @@ public interface SignalListRepository extends JpaRepository<SignalList, Long> {
     @Modifying
     @Transactional //Добавляем эту аннотацию, чтоб насильно сделать апдейт, даже если он запрещен
     @Query("update signallist sl set sl.signalName = :signalName, sl.signalDescription = :signalDescription, " +
-            "sl.dbValue = :dbValue, sl.position = :position, sl.offset = :offSet, sl.idGroup = :idGroup " +
+            "sl.dbValue = :dbValue, sl.position = :position, sl.fOffset = :offset, sl.idGroup = :idGroup " +
             "where sl.id = :id")
     void updateValue(@Param("signalName") String signalName, @Param("signalDescription") String signalDescription,
                      @Param("dbValue") int dbValue, @Param("position") int position,
-                     @Param("offSet") int offSet, @Param("idGroup") long idGroup, @Param("id") long id);
+                     @Param("offset") int offset, @Param("idGroup") long idGroup, @Param("id") long id);
 }

@@ -35,7 +35,7 @@ public class StartRecordForDrying extends Thread{
                     float readData = -1.00f;
                     for (int i = 0; i < array.size(); i++) {
                         s7Client.ReadArea(S7.S7AreaDB, array.get(i).getDbValue(), 0,
-                                array.get(i).getPosition() + array.get(i).getOffset(), buffer);
+                                array.get(i).getPosition() + array.get(i).getFOffset(), buffer);
                         readData = S7.GetFloatAt(buffer, array.get(i).getPosition());
 
                         double scale = Math.pow(10, 2);

@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Класс модель описывающий поля таблицы history
@@ -18,7 +19,7 @@ public class HistoryEntity implements Serializable {
     private Long id;
     private Long idUser;
     private String action;
-    private String createRecordDate;
+    private Date createRecordDate;
     private Long delete;
     private String place;
 }

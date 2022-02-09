@@ -40,6 +40,6 @@ public class SignalListImpl implements SignalListService {
     @Override
     public void updateValue(SignalList signalList) {
         signalListRepository.updateValue(signalList.getSignalName(), signalList.getSignalDescription(), signalList.getDbValue(),
-                signalList.getPosition(), signalList.getOffset(), signalList.getIdGroup(), signalList.getId());
+                signalList.getPosition(), signalList.getFOffset(), signalList.getIdGroup(), signalList.getId());
     }
 }

@@ -48,32 +48,32 @@ public class StartRecordFor1C extends Thread{
                     for (int i = 0; i < array.size(); i++) {
                         if (array.get(i).getSignalList().getIdController() == 1) {
                             s7ClientWashing.ReadArea(S7.S7AreaDB, array.get(i).getSignalList().getDbValue(), 0,
-                                    array.get(i).getSignalList().getPosition() + array.get(i).getSignalList().getOffset(), buffer);
+                                    array.get(i).getSignalList().getPosition() + array.get(i).getSignalList().getFOffset(), buffer);
                             readData = S7.GetFloatAt(buffer, array.get(i).getSignalList().getPosition());
                         }
                         if (array.get(i).getSignalList().getIdController() == 2) {
                             s7ClientDiffusion.ReadArea(S7.S7AreaDB, array.get(i).getSignalList().getDbValue(), 0,
-                                    array.get(i).getSignalList().getPosition() + array.get(i).getSignalList().getOffset(), buffer);
+                                    array.get(i).getSignalList().getPosition() + array.get(i).getSignalList().getFOffset(), buffer);
                             readData = S7.GetFloatAt(buffer, array.get(i).getSignalList().getPosition());
                         }
                         if (array.get(i).getSignalList().getIdController() == 3) {
                             s7ClientFermentation.ReadArea(S7.S7AreaDB, array.get(i).getSignalList().getDbValue(), 0,
-                                    array.get(i).getSignalList().getPosition() + array.get(i).getSignalList().getOffset(), buffer);
+                                    array.get(i).getSignalList().getPosition() + array.get(i).getSignalList().getFOffset(), buffer);
                             readData = S7.GetFloatAt(buffer, array.get(i).getSignalList().getPosition());
                         }
                         if (array.get(i).getSignalList().getIdController() == 4) {
                             s7Client.ReadArea(S7.S7AreaDB, array.get(i).getSignalList().getDbValue(), 0,
-                                    array.get(i).getSignalList().getPosition() + array.get(i).getSignalList().getOffset(), buffer);
+                                    array.get(i).getSignalList().getPosition() + array.get(i).getSignalList().getFOffset(), buffer);
                             readData = S7.GetFloatAt(buffer, array.get(i).getSignalList().getPosition());
                         }
                         if (array.get(i).getSignalList().getIdController() == 5) {
                             s7ClientBottling.ReadArea(S7.S7AreaDB, array.get(i).getSignalList().getDbValue(), 0,
-                                    array.get(i).getSignalList().getPosition() + array.get(i).getSignalList().getOffset(), buffer);
+                                    array.get(i).getSignalList().getPosition() + array.get(i).getSignalList().getFOffset(), buffer);
                             readData = S7.GetFloatAt(buffer, array.get(i).getSignalList().getPosition());
                         }
                         if (array.get(i).getSignalList().getIdController() == 6) {
                             s7ClientDrying.ReadArea(S7.S7AreaDB, array.get(i).getSignalList().getDbValue(), 0,
-                                    array.get(i).getSignalList().getPosition() + array.get(i).getSignalList().getOffset(), buffer);
+                                    array.get(i).getSignalList().getPosition() + array.get(i).getSignalList().getFOffset(), buffer);
                             readData = S7.GetFloatAt(buffer, array.get(i).getSignalList().getPosition());
                         }
                         double scale = Math.pow(10, 2);

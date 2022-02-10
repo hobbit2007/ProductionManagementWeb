@@ -91,7 +91,7 @@ public class FormSignalDetail extends FormLayout {
                         signalList.setIdGroup(groupID);
                         signalList.setId(varID);
 
-                        historyEntity.setAction("Обновление переменной" + varName.getValue() + " DBValue = " + db.getValue().intValue() + " Position = " + position.getValue().intValue() + " Offset = " + offset.getValue().intValue());
+                        historyEntity.setAction("Обновление переменной: " + varName.getValue() + " DBValue = " + db.getValue().intValue() + " Position = " + position.getValue().intValue() + " Offset = " + offset.getValue().intValue());
                         historyEntity.setPlace("Редактирование переменной ПЛК");
                         historyEntity.setIdUser(SecurityUtils.getAuthentication().getDetails().getId());
                         historyEntity.setCreateRecordDate(new Date());

@@ -11,6 +11,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.tutorial.crm.security.SecurityConfiguration;
+import com.vaadin.tutorial.crm.service.HistoryService;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.PlcControllersService;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.SignalGroupsService;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.SignalListService;
@@ -28,17 +29,19 @@ public class PlcSignalLayout extends AppLayout {
     private final PlcControllersService plcControllersService;
     private final SignalGroupsService signalGroupsService;
     private final SignalListService signalListService;
+    private final HistoryService historyService;
     LabelComponent labelComponent;
     HorizontalLayout hMenu1 = new HorizontalLayout();
     HorizontalLayout hMenu2 = new HorizontalLayout();
     Button createSignal;
 
     public PlcSignalLayout(SecurityConfiguration securityConfiguration, PlcControllersService plcControllersService,
-                           SignalGroupsService signalGroupsService, SignalListService signalListService) {
+                           SignalGroupsService signalGroupsService, SignalListService signalListService, HistoryService historyService) {
         this.securityConfiguration = securityConfiguration;
         this.plcControllersService = plcControllersService;
         this.signalGroupsService = signalGroupsService;
         this.signalListService = signalListService;
+        this.historyService = historyService;
 
         createHeader();
         createDrawer();
@@ -59,7 +62,7 @@ public class PlcSignalLayout extends AppLayout {
         createSignal.getStyle().set("background-color", "#d3b342");
         createSignal.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         createSignal.addClickListener(e -> {
-           new CreateSignal(plcControllersService, signalGroupsService, signalListService).open();
+           new CreateSignal(plcControllersService, signalGroupsService, signalListService, historyService).open();
         });
 
         RouterLink editSignal = new RouterLink("Редактировать переменную", EditSignal.class);

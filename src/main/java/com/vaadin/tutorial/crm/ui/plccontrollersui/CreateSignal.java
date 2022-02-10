@@ -16,10 +16,12 @@ import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.tutorial.crm.entity.HistoryEntity;
 import com.vaadin.tutorial.crm.entity.plccontrollersentity.PlcControllers;
 import com.vaadin.tutorial.crm.entity.plccontrollersentity.SignalGroup;
 import com.vaadin.tutorial.crm.entity.plccontrollersentity.SignalList;
 import com.vaadin.tutorial.crm.security.SecurityUtils;
+import com.vaadin.tutorial.crm.service.HistoryService;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.PlcControllersService;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.SignalGroupsService;
 import com.vaadin.tutorial.crm.service.plccontrollersservice.SignalListService;
@@ -58,7 +60,7 @@ public class CreateSignal extends Dialog {
 
     @Autowired
     public CreateSignal(PlcControllersService plcControllersService, SignalGroupsService signalGroupsService,
-                        SignalListService signalListService) {
+                        SignalListService signalListService, HistoryService historyService) {
         this.plcControllersService = plcControllersService;
         this.signalGroupsService = signalGroupsService;
         this.signalListService = signalListService;
@@ -142,7 +144,15 @@ public class CreateSignal extends Dialog {
                         signalList.setIdController(controllerId);
                         signalList.setIdGroup(signalGroupID);
 
+                        HistoryEntity historyEntity = new HistoryEntity();
+                        historyEntity.setAction("Добавление переменной: " + signalName.getValue().trim() + "Описание переменной: " + signalDescription.getValue() + " DBValue = " + dbNumber.getValue().intValue() + " Position = " + positionNumber.getValue().intValue() + " Offset = " + offsetNumber.getValue().intValue());
+                        historyEntity.setPlace("Добавление переменной ПЛК");
+                        historyEntity.setIdUser(SecurityUtils.getAuthentication().getDetails().getId());
+                        historyEntity.setCreateRecordDate(new Date());
+                        historyEntity.setDelete(0L);
+
                         signalListService.saveAll(signalList);
+                        historyService.saveAll(historyEntity);
                         Notification.show("Переменная успешно создана!", 5000, Notification.Position.MIDDLE);
                         close();
                     }

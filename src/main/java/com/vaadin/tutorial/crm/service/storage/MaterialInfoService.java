@@ -88,6 +88,18 @@ public interface MaterialInfoService {
     void updateMaterialInfoStorageCell(MaterialInfoEntity materialInfoEntity);
 
     /**
+     * Метод, который обновляет информацию об объекте хранения после перемещения склад/ячейка его баланс и расход
+     * @param materialInfoEntity - объект класса MaterialInfoEntity
+     */
+    void updateMaterialInfoBalance(MaterialInfoEntity materialInfoEntity);
+
+    /**
+     * Метод, который обновляет информацию об объекте хранения после перемещения склад/ячейка
+     * @param materialInfoEntity - объект класса MaterialInfoEntity
+     */
+    void updateMaterialInfoStorage(MaterialInfoEntity materialInfoEntity);
+
+    /**
      * Метод для списания объекта хранения со склада
      * @param writeOff - флаг списания
      * @param id - id объекта хранения

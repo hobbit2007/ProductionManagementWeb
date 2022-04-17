@@ -94,6 +94,25 @@ public class MaterialInfoImpl implements MaterialInfoService {
     }
 
     @Override
+    public void updateMaterialInfoBalance(MaterialInfoEntity materialInfoEntity) {
+        if (materialInfoEntity != null)
+            materialInfoRepository.updateMaterialInfoBalance(materialInfoEntity.getFlagMove(),
+                    materialInfoEntity.getBalance(), materialInfoEntity.getExpense(),
+                    materialInfoEntity.getId());
+        else
+            Notification.show("Нет данных для обновления!", 5000, Notification.Position.MIDDLE);
+    }
+
+    @Override
+    public void updateMaterialInfoStorage(MaterialInfoEntity materialInfoEntity) {
+        if (materialInfoEntity != null)
+            materialInfoRepository.updateMaterialInfoStorage(materialInfoEntity.getFlagMove(), materialInfoEntity.getIdStorage(),
+                    materialInfoEntity.getIdCell(), materialInfoEntity.getId(), materialInfoEntity.getIdLocation());
+        else
+            Notification.show("Нет данных для обновления!", 5000, Notification.Position.MIDDLE);
+    }
+
+    @Override
     public void updateWriteOff(Long writeOff, Long id) {
         materialInfoRepository.updateWriteOff(writeOff, id);
     }

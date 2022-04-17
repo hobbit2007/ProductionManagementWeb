@@ -80,7 +80,7 @@ public class CreateLocationDialog extends Dialog {
         cancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
         hMain.add(save, cancel);
-        vMain.add(new AnyComponent().labelTitle("Добавить локацию"), locationName, locationDescription, hMain);
+        vMain.add(new AnyComponent().labelTitle("Добавить локацию"), storage, locationName, locationDescription, hMain);
         vMain.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         add(vMain);
 

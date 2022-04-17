@@ -41,7 +41,7 @@ public class MoveStoreDialog extends Dialog {
 
     public MoveStoreDialog(StorageService storageService, CellService cellService, Long storageID, Long cellID,
                            MaterialMoveService materialMoveService, Long materialID, MaterialInfoService materialInfoService, Long locationID,
-                           LocationService locationService) {
+                           LocationService locationService, MaterialInfoEntity materialInfo) {
         setCloseOnEsc(false);
         setCloseOnOutsideClick(false);
         setDraggable(true);
@@ -146,16 +146,69 @@ public class MoveStoreDialog extends Dialog {
 
                        materialMoveService.saveAll(materialMoveEntity);
 
-                       MaterialInfoEntity materialInfoEntity = new MaterialInfoEntity();
-                       materialInfoEntity.setFlagMove(1);
-                       materialInfoEntity.setIdStorage(materialMoveEntity.getIdStorageNew());
-                       materialInfoEntity.setIdLocation(materialMoveEntity.getIdLocationNew());
-                       materialInfoEntity.setIdCell(materialMoveEntity.getIdCellNew());
-                       materialInfoEntity.setBalance(materialInfoService.getCheckID(materialID).get(0).getBalance() - expense.getValue());
-                       materialInfoEntity.setExpense(expense.getValue());
-                       materialInfoEntity.setId(materialID);
+                       if (materialInfoService.getCheckID(materialID).get(0).getBalance() - expense.getValue() > 0) { // Если перемещаем не весь материал
+                           try {
+                               MaterialInfoEntity materialInfoEntity = new MaterialInfoEntity();
+                               materialInfoEntity.setFlagMove(1);
+                               materialInfoEntity.setBalance(materialInfoService.getCheckID(materialID).get(0).getBalance() - expense.getValue());
+                               materialInfoEntity.setExpense(expense.getValue());
+                               materialInfoEntity.setId(materialID);
 
-                       materialInfoService.updateMaterialInfoStorageCell(materialInfoEntity);
+                               materialInfoService.updateMaterialInfoBalance(materialInfoEntity);
+                           }
+                           catch (Exception ex) {
+                               Notification.show("Не могу обновить запись после перемещения материала!" + ex.getMessage(), 10000, Notification.Position.MIDDLE);
+                               return;
+                           }
+
+                           try {
+                               MaterialInfoEntity materialInfoEntity = new MaterialInfoEntity();
+                               materialInfoEntity.setFlagMove(0);//из этой ячейки этот материал еще не перемещали
+                               materialInfoEntity.setMaterialName(materialInfo.getMaterialName());
+                               materialInfoEntity.setIdStorage(materialMoveEntity.getIdStorageNew());
+                               materialInfoEntity.setIdLocation(materialMoveEntity.getIdLocationNew());
+                               materialInfoEntity.setIdCell(materialMoveEntity.getIdCellNew());
+                               materialInfoEntity.setArticle(materialInfo.getArticle());
+                               materialInfoEntity.setQuantity(expense.getValue());
+                               materialInfoEntity.setBalance(expense.getValue());
+                               materialInfoEntity.setExpense(0);
+                               materialInfoEntity.setDateCreate(new Date());
+                               materialInfoEntity.setIdUser(SecurityUtils.getAuthentication().getDetails().getId());
+                               materialInfoEntity.setWriteoff(0);
+                               materialInfoEntity.setCostPrice(materialInfo.getCostPrice());
+                               materialInfoEntity.setMarketPrice(materialInfo.getMarketPrice());
+                               materialInfoEntity.setDiffPrice(materialInfo.getDiffPrice());
+                               materialInfoEntity.setDelete(0);
+                               materialInfoEntity.setIdSupplier(materialInfo.getIdSupplier());
+                               materialInfoEntity.setDescription(materialInfo.getDescription());
+                               materialInfoEntity.setQrNewMaterial(materialInfo.getQrNewMaterial());
+                               materialInfoEntity.setIdMeas(materialInfo.getIdMeas());
+
+                               materialInfoService.saveAll(materialInfoEntity);
+                           }
+                           catch (Exception ex) {
+                               Notification.show("Не могу создать новую запись для перемещаемого материала!" + ex.getMessage(), 50000, Notification.Position.MIDDLE);
+                               return;
+                           }
+                       }
+                       if (materialInfoService.getCheckID(materialID).get(0).getBalance() - expense.getValue() == 0) {
+                           try {
+                               MaterialInfoEntity materialInfoEntity = new MaterialInfoEntity();
+                               materialInfoEntity.setFlagMove(1);
+                               materialInfoEntity.setIdStorage(materialMoveEntity.getIdStorageNew());
+                               materialInfoEntity.setIdLocation(materialMoveEntity.getIdLocationNew());
+                               materialInfoEntity.setIdCell(materialMoveEntity.getIdCellNew());
+                               //materialInfoEntity.setBalance(materialInfoService.getCheckID(materialID).get(0).getBalance() - expense.getValue());
+                               //materialInfoEntity.setExpense(expense.getValue());
+                               materialInfoEntity.setId(materialID);
+
+                               materialInfoService.updateMaterialInfoStorage(materialInfoEntity);
+                           }
+                           catch (Exception ex) {
+                               Notification.show("Не могу обновить запись при полном перемещении материала! " + ex.getMessage(), 11000, Notification.Position.MIDDLE);
+                               return;
+                           }
+                       }
 
                        close();
                    } catch (Exception ex) {

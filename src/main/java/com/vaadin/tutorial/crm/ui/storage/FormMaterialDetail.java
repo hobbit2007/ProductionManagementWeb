@@ -24,12 +24,14 @@ import com.vaadin.tutorial.crm.service.storage.*;
 import org.apache.commons.math3.util.*;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Класс форма реализующий детальный просмотр информации по объекту хранения
  */
 public class FormMaterialDetail extends FormLayout {
     HorizontalLayout hButton = new HorizontalLayout();
+    MaterialInfoEntity materialInfo;
     TextField location = new TextField("Локация:");
     TextField storage = new TextField("Склад:");
     TextField cell = new TextField("Ячейка:");
@@ -204,8 +206,14 @@ public class FormMaterialDetail extends FormLayout {
                 if (!qty.isEmpty() && materialID != 0) {
                     materialInfoEntity.setQuantity(qty.getValue());
                     //Округляем до двух знаков после запятой
-                    materialInfoEntity.setBalance(Precision.round(qty.getValue() + materialInfoService.getCheckArticle(article.getValue()).get(0).getBalance(), 2));
-                    materialInfoEntity.setId(materialID);
+                    if (materialInfoService.getCheckArticle(article.getValue()).size() != 0) {
+                        materialInfoEntity.setBalance(Precision.round(qty.getValue() + materialInfoService.getCheckArticle(article.getValue()).get(0).getBalance(), 2));
+                        materialInfoEntity.setId(materialID);
+                    }
+                    else {
+                        Notification.show("Артикул не найден!", 3000, Notification.Position.MIDDLE);
+                        return;
+                    }
                     try {
                         materialInfoService.updatePrihod(materialInfoEntity);
                         additionalPrihod(materialInfoService, storageComingService, qtyOld, materialInfoEntity.getQuantity(), balanceOld, materialInfoEntity.getBalance());
@@ -241,7 +249,7 @@ public class FormMaterialDetail extends FormLayout {
             if (materialInfoService.getCheckID(materialID).get(0).getBalance() > 0) {
                 if (storageID != 0 && cellID != 0)
                     new MoveStoreDialog(storageService, cellService, storageID, cellID, materialMoveService, materialID, materialInfoService, locationID,
-                            locationService).open();
+                            locationService, materialInfo).open();
                 else {
                     Notification.show("Не могу найти склад или ячейку!", 3000, Notification.Position.MIDDLE);
                     return;
@@ -303,7 +311,7 @@ public class FormMaterialDetail extends FormLayout {
                 MaterialInfoEntity materialInfoEntity = new MaterialInfoEntity();
                 ChangePriceEntity changePriceEntity = new ChangePriceEntity();
                 costPrice.setReadOnly(true);
-                marketPrice.setReadOnly(false);
+                marketPrice.setReadOnly(true);
 
                 try {
                     if (!costPrice.isEmpty() && materialID != 0) {
@@ -442,6 +450,18 @@ public class FormMaterialDetail extends FormLayout {
             locationID = materialInfoEntity.getIdLocation();
             storageID = materialInfoEntity.getIdStorage();
             cellID = materialInfoEntity.getIdCell();
+
+            //Заполняем объект свойствами вызванного материала
+            materialInfo = new MaterialInfoEntity();
+            materialInfo.setMaterialName(materialInfoEntity.getMaterialName());
+            materialInfo.setArticle(materialInfoEntity.getArticle());
+            materialInfo.setCostPrice(materialInfoEntity.getCostPrice());
+            materialInfo.setMarketPrice(materialInfoEntity.getMarketPrice());
+            materialInfo.setDiffPrice(materialInfoEntity.getDiffPrice());
+            materialInfo.setIdSupplier(materialInfoEntity.getIdSupplier());
+            materialInfo.setDescription(materialInfoEntity.getDescription());
+            materialInfo.setQrNewMaterial(materialInfoEntity.getQrNewMaterial());
+            materialInfo.setIdMeas(materialInfoEntity.getIdMeas());
 
             //Если записи в таблице истории приходов есть, то кнопку активируем
             if (storageComingService.getAllByIdMaterial(materialID).size() != 0)

@@ -32,7 +32,10 @@ public class SignalListImpl implements SignalListService {
     @Override
     public void saveAll(SignalList signalList) {
         if (signalList != null)
-            signalListRepository.saveAndFlush(signalList);
+            //signalListRepository.saveAndFlush(signalList);
+            signalListRepository.insertValue(signalList.getSignalName(), signalList.getSignalDescription(), signalList.getDbValue(),
+                    signalList.getPosition(), signalList.getFOffset(), signalList.getIdUserCreate(), signalList.getDateCreate(),
+                    signalList.getIdController(), signalList.getIdGroup());
         else
             Notification.show("Нет данных для записи!", 5000, Notification.Position.MIDDLE);
     }

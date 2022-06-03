@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,4 +32,13 @@ public interface SignalListRepository extends JpaRepository<SignalList, Long> {
     void updateValue(@Param("signalName") String signalName, @Param("signalDescription") String signalDescription,
                      @Param("dbValue") int dbValue, @Param("position") int position,
                      @Param("offset") int offset, @Param("idGroup") long idGroup, @Param("id") long id);
+
+    @Modifying
+    @Transactional
+    @Query(value = "insert into signallist (signal_name, signal_description, delete, db_value, position, f_offset, id_user_create, date_create, id_controller, id_group) values (:signalName, :signalDescription, 0, :dbValue, :position, :offset, :idUserCreate, :dateCreate, :idController, :idGroup)", nativeQuery = true)
+
+    void insertValue(@Param("signalName") String signalName, @Param("signalDescription") String signalDescription,
+                     @Param("dbValue") int dbValue, @Param("position") int position,
+                     @Param("offset") int offset, @Param("idUserCreate") long idUserCreate,
+                     @Param("dateCreate") Date dateCreate, @Param("idController") long idController, @Param("idGroup") long idGroup);
 }
